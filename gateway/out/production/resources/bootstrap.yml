@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 4000
+  servlet:
+    context-path: ""
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    demo-service:
+        path: /demo/**
+        serviceId: demo-service
+        stripPrefix: false
+        sensitiveHeaders:
