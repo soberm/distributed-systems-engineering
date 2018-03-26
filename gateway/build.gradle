@@ -7,6 +7,9 @@ buildscript {
     }
 }
 
+group 'at.dse.g14'
+version '0.0.1'
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -19,9 +22,27 @@ repositories {
 }
 
 dependencies {
+    /************************************ LOGGING ********************************************************/
+
+    /************************************ UTILS  **********************************************************/
+
+    /************************************ DATABASE ********************************************************/
+
+    /************************************ PERSISTENCE******************************************************/
+
+    /************************************ SECURITY ********************************************************/
+
+    /************************************ SPRING BOOT ********************************************************/
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.10.RELEASE'
+
+    /************************************ SPRING CLOUD ********************************************************/
+
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '1.4.3.RELEASE'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '1.4.3.RELEASE'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.4.3.RELEASE'
+
+    /************************************ TESTING ********************************************************/
+
 }
