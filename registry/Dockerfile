@@ -12,7 +12,7 @@ VOLUME /tmp
 #Jar file, which should be copied to the container
 ARG JAR_FILE="registry-0.0.1.jar"
 
-# Copy the admin app into the container
+# Copy the registry app into the container
 COPY ./build/libs/${JAR_FILE} registry-0.0.1.jar
 
 # Expose the port 8761 outside of the container
