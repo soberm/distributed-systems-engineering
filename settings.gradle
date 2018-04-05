@@ -15,4 +15,6 @@ include 'demo-service'
 include 'gateway'
 include 'monitoring'
 include 'admin'
+include 'notyfier'
+include 'notyfier'
 
