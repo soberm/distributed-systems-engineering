@@ -7,7 +7,7 @@ import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.TopicAdminClient;
 import com.google.pubsub.v1.*;
 
-public class PubSubExamples {
+public class PubSubHelpers {
 
   // Your Google Cloud Platform project ID
   private String projectId;
@@ -17,7 +17,7 @@ public class PubSubExamples {
   private String pullSubscriptionId;
   private String pushSubscriptionId;
 
-  public PubSubExamples(
+  public PubSubHelpers(
       String projectId, String topicId, String pullSubscriptionId, String pushSubscriptionId) {
     this.projectId = projectId;
     this.topicId = topicId;
@@ -26,8 +26,8 @@ public class PubSubExamples {
   }
 
   public static void main(String[] args) {
-    PubSubExamples examples =
-        new PubSubExamples(
+    PubSubHelpers examples =
+        new PubSubHelpers(
             "dse-group-14",
             "exampleTopic1",
             "examplePullSubscription1",
@@ -190,4 +190,6 @@ public class PubSubExamples {
       e.printStackTrace();
     }
   }
+
+  /** ************************ Publications ************************ */
 }
