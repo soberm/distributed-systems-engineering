@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @since 1.0.0
  */
 @FeignClient(
-    name = "demo-client",
-    url = "http://localhost:9090",
+    name = "demo-service",
     fallback = GreetingClient.GreetingClientFallback.class
 )
 public interface GreetingClient {
