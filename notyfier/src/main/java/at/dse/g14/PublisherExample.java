@@ -13,15 +13,9 @@ import java.util.List;
 
 public class PublisherExample {
 
-  private String projectId;
+  public void publishMessagesToTopic(String projectId, String topicId, List<String> messages) {
 
-  public PublisherExample(String projectId) {
-    this.projectId = projectId;
-  }
-
-  private void publishMessagesToTopic(String topicId, List<String> messages) {
-
-    ProjectTopicName topicName = ProjectTopicName.of(this.projectId, topicId);
+    ProjectTopicName topicName = ProjectTopicName.of(projectId, topicId);
     Publisher publisher = null;
     List<ApiFuture<String>> messageIdFutures = new ArrayList<>();
 

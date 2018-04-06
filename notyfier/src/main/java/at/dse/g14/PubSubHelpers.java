@@ -9,50 +9,33 @@ import com.google.pubsub.v1.*;
 
 public class PubSubHelpers {
 
-  // Your Google Cloud Platform project ID
-  private String projectId;
-
-  private String topicId;
-
-  private String pullSubscriptionId;
-  private String pushSubscriptionId;
-
-  public PubSubHelpers(
-      String projectId, String topicId, String pullSubscriptionId, String pushSubscriptionId) {
-    this.projectId = projectId;
-    this.topicId = topicId;
-    this.pullSubscriptionId = pullSubscriptionId;
-    this.pushSubscriptionId = pushSubscriptionId;
-  }
-
   public static void main(String[] args) {
-    PubSubHelpers examples =
-        new PubSubHelpers(
-            "dse-group-14",
-            "exampleTopic1",
-            "examplePullSubscription1",
-            "examplePushSubscription1");
+    String projectId = "dse-group-14";
+    String topicId = "exampleTopic1";
+    String pullSubscriptionId = "examplePullSubscription1";
+    String pushSubscriptionId = "examplePushSubscription1";
 
+    PubSubHelpers examples = new PubSubHelpers();
 
-    examples.createTopic(examples.projectId, examples.topicId);
-    examples.listTopics(examples.projectId);
+    examples.createTopic(projectId, topicId);
+    examples.listTopics(projectId);
 
     examples.createPullSubscription(
-        examples.projectId, examples.topicId, examples.pullSubscriptionId);
+        projectId, topicId, pullSubscriptionId);
     // Kann nicht funktioneiren, endpoint gibts nicht, nur als beispiel
-    //    examples.createPushSubscription(examples.projectId, examples.topicId,
+    //    examples.createPushSubscription(projectId, examples.topicId,
     // examples.pushSubscriptionId, "https://example.endpint.com");
-    //    examples.deleteSubscription(examples.projectId, examples.pushSubscriptionId);
-    examples.listSubscriptionsOfProject(examples.projectId);
-    examples.listSubscriptionsOfTopic(examples.topicId);
-    examples.deleteSubscription(examples.projectId, examples.pullSubscriptionId);
+    //    examples.deleteSubscription(projectId, examples.pushSubscriptionId);
+    examples.listSubscriptionsOfProject(projectId);
+    examples.listSubscriptionsOfTopic(projectId, topicId);
+    examples.deleteSubscription(projectId, pullSubscriptionId);
 
-    examples.deleteTopic(examples.projectId, examples.topicId);
-    examples.listTopics(examples.projectId);
+    examples.deleteTopic(projectId, topicId);
+    examples.listTopics(projectId);
   }
 
   /** ************************ TOPICS ************************ */
-  private void createTopic(String projectId, String topicId) {
+  public void createTopic(String projectId, String topicId) {
     ProjectTopicName topic = ProjectTopicName.of(projectId, topicId);
     try (TopicAdminClient topicAdminClient = TopicAdminClient.create()) {
       topicAdminClient.createTopic(topic);
@@ -66,7 +49,7 @@ public class PubSubHelpers {
     System.out.printf("Topic %s:%s created.\n", topic.getProject(), topic.getTopic());
   }
 
-  private void deleteTopic(String projectId, String topicId) {
+  public void deleteTopic(String projectId, String topicId) {
     try (TopicAdminClient topicAdminClient = TopicAdminClient.create()) {
       ProjectTopicName topicName = ProjectTopicName.of(projectId, topicId);
       topicAdminClient.deleteTopic(topicName);
@@ -79,7 +62,7 @@ public class PubSubHelpers {
     }
   }
 
-  private void listTopics(String topicName) {
+  public void listTopics(String projectId) {
     try (TopicAdminClient topicAdminClient = TopicAdminClient.create()) {
       ListTopicsRequest listTopicsRequest =
           ListTopicsRequest.newBuilder().setProject(ProjectName.format(projectId)).build();
@@ -96,7 +79,7 @@ public class PubSubHelpers {
   }
 
   /** ************************ SUBSCRIPTIONS ************************ */
-  private Subscription createPullSubscription(
+  public Subscription createPullSubscription(
       String projectId, String topicId, String subscriptionId) {
     try (SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create()) {
       // eg. projectId = "my-test-project", topicId = "my-test-topic"
@@ -116,7 +99,7 @@ public class PubSubHelpers {
     return null;
   }
 
-  private Subscription createPushSubscription(
+  public Subscription createPushSubscription(
       String projectId, String topicId, String subscriptionId, String endpoint) {
     try (SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create()) {
       ProjectTopicName topicName = ProjectTopicName.of(projectId, topicId);
@@ -140,7 +123,7 @@ public class PubSubHelpers {
     return null;
   }
 
-  private void deleteSubscription(String projectId, String subscriptionId) {
+  public void deleteSubscription(String projectId, String subscriptionId) {
     try (SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create()) {
       ProjectSubscriptionName subscriptionName =
           ProjectSubscriptionName.of(projectId, subscriptionId);
@@ -156,7 +139,7 @@ public class PubSubHelpers {
     }
   }
 
-  private void listSubscriptionsOfProject(String projectId) {
+  public void listSubscriptionsOfProject(String projectId) {
     try (SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create()) {
       ListSubscriptionsRequest listSubscriptionsRequest =
           ListSubscriptionsRequest.newBuilder()
@@ -174,7 +157,7 @@ public class PubSubHelpers {
     }
   }
 
-  private void listSubscriptionsOfTopic(String topicId) {
+  public void listSubscriptionsOfTopic(String projectId, String topicId) {
     try (TopicAdminClient topicAdminClient = TopicAdminClient.create()) {
       TopicName topicName = ProjectTopicName.of(projectId, topicId);
       ListTopicSubscriptionsRequest request =
