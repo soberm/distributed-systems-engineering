@@ -39,8 +39,6 @@ public class VehicleServiceImpl implements VehicleService {
   private void validate(final Vehicle vehicle) throws ValidationException {
     if (vehicle.getManufacturer() == null) {
       throw new ValidationException("No manufacturer provided");
-    } else if (vehicle.getPosition() == null) {
-      throw new ValidationException("No GPS point provided");
     }
   }
 }

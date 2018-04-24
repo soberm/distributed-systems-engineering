@@ -1,19 +1,18 @@
 package at.dse.g14.commons.dto;
 
-import java.util.Set;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author Lukas Baronyai
@@ -25,20 +24,34 @@ import org.hibernate.validator.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vehicle implements DTO {
+public class LiveData {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
-  private String modelType;
+  @Min(0)
+  private int passenger;
+
+  @Embedded
+  private GpsPoint position;
+
+  @Min(0)
+  private double speed;
+
+  @Min(0)
+  private double distanceVehicleAhead;
+
+  @Min(0)
+  private double distanceVehicleBehind;
+
+  @Builder.Default
+  private boolean nearCrashEvent = false;
+  @Builder.Default
+  private boolean crashEvent = false;
 
   @ManyToOne
-  @JoinColumn(name = "manufacturer_id", nullable = false)
-  private VehicleManufacturer manufacturer;
-
+  @JoinColumn(name = "vehicle_id", nullable = false)
   @NotNull
-  @OneToMany(mappedBy = "vehicle")
-  private Set<LiveData> data;
+  private Vehicle vehicle;
 }
