@@ -1,0 +1,30 @@
+server:
+  port: 4000
+  servlet:
+    context-path: ""
+
+spring:
+  application:
+    name: gateway
+  boot:
+    admin:
+      client:
+        url: http://localhost:8123
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    demo-service:
+        path: /demo/**
+        serviceId: demo-service
+        stripPrefix: false
+        sensitiveHeaders:

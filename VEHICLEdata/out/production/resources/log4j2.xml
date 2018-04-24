@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Properties>
+    <Property name="log_dir">/logs</Property>
+    <Property name="archive">/archive</Property>
+    <Property name="servicename">reportservice</Property>
+  </Properties>
+  <Appenders>
+    <!-- debug messages also get displayed on console-->
+    <Console name="Console-Appender" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+    </Console>
+
+    <!-- one file for all error output per day -->
+    <RollingFile fileName="${log_dir}/${servicename}_error_output.log"
+      filePattern="${archive}/%d{yyyy-MM-dd}/${servicename}_error_output-%d{yyyy-MM-dd}-%i.log"
+      name="Error-File-Appender">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+        <SizeBasedTriggeringPolicy size="1 MB"/>
+      </Policies>
+      <Filters>
+        <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+    </RollingFile>
+
+    <!-- one file for all error output per day -->
+    <RollingFile fileName="${log_dir}/${servicename}_debug_output.log"
+      filePattern="${archive}/%d{yyyy-MM-dd}/${servicename}_debug_output-%d{yyyy-MM-dd}-%i.log"
+      name="Reportserviceadapter-File-Appender">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+        <SizeBasedTriggeringPolicy size="1 MB"/>
+      </Policies>
+    </RollingFile>
+
+    <!-- one file for all spring output per day -->
+    <RollingFile fileName="${log_dir}/${servicename}_spring_output.log"
+      filePattern="${archive}/%d{yyyy-MM-dd}/${servicename}_spring_output-%d{yyyy-MM-dd}-%i.log"
+      name="SpringBoot-File-Appender">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+        <SizeBasedTriggeringPolicy size="1 MB"/>
+      </Policies>
+    </RollingFile>
+
+  </Appenders>
+
+  <Loggers>
+    <Logger additivity="false" level="info" name="org.springframework.web">
+      <AppenderRef ref="SpringBoot-File-Appender"/>
+      <AppenderRef ref="Console-Appender"/>
+    </Logger>
+    <Logger additivity="false" level="debug" name="at.steps.reportserviceadapter">
+      <AppenderRef level="debug" ref="Console-Appender"/>
+      <AppenderRef level="debug" ref="Reportserviceadapter-File-Appender"/>
+      <AppenderRef level="error" ref="Error-File-Appender"/>
+    </Logger>
+    <Root>
+      <AppenderRef ref="Console-Appender"/>
+    </Root>
+  </Loggers>
+</Configuration>

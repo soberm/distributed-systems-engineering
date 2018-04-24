@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: monitoring
+  boot:
+    admin:
+      client:
+        url: http://localhost:8123
+
+server:
+  servlet:
+    context-path: ""
+
+endpoints:
+  health.path: /actuator/health
+  env.path: /actuator/env
+  info.path: /actuator/info
+  auditevents.path: /actuator/auditevents
+  trace.path: /actuator/trace
+  loggers.path: /actuator/loggers
+  metrics.path: /actuator/metrics
+  mappings.path: /actuator/mappings
+  beans.path: /actuator/beans
+  dump.path: /actuator/dump
+  heapdump.path: /actuator/heapdump
