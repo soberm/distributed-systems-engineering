@@ -1,6 +1,42 @@
--- DROP TABLE public.vehicle_manufacturer;
--- DROP TABLE public.vehicle;
--- DROP TABLE public.emergency_service;
+DROP TABLE IF EXISTS public.vehicle;
+DROP TABLE IF EXISTS public.vehicle_manufacturer;
+DROP TABLE IF EXISTS public.emergency_service;
+
+DROP SEQUENCE IF EXISTS public.emergency_service_id_seq;
+DROP SEQUENCE IF EXISTS public.vehicle_id_seq;
+DROP SEQUENCE IF EXISTS public.vehicle_manufacturer_id_seq;
+
+-- Sequences
+
+CREATE SEQUENCE public.emergency_service_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.emergency_service_id_seq
+    OWNER TO postgres;
+
+CREATE SEQUENCE public.vehicle_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.vehicle_id_seq
+    OWNER TO postgres;
+
+CREATE SEQUENCE public.vehicle_manufacturer_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.vehicle_manufacturer_id_seq
+    OWNER TO postgres;
 
 --  Table: public.vehicle_manufacturer
 
@@ -66,3 +102,12 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.vehicle
   OWNER to postgres;
+
+-- INSERTS
+
+INSERT INTO vehicle_manufacturer VALUES (default , 'BMW');
+INSERT INTO vehicle_manufacturer VALUES (default , 'VW');
+
+INSERT INTO emergency_service VALUES (default , 'Police');
+INSERT INTO emergency_service VALUES (default , 'Fire Brigade');
+INSERT INTO emergency_service VALUES (default , 'Rescue Service');

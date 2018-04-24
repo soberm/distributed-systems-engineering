@@ -20,8 +20,8 @@ dependencies {
 
     /************************************ DATABASE ********************************************************/
 
-//    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.2.Final'
-//    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.2.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
 
     /************************************ PERSISTENCE******************************************************/
 
