@@ -3,6 +3,7 @@ package at.dse.g14.commons.dto;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Lukas Baronyai
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class GpsPoint {
 

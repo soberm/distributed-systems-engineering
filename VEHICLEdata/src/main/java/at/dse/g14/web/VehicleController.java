@@ -4,6 +4,8 @@ import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.persistence.VehicleRepository;
+import at.dse.g14.service.VehicleService;
+import at.dse.g14.service.exception.ValidationException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,20 +27,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/manufacturer/{id}/vehicle")
 public class VehicleController {
 
+  private final VehicleService vehicleService;
   private final VehicleRepository vehicleRepository;
   private final VehicleManufacturerRepository manufacturerRepository;
 
   @Autowired
   public VehicleController(
+      final VehicleService vehicleService,
       final VehicleRepository vehicleRepository,
       final VehicleManufacturerRepository manufacturerRepository) {
+    this.vehicleService = vehicleService;
     this.vehicleRepository = vehicleRepository;
     this.manufacturerRepository = manufacturerRepository;
   }
 
   @PostMapping
-  public Vehicle createVehicle(@RequestBody final Vehicle vehicle) {
-    return vehicleRepository.save(vehicle);
+  public Vehicle createVehicle(@RequestBody final Vehicle vehicle) throws ValidationException {
+    return vehicleService.create(vehicle);
   }
 
   @GetMapping("/{vid}")
@@ -58,7 +63,7 @@ public class VehicleController {
   }
 
   @PutMapping
-  public Vehicle updateVehicle(@RequestBody final Vehicle vehicle) {
-    return vehicleRepository.save(vehicle);
+  public Vehicle updateVehicle(@RequestBody final Vehicle vehicle) throws ValidationException {
+    return vehicleService.update(vehicle);
   }
 }
