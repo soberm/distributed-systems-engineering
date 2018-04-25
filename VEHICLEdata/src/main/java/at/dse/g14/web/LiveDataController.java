@@ -48,7 +48,7 @@ public class LiveDataController {
   }
 
   @PostMapping
-  public LiveData createVehicle(@RequestBody final LiveData data) throws ValidationException {
+  public LiveData createLiveData(@RequestBody final LiveData data) throws ValidationException {
     return dataService.create(data);
   }
 

@@ -19,10 +19,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @AllArgsConstructor
 public class Vehicle implements DTO {
 
+  private Long id;
+
   @NotEmpty
   protected Set<LiveData> data;
-  private Long id;
+
+  private VehicleManufacturer manufacturer;
   @NotBlank
   private String modelType;
-  private VehicleManufacturer manufacturer;
 }
