@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @since 1.0.0
  */
 @Data
+@Table(name = "vehicle")
 @javax.persistence.Entity
 @Builder
 @NoArgsConstructor

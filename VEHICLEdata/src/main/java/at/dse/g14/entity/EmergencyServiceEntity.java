@@ -1,9 +1,9 @@
 package at.dse.g14.entity;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +16,12 @@ import org.hibernate.validator.constraints.NotBlank;
  * @since 1.0.0
  */
 @Data
-@Entity
+@javax.persistence.Entity
+@Table(name = "emergency_service")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmergencyServiceEntity implements at.dse.g14.entity.Entity {
+public class EmergencyServiceEntity implements Entity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
