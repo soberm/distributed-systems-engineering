@@ -1,5 +1,6 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.entity;
 
+import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Embeddable
 public class GpsPoint {
 
   private double lat;

@@ -1,15 +1,13 @@
 package at.dse.g14.web;
 
 import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.persistence.VehicleRepository;
 import at.dse.g14.service.VehicleService;
 import at.dse.g14.service.exception.ValidationException;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,15 +28,18 @@ public class VehicleController {
   private final VehicleService vehicleService;
   private final VehicleRepository vehicleRepository;
   private final VehicleManufacturerRepository manufacturerRepository;
+  private final ModelMapper modelMapper;
 
   @Autowired
   public VehicleController(
       final VehicleService vehicleService,
       final VehicleRepository vehicleRepository,
-      final VehicleManufacturerRepository manufacturerRepository) {
+      final VehicleManufacturerRepository manufacturerRepository,
+      final ModelMapper modelMapper) {
     this.vehicleService = vehicleService;
     this.vehicleRepository = vehicleRepository;
     this.manufacturerRepository = manufacturerRepository;
+    this.modelMapper = modelMapper;
   }
 
   @PostMapping
@@ -47,19 +48,14 @@ public class VehicleController {
   }
 
   @GetMapping("/{vid}")
-  public ResponseEntity<Vehicle> getVehicle(
-      @PathVariable("id") final long id, @PathVariable("vid") final long vid) {
-    final Vehicle vehicle = vehicleRepository.findOne(vid);
-    final VehicleManufacturer manufacturer = manufacturerRepository.findOne(id);
-
-    return vehicle.getManufacturer().equals(manufacturer)
-        ? new ResponseEntity<>(vehicle, HttpStatus.OK)
-        : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  public Vehicle getVehicle(@PathVariable("id") final long id, @PathVariable("vid") final long vid)
+      throws ValidationException {
+    return vehicleService.findOne(id, vid);
   }
 
   @GetMapping
   public List<Vehicle> getAllVehicleOfManufacturer(@PathVariable("id") final long id) {
-    return vehicleRepository.findAllByManufacturer_Id(id);
+    return vehicleService.findAllOfManufacturer(id);
   }
 
   @PutMapping

@@ -1,6 +1,6 @@
 package at.dse.g14.persistence;
 
-import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.entity.EmergencyServiceEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @since 1.0.0
  */
 @Repository
-public interface EmergencyServiceRepository extends CrudRepository<EmergencyService, Long> {
+public interface EmergencyServiceRepository extends CrudRepository<EmergencyServiceEntity, Long> {
 
 }
