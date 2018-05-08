@@ -8,7 +8,7 @@ public interface ICrudService<T, ID> {
 
   void update(T entity);
 
-  void delete(ID s);
+  void delete(ID id);
 
   T findOne(ID id);
 
