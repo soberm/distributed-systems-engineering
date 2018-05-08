@@ -17,7 +17,7 @@ public class VehicleTrack {
   @Id
   private Long id;
 
-  private long vin;
+  private String vin;
 
   private String modelType;
 
