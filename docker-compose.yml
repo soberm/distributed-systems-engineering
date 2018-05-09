@@ -65,3 +65,9 @@ services:
       - $HOME/data/db:/data/db
       - $HOME/data/bkp:/data/bkp
     restart: always
+  store-front-ui:
+    build: ./StoreFrontUI
+    restart: always
+    container_name: dse_frontend
+    ports:
+      - 4200:4200
