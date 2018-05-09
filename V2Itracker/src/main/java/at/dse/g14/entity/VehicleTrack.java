@@ -1,9 +1,14 @@
 package at.dse.g14.entity;
 
+import java.math.BigDecimal;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,22 +22,31 @@ public class VehicleTrack {
   @Id
   private Long id;
 
+  @NotNull
   private String vin;
 
+  @NotNull
   private String modelType;
 
-  private int passengers;
+  @Range(min = 0, max = 300)
+  private Integer passengers;
 
+  @Valid
   private GpsPoint location;
 
-  private double speed;
+  @DecimalMin(value = "0.0")
+  private BigDecimal speed;
 
-  private double distanceVehicleAhead;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleAhead;
 
-  private double distanceVehicleBehind;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleBehind;
 
-  private boolean nearCrashEvent;
+  @NotNull
+  private Boolean nearCrashEvent;
 
-  private boolean crashEvent;
+  @NotNull
+  private Boolean crashEvent;
 
 }
