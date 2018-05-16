@@ -7,7 +7,7 @@ public interface ICrudService<T, ID> {
 
   T save(T entity) throws ServiceException;
 
-  void update(T entity) throws ServiceException;
+  T update(T entity) throws ServiceException;
 
   void delete(ID id) throws ServiceException;
 
