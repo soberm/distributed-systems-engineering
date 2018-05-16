@@ -1,16 +1,19 @@
 package at.dse.g14.service.impl;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import at.dse.g14.entity.GpsPoint;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.ValidationException;
+import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import org.hamcrest.collection.IsEmptyCollection;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,19 @@ public class VehicleTrackServiceTest {
   public void save_validVehicleTrack_shouldPersist() throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
     assertThat(vehicleTrackService.save(vehicleTrack), is(vehicleTrack));
+    vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
+  }
+
+  @Test
+  public void save_alreadyExistingVehicleTrack_shouldThrowException() throws Exception {
+    VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
+    vehicleTrackService.save(vehicleTrack);
+    try {
+      vehicleTrackService.save(vehicleTrack);
+      Assert.fail("VehicleTrackAlreadyExistsException should be thrown.");
+    } catch (VehicleTrackAlreadyExistsException e) {
+      vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
+    }
   }
 
   @Test(expected = ValidationException.class)
@@ -73,7 +89,8 @@ public class VehicleTrackServiceTest {
   }
 
   @Test(expected = ValidationException.class)
-  public void save_invalidVehicleTrackDistanceVehicleBehind_shouldThrowException() throws Exception {
+  public void save_invalidVehicleTrackDistanceVehicleBehind_shouldThrowException()
+      throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
     vehicleTrack.setDistanceVehicleBehind(new BigDecimal(-1));
     vehicleTrackService.save(vehicleTrack);
@@ -110,6 +127,13 @@ public class VehicleTrackServiceTest {
     vehicleTrackService.update(savedVehicleTrack);
     assertThat(vehicleTrackService.findOne(id), is(savedVehicleTrack));
     vehicleTrackService.delete(id); //cleanup
+  }
+
+  @Test
+  public void update_notExistingVehicleTrack_shouldPersist() throws Exception {
+    VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
+    assertThat(vehicleTrackService.update(vehicleTrack), is(vehicleTrack));
+    vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
   }
 
   @Test(expected = ValidationException.class)
@@ -179,7 +203,7 @@ public class VehicleTrackServiceTest {
     assertThat(vehicleTrackService.findAll(), IsEmptyCollection.empty());
   }
 
-  public VehicleTrack buildValidVehicleTrack(Long id){
+  public VehicleTrack buildValidVehicleTrack(Long id) {
     return VehicleTrack.builder()
         .id(id)
         .vin("W0L000051T2123456")
