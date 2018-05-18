@@ -7,6 +7,7 @@ import at.dse.g14.service.exception.ServiceException;
 import at.dse.g14.service.exception.ValidationException;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class VehicleTrackService implements IVehicleTrackService {
   public VehicleTrack update(VehicleTrack vehicleTrack) throws ServiceException {
     validate(vehicleTrack);
 
+
+
     VehicleTrack loadedVehicleTrack = findOne(vehicleTrack.getId());
 
     if (loadedVehicleTrack == null) {
@@ -63,14 +66,18 @@ public class VehicleTrackService implements IVehicleTrackService {
   public void delete(Long id) throws ServiceException {
     validate(id);
     log.info("Deleted VehicleTrack " + id);
-    vehicleTrackRepository.delete(id);
+    vehicleTrackRepository.deleteById(id);
   }
 
   @Override
   public VehicleTrack findOne(Long id) throws ServiceException {
     validate(id);
     log.info("Finding VehicleTrack " + id);
-    return vehicleTrackRepository.findOne(id);
+    try{
+      return vehicleTrackRepository.findById(id).get();
+    }catch(NoSuchElementException e){
+      return null;
+    }
   }
 
   @Override
