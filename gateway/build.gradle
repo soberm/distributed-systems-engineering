@@ -1,48 +1,52 @@
 buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
-group 'at.dse.g14'
-version '0.0.1'
-
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
+group 'at.dse.g14'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+    springCloudVersion = 'Finchley.BUILD-SNAPSHOT'
 }
 
 dependencies {
-    /************************************ LOGGING ********************************************************/
 
-    /************************************ UTILS  **********************************************************/
+    /*** SPRING BOOT ***/
 
-    /************************************ DATABASE ********************************************************/
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
 
-    /************************************ PERSISTENCE******************************************************/
+    /*** SPRING CLOUD ***/
 
-    /************************************ SECURITY ********************************************************/
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
 
-    /************************************ SPRING BOOT ********************************************************/
+}
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.10.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.10.RELEASE'
-
-    /************************************ SPRING CLOUD ********************************************************/
-
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '1.4.3.RELEASE'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '1.4.3.RELEASE'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.4.3.RELEASE'
-
-    /************************************ TESTING ********************************************************/
-
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
