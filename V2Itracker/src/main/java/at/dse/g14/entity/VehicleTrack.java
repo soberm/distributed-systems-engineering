@@ -1,5 +1,6 @@
 package at.dse.g14.entity;
 
+import at.dse.g14.commons.dto.GpsPoint;
 import java.math.BigDecimal;
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
