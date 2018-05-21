@@ -1,10 +1,10 @@
 package at.dse.g14.service.impl;
 
+import at.dse.g14.commons.service.exception.ServiceException;
+import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.persistence.VehicleTrackRepository;
 import at.dse.g14.service.IVehicleTrackService;
-import at.dse.g14.service.exception.ServiceException;
-import at.dse.g14.service.exception.ValidationException;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import java.util.List;
 import java.util.NoSuchElementException;
