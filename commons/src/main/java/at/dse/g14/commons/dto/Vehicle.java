@@ -19,7 +19,8 @@ public class Vehicle implements DTO {
 
   private Long id;
 
-  private VehicleManufacturer manufacturer;
   @NotBlank
   private String modelType;
+
+  private VehicleManufacturer manufacturer;
 }

@@ -20,7 +20,7 @@ public class VehicleControllerTest extends AbstractControllerTest {
         .perform(
             post("/manufacturer/{id}/vehicle", String.valueOf(manufacturerEntity1.getId()))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(gson.toJson(new Vehicle(null, convertToDto(manufacturerEntity1), "Polo"))))
+                .content(gson.toJson(new Vehicle(null, "Polo", convertToDto(manufacturerEntity1)))))
         .andExpect(status().isOk())
         .andReturn();
   }
