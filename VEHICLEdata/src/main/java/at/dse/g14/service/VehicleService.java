@@ -1,7 +1,8 @@
 package at.dse.g14.service;
 
 import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.service.exception.ValidationException;
+import at.dse.g14.commons.service.CrudService;
+import at.dse.g14.commons.service.exception.ValidationException;
 import java.util.List;
 
 /**

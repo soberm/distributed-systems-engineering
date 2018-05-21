@@ -1,9 +1,9 @@
 package at.dse.g14.web;
 
 import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.service.exception.ServiceException;
+import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.service.VehicleService;
-import at.dse.g14.service.exception.ServiceException;
-import at.dse.g14.service.exception.ValidationException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

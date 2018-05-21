@@ -1,6 +1,6 @@
-package at.dse.g14.service;
+package at.dse.g14.commons.service;
 
-import at.dse.g14.service.exception.ServiceException;
+import at.dse.g14.commons.service.exception.ServiceException;
 import java.util.List;
 
 public interface CrudService<T, ID> {

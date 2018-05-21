@@ -1,8 +1,8 @@
 package at.dse.g14.web;
 
 import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.EmergencyServiceService;
-import at.dse.g14.service.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

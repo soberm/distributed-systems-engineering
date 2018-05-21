@@ -1,4 +1,4 @@
-package at.dse.g14.service.exception;
+package at.dse.g14.commons.service.exception;
 
 /**
  * @author Lukas Baronyai
