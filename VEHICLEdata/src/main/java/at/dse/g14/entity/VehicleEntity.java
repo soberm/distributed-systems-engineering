@@ -1,14 +1,11 @@
 package at.dse.g14.entity;
 
-import java.util.Set;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,8 +35,4 @@ public class VehicleEntity implements Entity {
   @ManyToOne
   @JoinColumn(name = "manufacturer_id", nullable = false)
   private VehicleManufacturerEntity manufacturer;
-
-  @NotNull
-  @OneToMany(mappedBy = "vehicle")
-  private Set<LiveDataEntity> data;
 }
