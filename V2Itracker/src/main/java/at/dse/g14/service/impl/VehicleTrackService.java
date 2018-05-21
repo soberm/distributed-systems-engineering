@@ -2,7 +2,7 @@ package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
-import at.dse.g14.entity.VehicleTrack;
+import at.dse.g14.entity.VehicleTrackEntity;
 import at.dse.g14.persistence.VehicleTrackRepository;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
@@ -24,7 +24,7 @@ public class VehicleTrackService implements IVehicleTrackService {
   private VehicleTrackRepository vehicleTrackRepository;
 
   @Override
-  public VehicleTrack save(VehicleTrack vehicleTrack) throws ServiceException {
+  public VehicleTrackEntity save(VehicleTrackEntity vehicleTrack) throws ServiceException {
     validate(vehicleTrack);
 
     if (findOne(vehicleTrack.getId()) != null) {
@@ -36,12 +36,10 @@ public class VehicleTrackService implements IVehicleTrackService {
   }
 
   @Override
-  public VehicleTrack update(VehicleTrack vehicleTrack) throws ServiceException {
+  public VehicleTrackEntity update(VehicleTrackEntity vehicleTrack) throws ServiceException {
     validate(vehicleTrack);
 
-
-
-    VehicleTrack loadedVehicleTrack = findOne(vehicleTrack.getId());
+    VehicleTrackEntity loadedVehicleTrack = findOne(vehicleTrack.getId());
 
     if (loadedVehicleTrack == null) {
       log.info(vehicleTrack + " does not exist. Creating a new one.");
@@ -70,7 +68,7 @@ public class VehicleTrackService implements IVehicleTrackService {
   }
 
   @Override
-  public VehicleTrack findOne(Long id) throws ServiceException {
+  public VehicleTrackEntity findOne(Long id) throws ServiceException {
     validate(id);
     log.info("Finding VehicleTrack " + id);
     try{
@@ -81,12 +79,12 @@ public class VehicleTrackService implements IVehicleTrackService {
   }
 
   @Override
-  public List<VehicleTrack> findAll() throws ServiceException {
+  public List<VehicleTrackEntity> findAll() throws ServiceException {
     log.info("Finding all VehicleTracks.");
     return vehicleTrackRepository.findAll();
   }
 
-  private void validate(VehicleTrack vehicleTrack) throws ValidationException {
+  private void validate(VehicleTrackEntity vehicleTrack) throws ValidationException {
     log.debug("Validating " + vehicleTrack);
     if (!validator.validate(vehicleTrack).isEmpty()) {
       throw new ValidationException("VehicleTrack not valid.");
