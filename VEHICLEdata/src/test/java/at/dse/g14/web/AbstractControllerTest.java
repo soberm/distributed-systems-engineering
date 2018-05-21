@@ -1,9 +1,7 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.LiveData;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.entity.LiveDataEntity;
 import at.dse.g14.entity.VehicleEntity;
 import at.dse.g14.entity.VehicleManufacturerEntity;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
@@ -63,32 +61,16 @@ public abstract class AbstractControllerTest {
     manufacturerEntity3 =
         manufacturerRepository.save(new VehicleManufacturerEntity(null, "Tesla", new HashSet<>()));
 
-    vehicleEntity1 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "Polo", manufacturerEntity1, new HashSet<>()));
-    vehicleEntity2 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "Golf", manufacturerEntity1, new HashSet<>()));
+    vehicleEntity1 = vehicleRepository.save(new VehicleEntity(null, "Polo", manufacturerEntity1));
+    vehicleEntity2 = vehicleRepository.save(new VehicleEntity(null, "Golf", manufacturerEntity1));
     vehicleEntity3 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "2er Cabrio", manufacturerEntity2, new HashSet<>()));
+        vehicleRepository.save(new VehicleEntity(null, "2er Cabrio", manufacturerEntity2));
     vehicleEntity4 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "2er Coupe", manufacturerEntity2, new HashSet<>()));
+        vehicleRepository.save(new VehicleEntity(null, "2er Coupe", manufacturerEntity2));
     vehicleEntity5 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "Model S", manufacturerEntity3, new HashSet<>()));
+        vehicleRepository.save(new VehicleEntity(null, "Model S", manufacturerEntity3));
     vehicleEntity6 =
-        vehicleRepository.save(
-            new VehicleEntity(null, "Model X", manufacturerEntity3, new HashSet<>()));
-  }
-
-  protected LiveData convertToDto(LiveDataEntity entity) {
-    return modelMapper.map(entity, LiveData.class);
-  }
-
-  protected LiveDataEntity convertToEntity(LiveData dto) {
-    return modelMapper.map(dto, LiveDataEntity.class);
+        vehicleRepository.save(new VehicleEntity(null, "Model X", manufacturerEntity3));
   }
 
   protected VehicleManufacturer convertToDto(VehicleManufacturerEntity entity) {

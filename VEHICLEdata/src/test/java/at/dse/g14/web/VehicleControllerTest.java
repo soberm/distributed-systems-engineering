@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import at.dse.g14.commons.dto.Vehicle;
-import java.util.HashSet;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -21,10 +20,7 @@ public class VehicleControllerTest extends AbstractControllerTest {
         .perform(
             post("/manufacturer/{id}/vehicle", String.valueOf(manufacturerEntity1.getId()))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(
-                    gson.toJson(
-                        new Vehicle(
-                            null, "Polo", convertToDto(manufacturerEntity1), new HashSet<>()))))
+                .content(gson.toJson(new Vehicle(null, convertToDto(manufacturerEntity1), "Polo"))))
         .andExpect(status().isOk())
         .andReturn();
   }
