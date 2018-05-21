@@ -9,13 +9,10 @@ import java.util.List;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-public interface VehicleService {
+public interface VehicleService extends CrudService<Vehicle, Long> {
 
-  Vehicle create(final Vehicle vehicle) throws ValidationException;
-
-  Vehicle findOne(final long vehicleId, final long manufacturerId) throws ValidationException;
-
-  Vehicle update(final Vehicle vehicle) throws ValidationException;
+  Vehicle findOne(long vehicleId, long manufacturerId)
+      throws ValidationException;
 
   List<Vehicle> findAllOfManufacturer(final long manufacturerId);
 }

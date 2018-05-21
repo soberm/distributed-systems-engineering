@@ -1,12 +1,10 @@
 package at.dse.g14.web;
 
 import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.persistence.VehicleManufacturerRepository;
-import at.dse.g14.persistence.VehicleRepository;
 import at.dse.g14.service.VehicleService;
+import at.dse.g14.service.exception.ServiceException;
 import at.dse.g14.service.exception.ValidationException;
 import java.util.List;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,25 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class VehicleController {
 
   private final VehicleService vehicleService;
-  private final VehicleRepository vehicleRepository;
-  private final VehicleManufacturerRepository manufacturerRepository;
-  private final ModelMapper modelMapper;
 
   @Autowired
-  public VehicleController(
-      final VehicleService vehicleService,
-      final VehicleRepository vehicleRepository,
-      final VehicleManufacturerRepository manufacturerRepository,
-      final ModelMapper modelMapper) {
+  public VehicleController(final VehicleService vehicleService) {
     this.vehicleService = vehicleService;
-    this.vehicleRepository = vehicleRepository;
-    this.manufacturerRepository = manufacturerRepository;
-    this.modelMapper = modelMapper;
   }
 
   @PostMapping
-  public Vehicle createVehicle(@RequestBody final Vehicle vehicle) throws ValidationException {
-    return vehicleService.create(vehicle);
+  public Vehicle createVehicle(@RequestBody final Vehicle vehicle) throws ServiceException {
+    return vehicleService.save(vehicle);
   }
 
   @GetMapping("/{vid}")
@@ -59,7 +47,7 @@ public class VehicleController {
   }
 
   @PutMapping
-  public Vehicle updateVehicle(@RequestBody final Vehicle vehicle) throws ValidationException {
+  public Vehicle updateVehicle(@RequestBody final Vehicle vehicle) throws ServiceException {
     return vehicleService.update(vehicle);
   }
 }

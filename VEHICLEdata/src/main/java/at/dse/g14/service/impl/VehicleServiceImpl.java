@@ -1,10 +1,12 @@
-package at.dse.g14.service;
+package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.entity.VehicleEntity;
 import at.dse.g14.entity.VehicleManufacturerEntity;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.persistence.VehicleRepository;
+import at.dse.g14.service.VehicleService;
+import at.dse.g14.service.exception.ServiceException;
 import at.dse.g14.service.exception.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle create(final Vehicle vehicle) throws ValidationException {
+  public Vehicle save(final Vehicle vehicle) throws ValidationException {
     validate(vehicle);
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));
     return convertToDto(entity);
@@ -56,13 +58,34 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle update(final Vehicle vehicle) throws ValidationException {
+  public Vehicle update(final Vehicle vehicle) throws ServiceException {
     validate(vehicle);
     if (vehicle.getId() != null) {
       throw new ValidationException("No ID provided");
     }
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));
     return convertToDto(entity);
+  }
+
+  @Override
+  public void delete(final Long vehicleId) throws ServiceException {
+    if (vehicleId == null) {
+      throw new ServiceException("ID is null!");
+    }
+    vehicleRepository.delete(vehicleId);
+  }
+
+  @Override
+  public Vehicle findOne(final Long vehicleId) throws ServiceException {
+    if (vehicleId == null) {
+      throw new ServiceException("ID is null!");
+    }
+    return convertToDto(vehicleRepository.findOne(vehicleId));
+  }
+
+  @Override
+  public List<Vehicle> findAll() throws ServiceException {
+    return convertToDto((List<VehicleEntity>) vehicleRepository.findAll());
   }
 
   private void validate(final Vehicle vehicle) throws ValidationException {
