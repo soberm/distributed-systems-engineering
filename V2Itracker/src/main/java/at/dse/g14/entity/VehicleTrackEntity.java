@@ -3,6 +3,7 @@ package at.dse.g14.entity;
 import at.dse.g14.commons.dto.GpsPoint;
 import java.math.BigDecimal;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class VehicleTrackEntity {
   private GpsPoint location;
 
   @DecimalMin(value = "0.0")
+  @DecimalMax(value = "130.0")
   private BigDecimal speed;
 
   @DecimalMin(value = "0.0")
