@@ -35,6 +35,9 @@ dependencies {
 
     compile project(':commons')
 
+    /*** UTILS ***/
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+
     /*** SPRING BOOT ***/
 
     compile('org.springframework.boot:spring-boot-starter-actuator')
@@ -56,6 +59,7 @@ dependencies {
 
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
 
 dependencyManagement {

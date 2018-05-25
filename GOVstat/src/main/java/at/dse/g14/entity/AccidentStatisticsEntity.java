@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "accident_statistics")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccidentStatistics {
+public class AccidentStatisticsEntity {
 
     @Id
     private Long id;
