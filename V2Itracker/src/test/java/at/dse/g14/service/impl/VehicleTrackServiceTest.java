@@ -6,12 +6,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import at.dse.g14.commons.dto.GpsPoint;
 import at.dse.g14.commons.dto.VehicleTrack;
+import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import javax.xml.bind.ValidationException;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Test;
