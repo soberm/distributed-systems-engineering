@@ -8,13 +8,8 @@
  */
 
 rootProject.name = 'distributed-systems-engineering'
-include 'dse-client'
 include 'registry'
-include 'demo-client'
-include 'demo-service'
 include 'gateway'
-include 'monitoring'
-include 'admin'
 include 'notyfier'
 include 'V2Itracker'
 include 'VEHICLEdata'
