@@ -10,6 +10,7 @@ import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 import org.hamcrest.collection.IsEmptyCollection;
@@ -204,12 +205,14 @@ public class VehicleTrackServiceTest {
   }
 
   public VehicleTrack buildValidVehicleTrack(Long id) {
+    BigDecimal lat = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
+    BigDecimal lon = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
     return VehicleTrack.builder()
         .id(id)
         .vin("W0L000051T2123456")
         .modelType("Opel")
         .passengers(4)
-        .location(new GpsPoint(new BigDecimal(20), new BigDecimal(20)))
+        .location(new GpsPoint(lat, lon))
         .speed(new BigDecimal(130))
         .distanceVehicleAhead(new BigDecimal(20))
         .distanceVehicleBehind(new BigDecimal(15))

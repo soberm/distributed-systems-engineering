@@ -53,7 +53,7 @@ public class AccidentStatisticsService implements IAccidentStatisticsService {
 
         AccidentStatistics loadedAccidentStatistics = findOne(accidentStatistics.getId());
 
-        if (accidentStatistics == null) {
+        if (loadedAccidentStatistics == null) {
             log.info(accidentStatistics + " does not exist. Creating a new one.");
             return save(accidentStatistics);
         }
