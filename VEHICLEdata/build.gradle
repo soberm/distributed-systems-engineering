@@ -46,7 +46,6 @@ dependencies {
 
     /************************************ DATABASE ********************************************************/
 
-    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.1'
     runtime('org.postgresql:postgresql:42.2.2')
 //    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.2.Final'
 //    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
@@ -71,4 +70,5 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.10.RELEASE'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
