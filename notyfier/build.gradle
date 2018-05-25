@@ -1,40 +1,65 @@
 buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
-group 'at.dse.g14'
-version '0.0.1'
-
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
+group 'at.dse.g14'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+    springCloudGcpVersion = '1.0.0.M3'
+    springCloudVersion = 'Finchley.BUILD-SNAPSHOT'
 }
 
 dependencies {
-    /************************************ LOGGING ********************************************************/
+    compile project(':commons')
 
-    /************************************ UTILS  **********************************************************/
-    compile 'com.google.cloud:google-cloud-pubsub:0.38.0-beta'
-    testCompile 'junit:junit:4.12'
-    /************************************ DATABASE ********************************************************/
+    /*** UTILS ***/
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
 
-    /************************************ PERSISTENCE******************************************************/
+    /*** SPRING BOOT ***/
 
-    /************************************ SECURITY ********************************************************/
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-integration')
+    compile('org.springframework.boot:spring-boot-starter-web')
 
-    /************************************ SPRING BOOT ********************************************************/
+    /*** SPRING CLOUD ***/
 
-    /************************************ SPRING CLOUD ********************************************************/
+    compile('org.springframework.cloud:spring-cloud-gcp-starter-pubsub')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+    compile('org.springframework.cloud:spring-cloud-starter-openfeign')
 
+    /*** TEST ***/
+
+    compileOnly('org.projectlombok:lombok')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
