@@ -9,10 +9,10 @@
 
 rootProject.name = 'distributed-systems-engineering'
 include 'registry'
-include 'gateway'
-include 'notyfier'
+include 'APIgateway'
+include 'NOTYfier'
 include 'V2Itracker'
 include 'VEHICLEdata'
-include 'commons'
 include 'GOVstat'
+include 'commons'
 

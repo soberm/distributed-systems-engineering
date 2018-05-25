@@ -15,9 +15,9 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @EnableZuulProxy
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-public class GatewayApplication {
+public class APIGatewayApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(GatewayApplication.class, args);
+    SpringApplication.run(APIGatewayApplication.class, args);
   }
 }
