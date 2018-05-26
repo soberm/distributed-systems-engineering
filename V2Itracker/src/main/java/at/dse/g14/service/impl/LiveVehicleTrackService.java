@@ -50,8 +50,8 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
         LiveVehicleTrack loadedLiveVehicleTrack = findOne(liveVehicleTrack.getVin());
 
         if (loadedLiveVehicleTrack == null) {
-            log.info(loadedLiveVehicleTrack + " does not exist. Creating a new one.");
-            return save(loadedLiveVehicleTrack);
+            log.info(liveVehicleTrack + " does not exist. Creating a new one.");
+            return save(liveVehicleTrack);
         }
 
         loadedLiveVehicleTrack.setModelType(liveVehicleTrack.getModelType());

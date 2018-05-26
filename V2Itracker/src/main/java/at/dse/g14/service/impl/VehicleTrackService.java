@@ -2,11 +2,14 @@ package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
+import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.persistence.VehicleTrackRepository;
+import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +23,18 @@ public class VehicleTrackService implements IVehicleTrackService {
 
   private final Validator validator;
   private final VehicleTrackRepository vehicleTrackRepository;
+  private final ILiveVehicleTrackService liveVehicleTrackService;
+  private final ModelMapper modelMapper;
 
   @Autowired
   public VehicleTrackService(
-      final Validator validator, final VehicleTrackRepository vehicleTrackRepository) {
+          final Validator validator, final VehicleTrackRepository vehicleTrackRepository,
+          final ILiveVehicleTrackService liveVehicleTrackService,
+          final ModelMapper modelMapper) {
     this.validator = validator;
     this.vehicleTrackRepository = vehicleTrackRepository;
+    this.liveVehicleTrackService = liveVehicleTrackService;
+    this.modelMapper = modelMapper;
   }
 
   @Override
@@ -37,7 +46,10 @@ public class VehicleTrackService implements IVehicleTrackService {
     }
 
     log.info("Saving " + vehicleTrack);
-    return vehicleTrackRepository.save(vehicleTrack);
+    VehicleTrack savedVehicleTrack = vehicleTrackRepository.save(vehicleTrack);
+    liveVehicleTrackService.update(convertToLiveVehicleTrack(savedVehicleTrack));
+
+    return savedVehicleTrack;
   }
 
   @Override
@@ -62,7 +74,10 @@ public class VehicleTrackService implements IVehicleTrackService {
     loadedVehicleTrack.setCrashEvent(vehicleTrack.getCrashEvent());
 
     log.info("Updating " + loadedVehicleTrack);
-    return vehicleTrackRepository.save(loadedVehicleTrack);
+    loadedVehicleTrack = vehicleTrackRepository.save(loadedVehicleTrack);
+    liveVehicleTrackService.update(convertToLiveVehicleTrack(loadedVehicleTrack));
+
+    return loadedVehicleTrack;
   }
 
   @Override
@@ -101,6 +116,10 @@ public class VehicleTrackService implements IVehicleTrackService {
     if (id < 0) {
       throw new ValidationException("Id must be greater than 0.");
     }
+  }
+
+  private LiveVehicleTrack convertToLiveVehicleTrack(VehicleTrack vehicleTrack) {
+    return modelMapper.map(vehicleTrack, LiveVehicleTrack.class);
   }
 
 }
