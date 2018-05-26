@@ -8,15 +8,23 @@ import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
 public class VehicleTrackService implements IVehicleTrackService {
+
+  private static final int RANGE = 10;
 
   private final Validator validator;
   private final VehicleTrackRepository vehicleTrackRepository;
@@ -36,8 +44,21 @@ public class VehicleTrackService implements IVehicleTrackService {
       throw new VehicleTrackAlreadyExistsException(vehicleTrack + " already exists.");
     }
 
+    VehicleTrack savedVehicleTrack = vehicleTrackRepository.save(vehicleTrack);
     log.info("Saving " + vehicleTrack);
-    return vehicleTrackRepository.save(vehicleTrack);
+
+
+    if(savedVehicleTrack.getCrashEvent() || savedVehicleTrack.getNearCrashEvent()){
+      Double[] location = savedVehicleTrack.getLocation();
+
+      Point accidentLocation = new Point(location[0], location[1]);
+      Distance notifyDistance = new Distance(RANGE, Metrics.KILOMETERS);
+      List<VehicleTrack> vehicleTracksNear = vehicleTrackRepository.findByLocationNear(accidentLocation, notifyDistance);
+
+      //TODO: Filter for the latest VehicleTrack of each Vehicle
+    }
+
+    return savedVehicleTrack;
   }
 
   @Override
@@ -68,14 +89,14 @@ public class VehicleTrackService implements IVehicleTrackService {
   @Override
   public void delete(Long id) throws ServiceException {
     validate(id);
-    log.info("Deleted VehicleTrackDTO " + id);
+    log.info("Deleted VehicleTrack " + id);
     vehicleTrackRepository.deleteById(id);
   }
 
   @Override
   public VehicleTrack findOne(Long id) throws ServiceException {
     validate(id);
-    log.info("Finding VehicleTrackDTO " + id);
+    log.info("Finding VehicleTrack " + id);
     try {
       return vehicleTrackRepository.findById(id).get();
     } catch (NoSuchElementException e) {
@@ -92,7 +113,7 @@ public class VehicleTrackService implements IVehicleTrackService {
   private void validate(VehicleTrack vehicleTrack) throws ValidationException {
     log.debug("Validating " + vehicleTrack);
     if (!validator.validate(vehicleTrack).isEmpty()) {
-      throw new ValidationException("VehicleTrackDTO not valid.");
+      throw new ValidationException("VehicleTrack not valid.");
     }
   }
 
@@ -102,4 +123,11 @@ public class VehicleTrackService implements IVehicleTrackService {
       throw new ValidationException("Id must be greater than 0.");
     }
   }
+
+  @Override
+  public List<VehicleTrack> findByLocationNear(Point p, Distance d) {
+    log.info("Finding VehicleTracks near {}" + p);
+    return vehicleTrackRepository.findByLocationNear(p, d);
+  }
+
 }

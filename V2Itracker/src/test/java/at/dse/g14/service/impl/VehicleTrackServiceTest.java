@@ -11,6 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -69,16 +73,9 @@ public class VehicleTrackServiceTest {
   }
 
   @Test(expected = ValidationException.class)
-  public void save_invalidVehicleTrackLocationLat_shouldThrowException() throws Exception {
+  public void save_invalidVehicleTrackLocation_shouldThrowException() throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
-    vehicleTrack.setLocation(new GpsPoint(new BigDecimal(-91), new BigDecimal(180)));
-    vehicleTrackService.save(vehicleTrack);
-  }
-
-  @Test(expected = ValidationException.class)
-  public void save_invalidVehicleTrackLocationLon_shouldThrowException() throws Exception {
-    VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
-    vehicleTrack.setLocation(new GpsPoint(new BigDecimal(-90), new BigDecimal(181)));
+    vehicleTrack.setLocation(new Double[]{1.0});
     vehicleTrackService.save(vehicleTrack);
   }
 
@@ -204,15 +201,40 @@ public class VehicleTrackServiceTest {
     assertThat(vehicleTrackService.findAll(), IsEmptyCollection.empty());
   }
 
+  @Test
+  public void findByLocationWithin_populatedDatabase_shouldReturnVehicleTracks() throws Exception {
+    Long id1 = 0L;
+    VehicleTrack vehicleTrack1 = buildValidVehicleTrack(id1);
+    vehicleTrack1.setLocation(new Double[]{48.208174, 16.373819}); //Vienna
+    assertThat(vehicleTrackService.save(vehicleTrack1), is(vehicleTrack1));
+    Long id2 = 1L;
+    VehicleTrack vehicleTrack2 = buildValidVehicleTrack(id2);
+    vehicleTrack2.setLocation(new Double[]{48.309667, 16.322878}); //Klosterneuburg
+    assertThat(vehicleTrackService.save(vehicleTrack2), is(vehicleTrack2));
+    Long id3 = 3L;
+    VehicleTrack vehicleTrack3 = buildValidVehicleTrack(id3);
+    vehicleTrack3.setLocation(new Double[]{48.198591, 16.363106}); //Vienna
+    assertThat(vehicleTrackService.save(vehicleTrack3), is(vehicleTrack3));
+
+    Double[] location = vehicleTrack1.getLocation();
+    List<VehicleTrack> vehicleTracksInRange = Arrays.asList(vehicleTrack1, vehicleTrack3);
+
+    Point point = new Point(location[0], location[1]);
+    Distance distance = new Distance(10, Metrics.KILOMETERS);
+    assertThat(vehicleTrackService.findByLocationNear(point, distance), is(vehicleTracksInRange));
+
+    vehicleTrackService.delete(id1); // cleanup
+    vehicleTrackService.delete(id2); // cleanup
+    vehicleTrackService.delete(id3); // cleanup
+  }
+
   public VehicleTrack buildValidVehicleTrack(Long id) {
-    BigDecimal lat = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
-    BigDecimal lon = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
     return VehicleTrack.builder()
         .id(id)
         .vin("W0L000051T2123456")
         .modelType("Opel")
         .passengers(4)
-        .location(new GpsPoint(lat, lon))
+        .location(new Double[]{20.0, 20.0})
         .speed(new BigDecimal(130))
         .distanceVehicleAhead(new BigDecimal(20))
         .distanceVehicleBehind(new BigDecimal(15))
