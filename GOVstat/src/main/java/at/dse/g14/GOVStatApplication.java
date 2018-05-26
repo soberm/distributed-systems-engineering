@@ -23,9 +23,4 @@ public class GOVStatApplication {
     SpringApplication.run(GOVStatApplication.class, args);
   }
 
-  @Bean
-  public ModelMapper modelMapper() {
-    return new ModelMapper();
-  }
-
 }
