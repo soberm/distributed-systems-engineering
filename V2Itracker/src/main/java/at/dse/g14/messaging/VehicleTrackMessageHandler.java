@@ -25,10 +25,10 @@ public class VehicleTrackMessageHandler implements MessageHandler {
   @Override
   @ServiceActivator(inputChannel = "vehicleTrackInputChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
-    log.info("VehicleTrack-Message arrived! Payload: {}", message.getPayload());
+    log.info("VehicleTrackDTO-Message arrived! Payload: {}", message.getPayload());
     /*try {
       String payload = (String) message.getPayload();
-      VehicleTrack vehicleTrack = objectMapper.readValue(payload, VehicleTrack.class);
+      VehicleTrackDTO vehicleTrack = objectMapper.readValue(payload, VehicleTrackDTO.class);
       vehicleTrackService.update(vehicleTrack);*/
       AckReplyConsumer consumer =
           (AckReplyConsumer) message.getHeaders().get(GcpPubSubHeaders.ACKNOWLEDGEMENT);
