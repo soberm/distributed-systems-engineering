@@ -73,7 +73,7 @@ public class VehicleTrackServiceTest {
   @Test(expected = ValidationException.class)
   public void save_invalidVehicleTrackLocation_shouldThrowException() throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
-    vehicleTrack.setLocation(new Double[]{1.0});
+    vehicleTrack.setLocation(new Double[] {1.0});
     vehicleTrackService.save(vehicleTrack);
   }
 
@@ -205,7 +205,7 @@ public class VehicleTrackServiceTest {
         .vin("W0L000051T2123456")
         .modelType("Opel")
         .passengers(4)
-        .location(new Double[]{20.0, 20.0})
+        .location(new Double[] {20.0, 20.0})
         .speed(new BigDecimal(130))
         .distanceVehicleAhead(new BigDecimal(20))
         .distanceVehicleBehind(new BigDecimal(15))

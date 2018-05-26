@@ -5,7 +5,7 @@ import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.persistence.LiveVehicleTrackRepository;
 import at.dse.g14.service.ILiveVehicleTrackService;
-import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
+import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
@@ -20,86 +20,88 @@ import java.util.NoSuchElementException;
 @Service
 public class LiveVehicleTrackService implements ILiveVehicleTrackService {
 
-    private final Validator validator;
-    private final LiveVehicleTrackRepository liveVehicleTrackRepository;
+  private final Validator validator;
+  private final LiveVehicleTrackRepository liveVehicleTrackRepository;
 
-    @Autowired
-    public LiveVehicleTrackService(
-            final Validator validator,
-            final LiveVehicleTrackRepository liveVehicleTrackRepository) {
-        this.validator = validator;
-        this.liveVehicleTrackRepository = liveVehicleTrackRepository;
+  @Autowired
+  public LiveVehicleTrackService(
+      final Validator validator, final LiveVehicleTrackRepository liveVehicleTrackRepository) {
+    this.validator = validator;
+    this.liveVehicleTrackRepository = liveVehicleTrackRepository;
+  }
+
+  @Override
+  public LiveVehicleTrack save(LiveVehicleTrack liveVehicleTrack) throws ServiceException {
+    validate(liveVehicleTrack);
+
+    if (findOne(liveVehicleTrack.getVin()) != null) {
+      throw new LiveVehicleTrackAlreadyExistsException(liveVehicleTrack + " already exists.");
     }
 
-    @Override
-    public LiveVehicleTrack save(LiveVehicleTrack liveVehicleTrack) throws ServiceException {
-        validate(liveVehicleTrack);
+    //TODO: Create CrashInfo or NearCrashInfo and send it to NOTYfier
 
-        if (findOne(liveVehicleTrack.getVin()) != null) {
-            throw new VehicleTrackAlreadyExistsException(liveVehicleTrack + " already exists.");
-        }
+    log.info("Saving " + liveVehicleTrack);
+    return liveVehicleTrackRepository.save(liveVehicleTrack);
+  }
 
-        log.info("Saving " + liveVehicleTrack);
-        return liveVehicleTrackRepository.save(liveVehicleTrack);
+  @Override
+  public LiveVehicleTrack update(LiveVehicleTrack liveVehicleTrack) throws ServiceException {
+    validate(liveVehicleTrack);
+
+    LiveVehicleTrack loadedLiveVehicleTrack = findOne(liveVehicleTrack.getVin());
+
+    if (loadedLiveVehicleTrack == null) {
+      log.info(liveVehicleTrack + " does not exist. Creating a new one.");
+      return save(liveVehicleTrack);
     }
 
-    @Override
-    public LiveVehicleTrack update(LiveVehicleTrack liveVehicleTrack) throws ServiceException {
-        validate(liveVehicleTrack);
+    loadedLiveVehicleTrack.setModelType(liveVehicleTrack.getModelType());
+    loadedLiveVehicleTrack.setPassengers(liveVehicleTrack.getPassengers());
+    loadedLiveVehicleTrack.setLocation(liveVehicleTrack.getLocation());
+    loadedLiveVehicleTrack.setSpeed(liveVehicleTrack.getSpeed());
+    loadedLiveVehicleTrack.setDistanceVehicleAhead(liveVehicleTrack.getDistanceVehicleAhead());
+    loadedLiveVehicleTrack.setDistanceVehicleBehind(liveVehicleTrack.getDistanceVehicleBehind());
+    loadedLiveVehicleTrack.setNearCrashEvent(liveVehicleTrack.getNearCrashEvent());
+    loadedLiveVehicleTrack.setCrashEvent(liveVehicleTrack.getCrashEvent());
 
-        LiveVehicleTrack loadedLiveVehicleTrack = findOne(liveVehicleTrack.getVin());
+    //TODO: Create CrashInfo or NearCrashInfo and send it to NOTYfier
 
-        if (loadedLiveVehicleTrack == null) {
-            log.info(liveVehicleTrack + " does not exist. Creating a new one.");
-            return save(liveVehicleTrack);
-        }
+    log.info("Updating " + liveVehicleTrack);
+    return liveVehicleTrackRepository.save(liveVehicleTrack);
+  }
 
-        loadedLiveVehicleTrack.setModelType(liveVehicleTrack.getModelType());
-        loadedLiveVehicleTrack.setPassengers(liveVehicleTrack.getPassengers());
-        loadedLiveVehicleTrack.setLocation(liveVehicleTrack.getLocation());
-        loadedLiveVehicleTrack.setSpeed(liveVehicleTrack.getSpeed());
-        loadedLiveVehicleTrack.setDistanceVehicleAhead(liveVehicleTrack.getDistanceVehicleAhead());
-        loadedLiveVehicleTrack.setDistanceVehicleBehind(liveVehicleTrack.getDistanceVehicleBehind());
-        loadedLiveVehicleTrack.setNearCrashEvent(liveVehicleTrack.getNearCrashEvent());
-        loadedLiveVehicleTrack.setCrashEvent(liveVehicleTrack.getCrashEvent());
+  @Override
+  public void delete(String vin) throws ServiceException {
+    log.info("Deleted LiveVehicleTrack " + vin);
+    liveVehicleTrackRepository.deleteById(vin);
+  }
 
-        log.info("Updating " + liveVehicleTrack);
-        return liveVehicleTrackRepository.save(liveVehicleTrack);
+  @Override
+  public LiveVehicleTrack findOne(String vin) throws ServiceException {
+    log.info("Finding LiveVehicleTrack " + vin);
+    try {
+      return liveVehicleTrackRepository.findById(vin).get();
+    } catch (NoSuchElementException e) {
+      return null;
     }
+  }
 
-    @Override
-    public void delete(String vin) throws ServiceException {
-        log.info("Deleted LiveVehicleTrack " + vin);
-        liveVehicleTrackRepository.deleteById(vin);
+  @Override
+  public List<LiveVehicleTrack> findAll() throws ServiceException {
+    log.info("Finding all LiveVehicleTrack.");
+    return liveVehicleTrackRepository.findAll();
+  }
+
+  @Override
+  public List<LiveVehicleTrack> findByLocationNear(Point p, Distance d) {
+    log.info("Finding LiveVehicleTrack near {}", p);
+    return liveVehicleTrackRepository.findByLocationNear(p, d);
+  }
+
+  private void validate(LiveVehicleTrack liveVehicleTrack) throws ValidationException {
+    log.debug("Validating " + liveVehicleTrack);
+    if (!validator.validate(liveVehicleTrack).isEmpty()) {
+      throw new ValidationException("LiveVehicleTrack not valid.");
     }
-
-    @Override
-    public LiveVehicleTrack findOne(String vin) throws ServiceException {
-        log.info("Finding LiveVehicleTrack " + vin);
-        try {
-            return liveVehicleTrackRepository.findById(vin).get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<LiveVehicleTrack> findAll() throws ServiceException {
-        log.info("Finding all LiveVehicleTrack.");
-        return liveVehicleTrackRepository.findAll();
-    }
-
-    @Override
-    public List<LiveVehicleTrack> findByLocationNear(Point p, Distance d) {
-        log.info("Finding LiveVehicleTrack near {}", p);
-        return liveVehicleTrackRepository.findByLocationNear(p, d);
-    }
-
-    private void validate(LiveVehicleTrack liveVehicleTrack) throws ValidationException {
-        log.debug("Validating " + liveVehicleTrack);
-        if (!validator.validate(liveVehicleTrack).isEmpty()) {
-            throw new ValidationException("LiveVehicleTrack not valid.");
-        }
-    }
-
+  }
 }
