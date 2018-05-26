@@ -2,6 +2,7 @@ package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleTrack;
+import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import org.hamcrest.collection.IsEmptyCollection;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -25,6 +27,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class VehicleTrackServiceTest {
 
   @Autowired private IVehicleTrackService vehicleTrackService;
+
+  @MockBean private ILiveVehicleTrackService liveVehicleTrackService;
 
   @Test
   public void save_validVehicleTrack_shouldPersist() throws Exception {
