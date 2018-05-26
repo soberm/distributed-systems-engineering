@@ -1,20 +1,18 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.VehicleTrack;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
-import at.dse.g14.entity.VehicleTrackEntity;
+import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.persistence.VehicleTrackRepository;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.Validator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -22,16 +20,12 @@ public class VehicleTrackService implements IVehicleTrackService {
 
   private final Validator validator;
   private final VehicleTrackRepository vehicleTrackRepository;
-  private final ModelMapper modelMapper;
 
   @Autowired
   public VehicleTrackService(
-      final Validator validator,
-      final VehicleTrackRepository vehicleTrackRepository,
-      final ModelMapper modelMapper) {
+      final Validator validator, final VehicleTrackRepository vehicleTrackRepository) {
     this.validator = validator;
     this.vehicleTrackRepository = vehicleTrackRepository;
-    this.modelMapper = modelMapper;
   }
 
   @Override
@@ -43,7 +37,7 @@ public class VehicleTrackService implements IVehicleTrackService {
     }
 
     log.info("Saving " + vehicleTrack);
-    return convertToDto(vehicleTrackRepository.save(convertToEntity(vehicleTrack)));
+    return vehicleTrackRepository.save(vehicleTrack);
   }
 
   @Override
@@ -68,22 +62,22 @@ public class VehicleTrackService implements IVehicleTrackService {
     loadedVehicleTrack.setCrashEvent(vehicleTrack.getCrashEvent());
 
     log.info("Updating " + loadedVehicleTrack);
-    return convertToDto(vehicleTrackRepository.save(convertToEntity(loadedVehicleTrack)));
+    return vehicleTrackRepository.save(loadedVehicleTrack);
   }
 
   @Override
   public void delete(Long id) throws ServiceException {
     validate(id);
-    log.info("Deleted VehicleTrack " + id);
+    log.info("Deleted VehicleTrackDTO " + id);
     vehicleTrackRepository.deleteById(id);
   }
 
   @Override
   public VehicleTrack findOne(Long id) throws ServiceException {
     validate(id);
-    log.info("Finding VehicleTrack " + id);
+    log.info("Finding VehicleTrackDTO " + id);
     try {
-      return convertToDto(vehicleTrackRepository.findById(id).get());
+      return vehicleTrackRepository.findById(id).get();
     } catch (NoSuchElementException e) {
       return null;
     }
@@ -92,13 +86,13 @@ public class VehicleTrackService implements IVehicleTrackService {
   @Override
   public List<VehicleTrack> findAll() throws ServiceException {
     log.info("Finding all VehicleTracks.");
-    return convertToDto(vehicleTrackRepository.findAll());
+    return vehicleTrackRepository.findAll();
   }
 
   private void validate(VehicleTrack vehicleTrack) throws ValidationException {
     log.debug("Validating " + vehicleTrack);
     if (!validator.validate(vehicleTrack).isEmpty()) {
-      throw new ValidationException("VehicleTrack not valid.");
+      throw new ValidationException("VehicleTrackDTO not valid.");
     }
   }
 
@@ -107,21 +101,5 @@ public class VehicleTrackService implements IVehicleTrackService {
     if (id < 0) {
       throw new ValidationException("Id must be greater than 0.");
     }
-  }
-
-  private VehicleTrack convertToDto(VehicleTrackEntity entity) {
-    return modelMapper.map(entity, VehicleTrack.class);
-  }
-
-  private List<VehicleTrack> convertToDto(final List<VehicleTrackEntity> entities) {
-    return entities.stream().map(this::convertToDto).collect(Collectors.toList());
-  }
-
-  private VehicleTrackEntity convertToEntity(VehicleTrack dto) {
-    return modelMapper.map(dto, VehicleTrackEntity.class);
-  }
-
-  private List<VehicleTrackEntity> convertToEntity(final List<VehicleTrack> entities) {
-    return entities.stream().map(this::convertToEntity).collect(Collectors.toList());
   }
 }
