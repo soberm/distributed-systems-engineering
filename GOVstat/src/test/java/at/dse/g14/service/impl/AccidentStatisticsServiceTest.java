@@ -1,9 +1,9 @@
 package at.dse.g14.service.impl;
 
 
-import at.dse.g14.commons.dto.AccidentStatistics;
 import at.dse.g14.commons.dto.GpsPoint;
 import at.dse.g14.commons.service.exception.ValidationException;
+import at.dse.g14.entity.AccidentStatistics;
 import at.dse.g14.service.IAccidentStatisticsService;
 import at.dse.g14.service.exception.AccidentStatisticsAlreadyExistsException;
 import org.hamcrest.collection.IsEmptyCollection;
