@@ -1,17 +1,10 @@
 package at.dse.g14.service.impl;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import at.dse.g14.commons.dto.GpsPoint;
-import at.dse.g14.commons.dto.VehicleTrack;
 import at.dse.g14.commons.service.exception.ValidationException;
+import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,18 +13,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class VehicleTrackServiceTest {
 
-  @Autowired
-  private IVehicleTrackService vehicleTrackService;
+  @Autowired private IVehicleTrackService vehicleTrackService;
 
   @Test
   public void save_validVehicleTrack_shouldPersist() throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
     assertThat(vehicleTrackService.save(vehicleTrack), is(vehicleTrack));
-    vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
+    vehicleTrackService.delete(vehicleTrack.getId()); // cleanup
   }
 
   @Test
@@ -42,7 +43,7 @@ public class VehicleTrackServiceTest {
       vehicleTrackService.save(vehicleTrack);
       Assert.fail("VehicleTrackAlreadyExistsException should be thrown.");
     } catch (VehicleTrackAlreadyExistsException e) {
-      vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
+      vehicleTrackService.delete(vehicleTrack.getId()); // cleanup
     }
   }
 
@@ -126,14 +127,14 @@ public class VehicleTrackServiceTest {
     savedVehicleTrack.setCrashEvent(true);
     vehicleTrackService.update(savedVehicleTrack);
     assertThat(vehicleTrackService.findOne(id), is(savedVehicleTrack));
-    vehicleTrackService.delete(id); //cleanup
+    vehicleTrackService.delete(id); // cleanup
   }
 
   @Test
   public void update_notExistingVehicleTrack_shouldPersist() throws Exception {
     VehicleTrack vehicleTrack = buildValidVehicleTrack(0L);
     assertThat(vehicleTrackService.update(vehicleTrack), is(vehicleTrack));
-    vehicleTrackService.delete(vehicleTrack.getId()); //cleanup
+    vehicleTrackService.delete(vehicleTrack.getId()); // cleanup
   }
 
   @Test(expected = ValidationException.class)
@@ -170,8 +171,8 @@ public class VehicleTrackServiceTest {
     assertThat(vehicleTrackService.save(vehicleTrack2), is(vehicleTrack2));
     assertThat(vehicleTrackService.findOne(id1), is(vehicleTrack1));
     assertThat(vehicleTrackService.findOne(id2), is(vehicleTrack2));
-    vehicleTrackService.delete(id1); //cleanup
-    vehicleTrackService.delete(id2); //cleanup
+    vehicleTrackService.delete(id1); // cleanup
+    vehicleTrackService.delete(id2); // cleanup
   }
 
   @Test
@@ -194,8 +195,8 @@ public class VehicleTrackServiceTest {
     assertThat(vehicleTrackService.save(vehicleTrack2), is(vehicleTrack2));
     List<VehicleTrack> vehicleTracks = Arrays.asList(vehicleTrack1, vehicleTrack2);
     assertThat(vehicleTrackService.findAll(), is(vehicleTracks));
-    vehicleTrackService.delete(id1); //cleanup
-    vehicleTrackService.delete(id2); //cleanup
+    vehicleTrackService.delete(id1); // cleanup
+    vehicleTrackService.delete(id2); // cleanup
   }
 
   @Test
@@ -204,12 +205,14 @@ public class VehicleTrackServiceTest {
   }
 
   public VehicleTrack buildValidVehicleTrack(Long id) {
+    BigDecimal lat = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
+    BigDecimal lon = BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP);
     return VehicleTrack.builder()
         .id(id)
         .vin("W0L000051T2123456")
         .modelType("Opel")
         .passengers(4)
-        .location(new GpsPoint(new BigDecimal(20), new BigDecimal(20)))
+        .location(new GpsPoint(lat, lon))
         .speed(new BigDecimal(130))
         .distanceVehicleAhead(new BigDecimal(20))
         .distanceVehicleBehind(new BigDecimal(15))
@@ -217,5 +220,4 @@ public class VehicleTrackServiceTest {
         .crashEvent(false)
         .build();
   }
-
 }
