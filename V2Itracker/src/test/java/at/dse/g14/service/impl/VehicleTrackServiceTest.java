@@ -1,6 +1,5 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.GpsPoint;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
@@ -11,14 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -199,33 +193,6 @@ public class VehicleTrackServiceTest {
   @Test
   public void findAll_emptyDatabase_shouldReturnEmptyList() throws Exception {
     assertThat(vehicleTrackService.findAll(), IsEmptyCollection.empty());
-  }
-
-  @Test
-  public void findByLocationWithin_populatedDatabase_shouldReturnVehicleTracks() throws Exception {
-    Long id1 = 0L;
-    VehicleTrack vehicleTrack1 = buildValidVehicleTrack(id1);
-    vehicleTrack1.setLocation(new Double[]{48.208174, 16.373819}); //Vienna
-    assertThat(vehicleTrackService.save(vehicleTrack1), is(vehicleTrack1));
-    Long id2 = 1L;
-    VehicleTrack vehicleTrack2 = buildValidVehicleTrack(id2);
-    vehicleTrack2.setLocation(new Double[]{48.309667, 16.322878}); //Klosterneuburg
-    assertThat(vehicleTrackService.save(vehicleTrack2), is(vehicleTrack2));
-    Long id3 = 3L;
-    VehicleTrack vehicleTrack3 = buildValidVehicleTrack(id3);
-    vehicleTrack3.setLocation(new Double[]{48.198591, 16.363106}); //Vienna
-    assertThat(vehicleTrackService.save(vehicleTrack3), is(vehicleTrack3));
-
-    Double[] location = vehicleTrack1.getLocation();
-    List<VehicleTrack> vehicleTracksInRange = Arrays.asList(vehicleTrack1, vehicleTrack3);
-
-    Point point = new Point(location[0], location[1]);
-    Distance distance = new Distance(10, Metrics.KILOMETERS);
-    assertThat(vehicleTrackService.findByLocationNear(point, distance), is(vehicleTracksInRange));
-
-    vehicleTrackService.delete(id1); // cleanup
-    vehicleTrackService.delete(id2); // cleanup
-    vehicleTrackService.delete(id3); // cleanup
   }
 
   public VehicleTrack buildValidVehicleTrack(Long id) {

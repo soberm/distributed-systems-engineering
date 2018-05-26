@@ -8,23 +8,15 @@ import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
 public class VehicleTrackService implements IVehicleTrackService {
-
-  private static final int RANGE = 10;
 
   private final Validator validator;
   private final VehicleTrackRepository vehicleTrackRepository;
@@ -44,21 +36,8 @@ public class VehicleTrackService implements IVehicleTrackService {
       throw new VehicleTrackAlreadyExistsException(vehicleTrack + " already exists.");
     }
 
-    VehicleTrack savedVehicleTrack = vehicleTrackRepository.save(vehicleTrack);
     log.info("Saving " + vehicleTrack);
-
-
-    if(savedVehicleTrack.getCrashEvent() || savedVehicleTrack.getNearCrashEvent()){
-      Double[] location = savedVehicleTrack.getLocation();
-
-      Point accidentLocation = new Point(location[0], location[1]);
-      Distance notifyDistance = new Distance(RANGE, Metrics.KILOMETERS);
-      List<VehicleTrack> vehicleTracksNear = vehicleTrackRepository.findByLocationNear(accidentLocation, notifyDistance);
-
-      //TODO: Filter for the latest VehicleTrack of each Vehicle
-    }
-
-    return savedVehicleTrack;
+    return vehicleTrackRepository.save(vehicleTrack);
   }
 
   @Override
@@ -122,12 +101,6 @@ public class VehicleTrackService implements IVehicleTrackService {
     if (id < 0) {
       throw new ValidationException("Id must be greater than 0.");
     }
-  }
-
-  @Override
-  public List<VehicleTrack> findByLocationNear(Point p, Distance d) {
-    log.info("Finding VehicleTracks near {}" + p);
-    return vehicleTrackRepository.findByLocationNear(p, d);
   }
 
 }
