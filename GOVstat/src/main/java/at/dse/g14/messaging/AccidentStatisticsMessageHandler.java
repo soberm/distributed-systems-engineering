@@ -44,11 +44,11 @@ public class AccidentStatisticsMessageHandler implements MessageHandler {
         try {
             AccidentStatisticsDTO accidentStatisticsDTO = objectMapper.readValue(payload, AccidentStatisticsDTO.class);
             accidentStatisticsService.update(convertToEntity(accidentStatisticsDTO));
-            consumer.ack();
         } catch (ServiceException | IOException e) {
             log.error("Could not handle AccidentStatistics-Message. Message ignored.", e);
+        }
+        if (consumer != null) {
             consumer.ack();
-            return;
         }
     }
 
