@@ -109,10 +109,14 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
     loadedLiveVehicleTrack.setNearCrashEvent(liveVehicleTrack.getNearCrashEvent());
     loadedLiveVehicleTrack.setCrashEvent(liveVehicleTrack.getCrashEvent());
 
-    //TODO: Create CrashInfo or NearCrashInfo and send it to NOTYfier
-
     log.info("Updating " + liveVehicleTrack);
-    return liveVehicleTrackRepository.save(liveVehicleTrack);
+    loadedLiveVehicleTrack = liveVehicleTrackRepository.save(loadedLiveVehicleTrack);
+
+    if(loadedLiveVehicleTrack.getCrashEvent() || loadedLiveVehicleTrack.getNearCrashEvent()){
+      handleAccidentEvent(loadedLiveVehicleTrack);
+    }
+
+    return loadedLiveVehicleTrack;
   }
 
   @Override

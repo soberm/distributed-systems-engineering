@@ -31,7 +31,7 @@ public class LiveVehicleTrack {
     private Integer passengers;
 
     @NotNull
-    @GeoSpatialIndexed
+    @GeoSpatialIndexed(useGeneratedName = true)
     @Size(min = 2, max = 2)
     private Double[] location;
 
