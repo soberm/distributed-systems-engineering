@@ -11,9 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventInformationDTO {
+public class AccidentEventDTO {
 
-    private VehicleTrackDTO vehicleTrack;
+    private LiveVehicleTrackDTO liveVehicleTrack;
 
     private List<String> vehiclesInRange;
 

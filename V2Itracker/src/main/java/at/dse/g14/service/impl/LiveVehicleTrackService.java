@@ -1,33 +1,53 @@
 package at.dse.g14.service.impl;
 
+import at.dse.g14.commons.dto.AccidentEventDTO;
+import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
+import at.dse.g14.config.PubSubConfig.AccidentEventOutboundGateway;
 import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.persistence.LiveVehicleTrackRepository;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class LiveVehicleTrackService implements ILiveVehicleTrackService {
 
+  private static final int RANGE = 10;
+
   private final Validator validator;
   private final LiveVehicleTrackRepository liveVehicleTrackRepository;
+  private final ModelMapper modelMapper;
+  private final ObjectMapper objectMapper;
+  private final AccidentEventOutboundGateway accidentEventOutboundGateway;
 
   @Autowired
   public LiveVehicleTrackService(
-      final Validator validator, final LiveVehicleTrackRepository liveVehicleTrackRepository) {
+      final Validator validator,
+      final LiveVehicleTrackRepository liveVehicleTrackRepository,
+      final ModelMapper modelMapper,
+      final AccidentEventOutboundGateway accidentEventOutboundGateway,
+      final ObjectMapper objectMapper) {
     this.validator = validator;
     this.liveVehicleTrackRepository = liveVehicleTrackRepository;
+    this.modelMapper = modelMapper;
+    this.accidentEventOutboundGateway = accidentEventOutboundGateway;
+    this.objectMapper = objectMapper;
   }
 
   @Override
@@ -38,10 +58,35 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
       throw new LiveVehicleTrackAlreadyExistsException(liveVehicleTrack + " already exists.");
     }
 
-    //TODO: Create CrashInfo or NearCrashInfo and send it to NOTYfier
-
     log.info("Saving " + liveVehicleTrack);
-    return liveVehicleTrackRepository.save(liveVehicleTrack);
+    LiveVehicleTrack savedLiveVehicleTrack = liveVehicleTrackRepository.save(liveVehicleTrack);
+
+    if(savedLiveVehicleTrack.getCrashEvent() || savedLiveVehicleTrack.getNearCrashEvent()){
+      handleAccidentEvent(savedLiveVehicleTrack);
+    }
+
+    return savedLiveVehicleTrack;
+  }
+
+  private void handleAccidentEvent(LiveVehicleTrack liveVehicleTrack) {
+    Double[] location = liveVehicleTrack.getLocation();
+    Point accidentPoint = new Point(location[0], location[1]);
+    Distance rangeToOtherVehicles = new Distance(RANGE, Metrics.KILOMETERS);
+
+    List<LiveVehicleTrack> vehiclesInRange = findByLocationNear(accidentPoint, rangeToOtherVehicles);
+    List<String> vehicleVINs = vehiclesInRange
+            .stream()
+            .map(v -> v.getVin())
+            .collect(Collectors.toList());
+
+    AccidentEventDTO accidentEventDTO = new AccidentEventDTO(
+            convertToLiveVehicleTrackDTO(liveVehicleTrack),
+            vehicleVINs);
+    try {
+      accidentEventOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(accidentEventDTO));
+    } catch (JsonProcessingException e) {
+      log.error("Could not send AccidentEvent to PubSub.", e);
+    }
   }
 
   @Override
@@ -104,4 +149,9 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
       throw new ValidationException("LiveVehicleTrack not valid.");
     }
   }
+
+  private LiveVehicleTrackDTO convertToLiveVehicleTrackDTO(LiveVehicleTrack liveVehicleTrack) {
+    return modelMapper.map(liveVehicleTrack, LiveVehicleTrackDTO.class);
+  }
+
 }
