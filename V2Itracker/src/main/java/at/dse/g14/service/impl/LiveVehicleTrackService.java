@@ -60,6 +60,7 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
 
     log.info("Saving " + liveVehicleTrack);
     LiveVehicleTrack savedLiveVehicleTrack = liveVehicleTrackRepository.save(liveVehicleTrack);
+    log.info("Saved " + liveVehicleTrack);
 
     if(savedLiveVehicleTrack.getCrashEvent() || savedLiveVehicleTrack.getNearCrashEvent()){
       handleAccidentEvent(savedLiveVehicleTrack);
@@ -130,7 +131,7 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
     log.info("Finding LiveVehicleTrack " + vin);
     try {
       return liveVehicleTrackRepository.findById(vin).get();
-    } catch (NoSuchElementException e) {
+    } catch (NoSuchElementException | IllegalArgumentException e) {
       return null;
     }
   }

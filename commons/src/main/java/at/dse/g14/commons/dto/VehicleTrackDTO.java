@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 public class VehicleTrackDTO implements DTO {
 
-  private Long id;
+  private String id;
 
   @NotNull
   private String vin;

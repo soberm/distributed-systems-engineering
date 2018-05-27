@@ -47,6 +47,7 @@ public class VehicleTrackService implements IVehicleTrackService {
 
     log.info("Saving " + vehicleTrack);
     VehicleTrack savedVehicleTrack = vehicleTrackRepository.save(vehicleTrack);
+    log.info("Saved " + vehicleTrack);
     liveVehicleTrackService.update(convertToLiveVehicleTrack(savedVehicleTrack));
 
     return savedVehicleTrack;
@@ -81,19 +82,17 @@ public class VehicleTrackService implements IVehicleTrackService {
   }
 
   @Override
-  public void delete(Long id) throws ServiceException {
-    validate(id);
+  public void delete(String id) throws ServiceException {
     log.info("Deleted VehicleTrack " + id);
     vehicleTrackRepository.deleteById(id);
   }
 
   @Override
-  public VehicleTrack findOne(Long id) throws ServiceException {
-    validate(id);
+  public VehicleTrack findOne(String id) throws ServiceException {
     log.info("Finding VehicleTrack " + id);
     try {
       return vehicleTrackRepository.findById(id).get();
-    } catch (NoSuchElementException e) {
+    } catch (NoSuchElementException | IllegalArgumentException e) {
       return null;
     }
   }
@@ -108,13 +107,6 @@ public class VehicleTrackService implements IVehicleTrackService {
     log.debug("Validating " + vehicleTrack);
     if (!validator.validate(vehicleTrack).isEmpty()) {
       throw new ValidationException("VehicleTrack not valid.");
-    }
-  }
-
-  private void validate(Long id) throws ValidationException {
-    log.debug("Validating Id for VehicleTracks " + id);
-    if (id < 0) {
-      throw new ValidationException("Id must be greater than 0.");
     }
   }
 

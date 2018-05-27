@@ -1,6 +1,5 @@
 package at.dse.g14.entity;
 
-import at.dse.g14.commons.dto.GpsPoint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -24,7 +22,7 @@ import java.math.BigDecimal;
 @Document(collection = "vehicle_tracks")
 public class VehicleTrack {
 
-  @Id private Long id;
+  @Id private String id;
 
   @NotNull private String vin;
 

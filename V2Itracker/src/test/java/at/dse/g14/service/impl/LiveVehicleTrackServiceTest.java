@@ -1,6 +1,7 @@
 package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.service.exception.ValidationException;
+import at.dse.g14.config.PubSubConfig.AccidentEventOutboundGateway;
 import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
@@ -28,6 +30,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class LiveVehicleTrackServiceTest {
 
   @Autowired private ILiveVehicleTrackService liveVehicleTrackService;
+
+  @MockBean private AccidentEventOutboundGateway accidentEventOutboundGateway;
 
   @Test
   public void save_validLiveVehicleTrack_shouldPersist() throws Exception {
