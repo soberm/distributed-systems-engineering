@@ -1,9 +1,9 @@
 package at.dse.g14.data.simulator;
 
 import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.VehicleTrackDTO;
 import at.dse.g14.data.simulator.config.PubSubConfig.VehicleTrackOutboundGateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,7 +64,7 @@ public class DseSender {
         EmergencyService.class);
   }
 
-  public void sendTrackData(final LiveVehicleTrackDTO vehicleTrack) {
+  public void sendTrackData(final VehicleTrackDTO vehicleTrack) {
     log.info("send: {}", vehicleTrack);
     try {
       gateway.sendToPubsub(objectMapper.writeValueAsString(vehicleTrack));

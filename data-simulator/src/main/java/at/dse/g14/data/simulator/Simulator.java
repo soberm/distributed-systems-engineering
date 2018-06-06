@@ -1,9 +1,9 @@
 package at.dse.g14.data.simulator;
 
 import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.VehicleTrackDTO;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -140,7 +140,7 @@ public class Simulator {
 //    vehicleDataMap.putIfAbsent(vehicle6, car6);
   }
 
-  @Scheduled(fixedRate = 20000, initialDelay = 5000)
+  @Scheduled(fixedRate = 2000, initialDelay = 5000)
   public void simulateTrackData() {
     try {
 
@@ -154,8 +154,8 @@ public class Simulator {
           break;
         }
 
-        final LiveVehicleTrackDTO track =
-            LiveVehicleTrackDTO.builder()
+        final VehicleTrackDTO track =
+            VehicleTrackDTO.builder()
                 .vin(String.valueOf(entry.getKey().getId()))
                 .modelType(entry.getKey().getModelType())
                 .passengers(random.nextInt(1, 4))
