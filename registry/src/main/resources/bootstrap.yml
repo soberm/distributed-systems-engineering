@@ -17,8 +17,8 @@ eureka:
     statusPageUrlPath: ${server.servlet.context-path}/actuator/info
     healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    register-with-eureka: false
+    fetch-registry: false
   server:
     enableSelfPreservation: false
     waitTimeInMsWhenSyncEmpty: 0

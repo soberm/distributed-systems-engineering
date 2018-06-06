@@ -1,40 +1,45 @@
 buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
-group 'at.dse.g14'
-version '0.0.1'
-
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
+group 'at.dse.g14'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+    springCloudVersion = 'Finchley.BUILD-SNAPSHOT'
 }
 
 dependencies {
-    /************************************ LOGGING ********************************************************/
 
-    /************************************ UTILS  **********************************************************/
+    /*** SPRING CLOUD ***/
 
-    /************************************ DATABASE ********************************************************/
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
 
-    /************************************ PERSISTENCE******************************************************/
+}
 
-    /************************************ SECURITY ********************************************************/
-
-    /************************************ SPRING BOOT ********************************************************/
-
-    /************************************ SPRING CLOUD ********************************************************/
-
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '1.4.3.RELEASE'
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
