@@ -55,7 +55,7 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
     if (manufacturerId == null) {
       throw new ServiceException("ID is null!");
     }
-    manufacturerRepository.delete(manufacturerId);
+    manufacturerRepository.deleteById(manufacturerId);
   }
 
   @Override
@@ -63,7 +63,7 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
     if (manufacturerId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(manufacturerRepository.findOne(manufacturerId));
+    return convertToDto(manufacturerRepository.findById(manufacturerId).get());
   }
 
   @Override

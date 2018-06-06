@@ -46,9 +46,9 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public Vehicle findOne(final long vehicleId, final long manufacturerId)
       throws ValidationException {
-    final VehicleEntity vehicleEntity = vehicleRepository.findOne(vehicleId);
+    final VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).get();
     final VehicleManufacturerEntity manufacturerEntity =
-        manufacturerRepository.findOne(manufacturerId);
+        manufacturerRepository.findById(manufacturerId).get();
 
     if (!vehicleEntity.getManufacturer().equals(manufacturerEntity)) {
       throw new ValidationException("Vehicle does not belong to provided manufacturer!");
@@ -72,7 +72,7 @@ public class VehicleServiceImpl implements VehicleService {
     if (vehicleId == null) {
       throw new ServiceException("ID is null!");
     }
-    vehicleRepository.delete(vehicleId);
+    vehicleRepository.deleteById(vehicleId);
   }
 
   @Override
@@ -80,7 +80,7 @@ public class VehicleServiceImpl implements VehicleService {
     if (vehicleId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(vehicleRepository.findOne(vehicleId));
+    return convertToDto(vehicleRepository.findById(vehicleId).get());
   }
 
   @Override

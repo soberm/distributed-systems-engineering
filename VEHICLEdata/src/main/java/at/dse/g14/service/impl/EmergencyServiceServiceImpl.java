@@ -52,7 +52,7 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
     if (serviceId == null) {
       throw new ServiceException("ID is null!");
     }
-    serviceRepository.delete(serviceId);
+    serviceRepository.deleteById(serviceId);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
     if (serviceId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(serviceRepository.findOne(serviceId));
+    return convertToDto(serviceRepository.findById(serviceId).get());
   }
 
   @Override
