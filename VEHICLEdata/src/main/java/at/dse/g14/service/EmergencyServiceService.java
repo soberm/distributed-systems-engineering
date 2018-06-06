@@ -8,6 +8,6 @@ import at.dse.g14.commons.service.CrudService;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-public interface EmergencyServiceService extends CrudService<EmergencyService, Long> {
+public interface EmergencyServiceService extends CrudService<EmergencyService, String> {
 
 }

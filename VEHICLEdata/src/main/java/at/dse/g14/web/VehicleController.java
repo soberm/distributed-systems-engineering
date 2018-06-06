@@ -36,13 +36,14 @@ public class VehicleController {
   }
 
   @GetMapping("/{vid}")
-  public Vehicle getVehicle(@PathVariable("id") final long id, @PathVariable("vid") final long vid)
+  public Vehicle getVehicle(@PathVariable("id") final String id,
+      @PathVariable("vid") final String vid)
       throws ValidationException {
     return vehicleService.findOne(id, vid);
   }
 
   @GetMapping
-  public List<Vehicle> getAllVehicleOfManufacturer(@PathVariable("id") final long id) {
+  public List<Vehicle> getAllVehicleOfManufacturer(@PathVariable("id") final String id) {
     return vehicleService.findAllOfManufacturer(id);
   }
 

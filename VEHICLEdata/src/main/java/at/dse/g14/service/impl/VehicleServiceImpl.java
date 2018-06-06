@@ -10,6 +10,7 @@ import at.dse.g14.persistence.VehicleRepository;
 import at.dse.g14.service.VehicleService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
@@ -53,11 +54,22 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle findOne(final long vehicleId, final long manufacturerId)
-      throws ValidationException {
-    final VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).get();
-    final VehicleManufacturerEntity manufacturerEntity =
-        manufacturerRepository.findById(manufacturerId).get();
+  public Vehicle findOne(final String vehicleId, final String manufacturerId)
+      throws ServiceException {
+
+    final Optional<VehicleEntity> foundVehicle = vehicleRepository.findById(vehicleId);
+    final Optional<VehicleManufacturerEntity> foundManufacturer = manufacturerRepository
+        .findById(manufacturerId);
+
+    if (!foundVehicle.isPresent()) {
+      throw new ServiceException("Unknown vehicleId " + vehicleId);
+    }
+    if (!foundManufacturer.isPresent()) {
+      throw new ServiceException("Unknown manufacturerId " + manufacturerId);
+    }
+
+    final VehicleEntity vehicleEntity = foundVehicle.get();
+    final VehicleManufacturerEntity manufacturerEntity = foundManufacturer.get();
 
     if (!vehicleEntity.getManufacturer().equals(manufacturerEntity)) {
       throw new ValidationException("Vehicle does not belong to provided manufacturer!");
@@ -77,7 +89,7 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public void delete(final Long vehicleId) throws ServiceException {
+  public void delete(final String vehicleId) throws ServiceException {
     if (vehicleId == null) {
       throw new ServiceException("ID is null!");
     }
@@ -85,11 +97,17 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle findOne(final Long vehicleId) throws ServiceException {
+  public Vehicle findOne(final String vehicleId) throws ServiceException {
     if (vehicleId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(vehicleRepository.findById(vehicleId).get());
+
+    final Optional<VehicleEntity> foundVehicle = vehicleRepository.findById(vehicleId);
+    if (!foundVehicle.isPresent()) {
+      throw new ServiceException("Unknown vehicleId " + vehicleId);
+    }
+
+    return convertToDto(foundVehicle.get());
   }
 
   @Override
@@ -98,11 +116,11 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public List<Vehicle> findAllOfManufacturer(long manufacturerId) {
+  public List<Vehicle> findAllOfManufacturer(final String manufacturerId) {
     return convertToDto(vehicleRepository.findAllByManufacturer_Id(manufacturerId));
   }
 
-  private Vehicle convertToDto(VehicleEntity entity) {
+  private Vehicle convertToDto(final VehicleEntity entity) {
     return modelMapper.map(entity, Vehicle.class);
   }
 

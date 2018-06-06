@@ -37,7 +37,7 @@ public class EmergencyServiceController {
   }
 
   @GetMapping("/{vid}")
-  public EmergencyService getEmergencyService(@PathVariable("id") final long id)
+  public EmergencyService getEmergencyService(@PathVariable("id") final String id)
       throws ServiceException {
     return emergencyServiceService.findOne(id);
   }

@@ -8,6 +8,7 @@ import at.dse.g14.persistence.EmergencyServiceRepository;
 import at.dse.g14.service.EmergencyServiceService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
@@ -57,7 +58,7 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
   }
 
   @Override
-  public void delete(final Long serviceId) throws ServiceException {
+  public void delete(final String serviceId) throws ServiceException {
     if (serviceId == null) {
       throw new ServiceException("ID is null!");
     }
@@ -65,11 +66,15 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
   }
 
   @Override
-  public EmergencyService findOne(final Long serviceId) throws ServiceException {
+  public EmergencyService findOne(final String serviceId) throws ServiceException {
     if (serviceId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(serviceRepository.findById(serviceId).get());
+    final Optional<EmergencyServiceEntity> foundService = serviceRepository.findById(serviceId);
+    if (!foundService.isPresent()) {
+      throw new ServiceException("Unknown serviceId " + serviceId);
+    }
+    return convertToDto(foundService.get());
   }
 
   @Override

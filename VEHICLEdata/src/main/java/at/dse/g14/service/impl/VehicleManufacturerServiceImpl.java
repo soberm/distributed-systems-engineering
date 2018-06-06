@@ -8,6 +8,7 @@ import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.service.VehicleManufacturerService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
@@ -60,7 +61,7 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
   }
 
   @Override
-  public void delete(final Long manufacturerId) throws ServiceException {
+  public void delete(final String manufacturerId) throws ServiceException {
     if (manufacturerId == null) {
       throw new ServiceException("ID is null!");
     }
@@ -68,11 +69,16 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
   }
 
   @Override
-  public VehicleManufacturer findOne(final Long manufacturerId) throws ServiceException {
+  public VehicleManufacturer findOne(final String manufacturerId) throws ServiceException {
     if (manufacturerId == null) {
       throw new ServiceException("ID is null!");
     }
-    return convertToDto(manufacturerRepository.findById(manufacturerId).get());
+    final Optional<VehicleManufacturerEntity> foundManufacturer = manufacturerRepository
+        .findById(manufacturerId);
+    if (!foundManufacturer.isPresent()) {
+      throw new ServiceException("Unknown manufacturerId " + manufacturerId);
+    }
+    return convertToDto(foundManufacturer.get());
   }
 
   @Override
