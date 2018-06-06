@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 //@AllArgsConstructor
 public class VehicleManufacturer implements DTO {
 
-  private Long id;
+  private String id;
 
   @NotBlank
   private String name;
@@ -26,7 +26,7 @@ public class VehicleManufacturer implements DTO {
   @NotEmpty
   private Set<Vehicle> vehicles;
 
-  public VehicleManufacturer(Long id, String name,
+  public VehicleManufacturer(String id, String name,
       Set<Vehicle> vehicles) {
     this.id = id;
     this.name = name;

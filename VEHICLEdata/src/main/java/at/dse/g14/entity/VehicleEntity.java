@@ -27,7 +27,7 @@ public class VehicleEntity implements Entity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private String id;
 
   @NotBlank
   private String modelType;
