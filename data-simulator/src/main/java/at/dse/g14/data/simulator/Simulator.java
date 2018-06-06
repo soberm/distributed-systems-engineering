@@ -1,7 +1,7 @@
 package at.dse.g14.data.simulator;
 
 import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.GpsPoint;
+import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
 import com.opencsv.CSVReader;
@@ -33,15 +33,25 @@ public class Simulator {
   private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
   private static final double CRASH_EVENT_PROBABILITY = 0.1;
   private static final int CRASH_COUNTER_MAX = 10;
+
   private CSVReader car1;
   private CSVReader car2;
   private CSVReader car3;
   private CSVReader car4;
   private CSVReader car5;
   private CSVReader car6;
-  private DseSender sender;
-  private Map<Vehicle, CSVReader> vehicleDataMap;
-  private Map<Vehicle, Integer> crashes = new HashMap<>();
+
+  private final DseSender sender;
+
+  private final Map<Vehicle, CSVReader> vehicleDataMap;
+  private final Map<Vehicle, Integer> crashes;
+
+  public Simulator(DseSender sender) {
+    this.sender = sender;
+
+    vehicleDataMap = new HashMap<>();
+    crashes = new HashMap<>();
+  }
 
   @PostConstruct
   public void init() {
@@ -77,7 +87,6 @@ public class Simulator {
             new BufferedReader(
                 new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream("./data/car6.csv"))));
-    sender = new DseSender();
 
     final TimerTask timerTask =
         new TimerTask() {
@@ -92,47 +101,46 @@ public class Simulator {
 
   public void createInitData() {
     log.info("create init data");
-    final VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW", new HashSet<>());
-    final VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW", new HashSet<>());
-    final VehicleManufacturer manufacturer3 =
+    VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW", new HashSet<>());
+    VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW", new HashSet<>());
+    VehicleManufacturer manufacturer3 =
         new VehicleManufacturer(null, "Tesla", new HashSet<>());
 
-    sender.createManufacturer(manufacturer1);
-    sender.createManufacturer(manufacturer2);
-    sender.createManufacturer(manufacturer3);
+    manufacturer1 = sender.createManufacturer(manufacturer1);
+    manufacturer2 = sender.createManufacturer(manufacturer2);
+    manufacturer3 = sender.createManufacturer(manufacturer3);
 
-    final Vehicle vehicle1 = new Vehicle(null, "Polo", manufacturer1);
-    final Vehicle vehicle2 = new Vehicle(null, "Golf", manufacturer1);
-    final Vehicle vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
-    final Vehicle vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
-    final Vehicle vehicle5 = new Vehicle(null, "Model S", manufacturer3);
-    final Vehicle vehicle6 = new Vehicle(null, "Model X", manufacturer3);
+    Vehicle vehicle1 = new Vehicle(null, "Polo", manufacturer1);
+    Vehicle vehicle2 = new Vehicle(null, "Golf", manufacturer1);
+    Vehicle vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
+    Vehicle vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
+    Vehicle vehicle5 = new Vehicle(null, "Model S", manufacturer3);
+    Vehicle vehicle6 = new Vehicle(null, "Model X", manufacturer3);
 
-    sender.createVehicle(vehicle1);
-    sender.createVehicle(vehicle2);
-    sender.createVehicle(vehicle3);
-    sender.createVehicle(vehicle4);
-    sender.createVehicle(vehicle5);
-    sender.createVehicle(vehicle6);
+    vehicle1 = sender.createVehicle(vehicle1);
+    vehicle2 = sender.createVehicle(vehicle2);
+    vehicle3 = sender.createVehicle(vehicle3);
+    vehicle4 = sender.createVehicle(vehicle4);
+    vehicle5 = sender.createVehicle(vehicle5);
+    vehicle6 = sender.createVehicle(vehicle6);
 
-    final EmergencyService service1 = new EmergencyService(null, "Polizei");
-    final EmergencyService service2 = new EmergencyService(null, "Feuerwehr");
-    final EmergencyService service3 = new EmergencyService(null, "Rettung");
+    EmergencyService service1 = new EmergencyService(null, "Polizei");
+    EmergencyService service2 = new EmergencyService(null, "Feuerwehr");
+    EmergencyService service3 = new EmergencyService(null, "Rettung");
 
-    sender.createEmergencyService(service1);
-    sender.createEmergencyService(service2);
-    sender.createEmergencyService(service3);
+    service1 = sender.createEmergencyService(service1);
+    service2 = sender.createEmergencyService(service2);
+    service3 = sender.createEmergencyService(service3);
 
-    vehicleDataMap = new HashMap<>();
     vehicleDataMap.putIfAbsent(vehicle1, car1);
-    vehicleDataMap.putIfAbsent(vehicle2, car2);
-    vehicleDataMap.putIfAbsent(vehicle3, car3);
-    vehicleDataMap.putIfAbsent(vehicle4, car4);
-    vehicleDataMap.putIfAbsent(vehicle5, car5);
-    vehicleDataMap.putIfAbsent(vehicle6, car6);
+//    vehicleDataMap.putIfAbsent(vehicle2, car2);
+//    vehicleDataMap.putIfAbsent(vehicle3, car3);
+//    vehicleDataMap.putIfAbsent(vehicle4, car4);
+//    vehicleDataMap.putIfAbsent(vehicle5, car5);
+//    vehicleDataMap.putIfAbsent(vehicle6, car6);
   }
 
-  @Scheduled(fixedRate = 2000, initialDelay = 5000)
+  @Scheduled(fixedRate = 20000, initialDelay = 5000)
   public void simulateTrackData() {
     try {
 
@@ -146,8 +154,8 @@ public class Simulator {
           break;
         }
 
-        final VehicleTrack track =
-            VehicleTrack.builder()
+        final LiveVehicleTrackDTO track =
+            LiveVehicleTrackDTO.builder()
                 .vin(String.valueOf(entry.getKey().getId()))
                 .modelType(entry.getKey().getModelType())
                 .passengers(random.nextInt(1, 4))
@@ -199,7 +207,9 @@ public class Simulator {
   }
 
   private Double[] constructGpsPoint(final String[] line) {
-    return new Double[]{Double.parseDouble(line[2]),
-        Double.parseDouble(line[3])};
+    return new Double[]{
+        Double.parseDouble(line[2]),
+        Double.parseDouble(line[3])
+    };
   }
 }
