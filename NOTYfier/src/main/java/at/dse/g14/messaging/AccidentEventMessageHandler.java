@@ -4,7 +4,9 @@ import at.dse.g14.commons.dto.AccidentEventDTO;
 import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.CrashEventNotification;
+import at.dse.g14.entity.NearCrashEventNotification;
 import at.dse.g14.service.ICrashEventNotificationService;
+import at.dse.g14.service.INearCrashEventNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +25,15 @@ public class AccidentEventMessageHandler implements MessageHandler {
 
   private final ObjectMapper objectMapper;
   private final ICrashEventNotificationService crashEventNotificationService;
+  private final INearCrashEventNotificationService nearCrashEventNotificationService;
 
   public AccidentEventMessageHandler(
-      ObjectMapper objectMapper, ICrashEventNotificationService crashEventNotificationService) {
+      ObjectMapper objectMapper,
+      ICrashEventNotificationService crashEventNotificationService,
+      INearCrashEventNotificationService nearCrashEventNotificationService) {
     this.objectMapper = objectMapper;
     this.crashEventNotificationService = crashEventNotificationService;
+    this.nearCrashEventNotificationService = nearCrashEventNotificationService;
   }
 
   @Override
@@ -66,6 +72,10 @@ public class AccidentEventMessageHandler implements MessageHandler {
 
   private void handleNearCrashEvent(AccidentEventDTO accidentEventDTO) throws ServiceException {
     log.info("Handling NearCrashEvent of {}", accidentEventDTO);
-    // TODO: Generate and save NearCrashEventNotifications
+    List<NearCrashEventNotification> nearCrashEventNotifications =
+        nearCrashEventNotificationService.generateFrom(accidentEventDTO);
+    for (NearCrashEventNotification nearCrashEventNotification : nearCrashEventNotifications) {
+      nearCrashEventNotificationService.update(nearCrashEventNotification);
+    }
   }
 }
