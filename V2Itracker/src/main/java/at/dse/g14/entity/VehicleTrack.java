@@ -1,5 +1,9 @@
 package at.dse.g14.entity;
 
+import java.math.BigDecimal;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,12 +12,6 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -37,7 +35,7 @@ public class VehicleTrack {
   private Double[] location;
 
   @DecimalMin(value = "0.0")
-  @DecimalMax(value = "130.0")
+//  @DecimalMax(value = "130.0")
   private BigDecimal speed;
 
   @DecimalMin(value = "0.0")
