@@ -16,12 +16,12 @@ import org.hibernate.validator.constraints.NotBlank;
 //@AllArgsConstructor
 public class EmergencyService {
 
-  private Long id;
+  private String id;
 
   @NotBlank
   private String name;
 
-  public EmergencyService(Long id, String name) {
+  public EmergencyService(String id, String name) {
     this.id = id;
     this.name = name;
   }
