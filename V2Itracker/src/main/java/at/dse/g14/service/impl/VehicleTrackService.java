@@ -8,14 +8,16 @@ import at.dse.g14.persistence.VehicleTrackRepository;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.validation.Validator;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -105,8 +107,14 @@ public class VehicleTrackService implements IVehicleTrackService {
 
   private void validate(VehicleTrack vehicleTrack) throws ValidationException {
     log.debug("Validating " + vehicleTrack);
-    if (!validator.validate(vehicleTrack).isEmpty()) {
-      throw new ValidationException("VehicleTrack not valid.");
+    Set<ConstraintViolation<VehicleTrack>> violations = validator.validate(vehicleTrack);
+    if (!violations.isEmpty()) {
+      throw new ValidationException("VehicleTrack not valid: \n" +
+          Arrays.toString(
+              violations.stream()
+                  .map(Object::toString)
+                  .toArray())
+      );
     }
   }
 
