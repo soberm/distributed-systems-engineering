@@ -3,7 +3,6 @@ package at.dse.g14.data.simulator;
 import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.commons.dto.VehicleTrack;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -4,7 +4,6 @@ import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.GpsPoint;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.commons.dto.VehicleTrack;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -199,9 +198,8 @@ public class Simulator {
     return isCrash;
   }
 
-  private GpsPoint constructGpsPoint(final String[] line) {
-    return new GpsPoint(
-        BigDecimal.valueOf(Double.parseDouble(line[2])),
-        BigDecimal.valueOf(Double.parseDouble(line[3])));
+  private Double[] constructGpsPoint(final String[] line) {
+    return new Double[]{Double.parseDouble(line[2]),
+        Double.parseDouble(line[3])};
   }
 }
