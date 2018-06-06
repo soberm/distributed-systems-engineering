@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Data
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AccidentEventDTO {
 
+    @Valid
     private LiveVehicleTrackDTO liveVehicleTrack;
 
     private List<String> vehiclesInRange;
