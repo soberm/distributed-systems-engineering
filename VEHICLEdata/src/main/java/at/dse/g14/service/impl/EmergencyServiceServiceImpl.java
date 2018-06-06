@@ -6,8 +6,13 @@ import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.EmergencyServiceEntity;
 import at.dse.g14.persistence.EmergencyServiceRepository;
 import at.dse.g14.service.EmergencyServiceService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +23,20 @@ import org.springframework.stereotype.Service;
  * @since 1.0.0
  */
 @Service("emergencyServiceService")
+@Slf4j
 public class EmergencyServiceServiceImpl implements EmergencyServiceService {
 
   private final EmergencyServiceRepository serviceRepository;
   private final ModelMapper modelMapper;
+  private final Validator validator;
 
   @Autowired
   public EmergencyServiceServiceImpl(
-      final EmergencyServiceRepository serviceRepository, final ModelMapper modelMapper) {
+      final EmergencyServiceRepository serviceRepository, final ModelMapper modelMapper,
+      final Validator validator) {
     this.serviceRepository = serviceRepository;
     this.modelMapper = modelMapper;
+    this.validator = validator;
   }
 
   @Override
@@ -64,7 +73,7 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
   }
 
   @Override
-  public List<EmergencyService> findAll() throws ServiceException {
+  public List<EmergencyService> findAll() {
     return convertToDto((List<EmergencyServiceEntity>) serviceRepository.findAll());
   }
 
@@ -81,5 +90,15 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
   }
 
   private void validate(final EmergencyService service) throws ValidationException {
+    log.debug("Validating " + service);
+    Set<ConstraintViolation<EmergencyService>> violations = validator.validate(service);
+    if (!violations.isEmpty()) {
+      throw new ValidationException("EmergencyService not valid: \n" +
+          Arrays.toString(
+              violations.stream()
+                  .map(Object::toString)
+                  .toArray())
+      );
+    }
   }
 }

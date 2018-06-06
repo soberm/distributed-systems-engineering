@@ -6,8 +6,13 @@ import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleManufacturerEntity;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.service.VehicleManufacturerService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +23,20 @@ import org.springframework.stereotype.Service;
  * @since 1.0.0
  */
 @Service("vehicleManufacturerService")
+@Slf4j
 public class VehicleManufacturerServiceImpl implements VehicleManufacturerService {
 
   private final VehicleManufacturerRepository manufacturerRepository;
   private final ModelMapper modelMapper;
+  private final Validator validator;
 
   @Autowired
   public VehicleManufacturerServiceImpl(
-      final VehicleManufacturerRepository manufacturerRepository, final ModelMapper modelMapper) {
+      final VehicleManufacturerRepository manufacturerRepository, final ModelMapper modelMapper,
+      final Validator validator) {
     this.manufacturerRepository = manufacturerRepository;
     this.modelMapper = modelMapper;
+    this.validator = validator;
   }
 
   @Override
@@ -84,5 +93,15 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
   }
 
   private void validate(final VehicleManufacturer manufacturer) throws ValidationException {
+    log.debug("Validating " + manufacturer);
+    Set<ConstraintViolation<VehicleManufacturer>> violations = validator.validate(manufacturer);
+    if (!violations.isEmpty()) {
+      throw new ValidationException("EmergencyService not valid: \n" +
+          Arrays.toString(
+              violations.stream()
+                  .map(Object::toString)
+                  .toArray())
+      );
+    }
   }
 }

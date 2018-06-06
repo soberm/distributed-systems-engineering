@@ -8,8 +8,13 @@ import at.dse.g14.entity.VehicleManufacturerEntity;
 import at.dse.g14.persistence.VehicleManufacturerRepository;
 import at.dse.g14.persistence.VehicleRepository;
 import at.dse.g14.service.VehicleService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,20 +25,24 @@ import org.springframework.stereotype.Service;
  * @since 1.0.0
  */
 @Service("vehicleService")
+@Slf4j
 public class VehicleServiceImpl implements VehicleService {
 
   private final VehicleRepository vehicleRepository;
   private final ModelMapper modelMapper;
   private final VehicleManufacturerRepository manufacturerRepository;
+  private final Validator validator;
 
   @Autowired
   public VehicleServiceImpl(
       final VehicleRepository vehicleRepository,
       final ModelMapper modelMapper,
-      final VehicleManufacturerRepository manufacturerRepository) {
+      final VehicleManufacturerRepository manufacturerRepository,
+      final Validator validator) {
     this.vehicleRepository = vehicleRepository;
     this.modelMapper = modelMapper;
     this.manufacturerRepository = manufacturerRepository;
+    this.validator = validator;
   }
 
   @Override
@@ -88,12 +97,6 @@ public class VehicleServiceImpl implements VehicleService {
     return convertToDto((List<VehicleEntity>) vehicleRepository.findAll());
   }
 
-  private void validate(final Vehicle vehicle) throws ValidationException {
-    if (vehicle.getManufacturer() == null) {
-      throw new ValidationException("No manufacturer provided");
-    }
-  }
-
   @Override
   public List<Vehicle> findAllOfManufacturer(long manufacturerId) {
     return convertToDto(vehicleRepository.findAllByManufacturer_Id(manufacturerId));
@@ -113,5 +116,18 @@ public class VehicleServiceImpl implements VehicleService {
 
   private List<VehicleEntity> convertToEntity(final List<Vehicle> entities) {
     return entities.stream().map(this::convertToEntity).collect(Collectors.toList());
+  }
+
+  private void validate(final Vehicle vehicle) throws ValidationException {
+    log.debug("Validating " + vehicle);
+    Set<ConstraintViolation<Vehicle>> violations = validator.validate(vehicle);
+    if (!violations.isEmpty()) {
+      throw new ValidationException("Vehicle not valid: \n" +
+          Arrays.toString(
+              violations.stream()
+                  .map(Object::toString)
+                  .toArray())
+      );
+    }
   }
 }
