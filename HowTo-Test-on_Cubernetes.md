@@ -14,17 +14,21 @@ Stackdriver Logging:            Aktiviert
 Stackdriver Monitoring:         Aktiviert
 ```
 
-Setup your local gcloud console with the following commands to connect to the cluster:
+2.) Setup your local gcloud console with the following commands to connect to the cluster:
 ```bash
 gcloud config set project dse-group-14
 gcloud config set compute/zone europe-west1-c
 gcloud container clusters get-credentials cluster-dse-group-14
 ```
 
-To build our project for cubernetes, build/use the newest images and upload it to the gcloud image registry with the following script:
+3.) To build our project for cubernetes, build/use the newest images and upload it to the gcloud image registry with the following script:
 ```bash
 build-upload-images.sh
 ```
+
+
+https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+
 
 
 
