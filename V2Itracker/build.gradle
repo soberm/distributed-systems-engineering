@@ -50,6 +50,7 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
     compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
 
     /*** TEST ***/
 
