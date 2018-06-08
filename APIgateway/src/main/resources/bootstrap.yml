@@ -6,10 +6,6 @@ server:
 spring:
   application:
     name: APIgateway
-  boot:
-    admin:
-      client:
-        url: http://localhost:8123
 
 eureka:
   client:
@@ -24,7 +20,7 @@ zuul:
 
   routes:
     demo-service:
-        path: /demo/**
-        serviceId: demo-service
+        path: /data/**
+        serviceId: VEHICLEdata
         stripPrefix: false
         sensitiveHeaders:

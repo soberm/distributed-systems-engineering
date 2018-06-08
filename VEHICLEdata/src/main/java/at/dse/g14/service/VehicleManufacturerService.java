@@ -8,6 +8,6 @@ import at.dse.g14.commons.service.CrudService;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-public interface VehicleManufacturerService extends CrudService<VehicleManufacturer, Long> {
+public interface VehicleManufacturerService extends CrudService<VehicleManufacturer, String> {
 
 }

@@ -3,6 +3,7 @@ package at.dse.g14.web;
 import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.EmergencyServiceService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,9 +37,14 @@ public class EmergencyServiceController {
   }
 
   @GetMapping("/{vid}")
-  public EmergencyService getEmergencyService(@PathVariable("id") final long id)
+  public EmergencyService getEmergencyService(@PathVariable("id") final String id)
       throws ServiceException {
     return emergencyServiceService.findOne(id);
+  }
+
+  @GetMapping
+  public List<EmergencyService> getAllEmergencyService() throws ServiceException {
+    return emergencyServiceService.findAll();
   }
 
   @PutMapping
