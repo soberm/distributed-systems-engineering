@@ -30,22 +30,22 @@ services:
 #      restart: always
 #      links:
 #        - vehicledata
-#  notyfier:
-#    build: ./NOTYfier
-#    ports:
-#      - "8248:8248"
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#    volumes:
-#      - ~/.config/:/root/.config
-  govstat:
-    build: ./GOVstat
+  notyfier:
+    build: ./NOTYfier
     ports:
-      - "8242:8242"
+      - "8248:8248"
     environment:
       SPRING_PROFILES_ACTIVE: compose
     volumes:
       - ~/.config/:/root/.config
+#  govstat:
+#    build: ./GOVstat
+#    ports:
+#      - "8242:8242"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: compose
+#    volumes:
+#      - ~/.config/:/root/.config
 #  v2itracker:
 #    build: ./V2Itracker
 #    ports:
