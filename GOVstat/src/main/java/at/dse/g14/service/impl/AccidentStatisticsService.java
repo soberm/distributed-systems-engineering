@@ -66,36 +66,36 @@ public class AccidentStatisticsService implements IAccidentStatisticsService {
     @Override
     public void delete(Long id) throws ServiceException {
         validate(id);
-        log.info("Deleted AccidentStatisticsDTO " + id);
+        log.info("Deleted AccidentStatistics " + id);
         accidentStatisticsRepository.deleteById(id);
     }
 
     @Override
     public AccidentStatistics findOne(Long id) throws ServiceException {
         validate(id);
-        log.info("Finding AccidentStatisticsDTO " + id);
+        log.info("Finding AccidentStatistics " + id);
         try {
             return accidentStatisticsRepository.findById(id).get();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | IllegalArgumentException e) {
             return null;
         }
     }
 
     @Override
     public List<AccidentStatistics> findAll() throws ServiceException {
-        log.info("Finding all AccidentStatisticsDTO.");
+        log.info("Finding all AccidentStatistics.");
         return (List<AccidentStatistics>) accidentStatisticsRepository.findAll();
     }
 
     private void validate(AccidentStatistics accidentStatistics) throws ValidationException {
         log.debug("Validating " + accidentStatistics);
         if (!validator.validate(accidentStatistics).isEmpty()) {
-            throw new ValidationException("AccidentStatisticsDTO not valid.");
+            throw new ValidationException("AccidentStatistics not valid.");
         }
     }
 
     private void validate(Long id) throws ValidationException {
-        log.debug("Validating Id for AccidentStatisticsDTO " + id);
+        log.debug("Validating Id for AccidentStatistics " + id);
         if (id < 0) {
             throw new ValidationException("Id must be greater than 0.");
         }

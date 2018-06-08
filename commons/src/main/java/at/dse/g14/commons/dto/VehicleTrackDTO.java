@@ -1,10 +1,11 @@
 package at.dse.g14.commons.dto;
 
 import java.math.BigDecimal;
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 public class VehicleTrackDTO implements DTO {
 
-  private Long id;
+  private String id;
 
   @NotNull
   private String vin;
@@ -33,8 +34,9 @@ public class VehicleTrackDTO implements DTO {
   @Range(min = 0, max = 300)
   private Integer passengers;
 
-  @Valid
-  private GpsPoint location;
+  @NotNull
+  @Size(min = 2, max = 2)
+  private Double[] location;
 
   @DecimalMin(value = "0.0")
   @DecimalMax(value = "130.0")

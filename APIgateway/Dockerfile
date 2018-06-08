@@ -10,7 +10,7 @@ LABEL description="Dockerfile for the Gateway"
 VOLUME /tmp
 
 #Jar file, which should be copied to the container
-ARG JAR_FILE="gateway-0.0.1.jar"
+ARG JAR_FILE="APIgateway-0.0.1-SNAPSHOT.jar"
 
 # Copy the gateway app into the container
 COPY ./build/libs/${JAR_FILE} gateway-0.0.1.jar

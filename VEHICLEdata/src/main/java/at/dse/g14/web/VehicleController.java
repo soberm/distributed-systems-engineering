@@ -2,7 +2,6 @@ package at.dse.g14.web;
 
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.service.exception.ServiceException;
-import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.service.VehicleService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,14 @@ public class VehicleController {
   }
 
   @GetMapping("/{vid}")
-  public Vehicle getVehicle(@PathVariable("id") final long id, @PathVariable("vid") final long vid)
-      throws ValidationException {
+  public Vehicle getVehicle(@PathVariable("id") final String id,
+      @PathVariable("vid") final String vid)
+      throws ServiceException {
     return vehicleService.findOne(id, vid);
   }
 
   @GetMapping
-  public List<Vehicle> getAllVehicleOfManufacturer(@PathVariable("id") final long id) {
+  public List<Vehicle> getAllVehicleOfManufacturer(@PathVariable("id") final String id) {
     return vehicleService.findAllOfManufacturer(id);
   }
 

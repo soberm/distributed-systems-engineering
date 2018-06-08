@@ -1,12 +1,11 @@
 package at.dse.g14.commons.dto;
 
 import java.util.Set;
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Lukas Baronyai
@@ -16,14 +15,21 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class VehicleManufacturer implements DTO {
 
-  private Long id;
+  private String id;
 
   @NotBlank
   private String name;
 
-  @NotEmpty
+  @NotNull
   private Set<Vehicle> vehicles;
+
+  public VehicleManufacturer(String id, String name,
+      Set<Vehicle> vehicles) {
+    this.id = id;
+    this.name = name;
+    this.vehicles = vehicles;
+  }
 }
