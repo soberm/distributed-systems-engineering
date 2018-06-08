@@ -24,7 +24,7 @@ services:
       ports:
         - "8138:8138"
       environment:
-        SPRING_PROFILES_ACTIVE: dev
+        SPRING_PROFILES_ACTIVE: compose
       volumes:
         - ~/.config/:/root/.config
       restart: always
