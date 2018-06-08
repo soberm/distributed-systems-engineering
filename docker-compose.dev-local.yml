@@ -30,14 +30,14 @@ services:
 #      restart: always
 #      links:
 #        - vehicledata
-  notyfier:
-    build: ./NOTYfier
-    ports:
-      - "8248:8248"
-    environment:
-      SPRING_PROFILES_ACTIVE: compose
-    volumes:
-      - ~/.config/:/root/.config
+#  notyfier:
+#    build: ./NOTYfier
+#    ports:
+#      - "8248:8248"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: compose
+#    volumes:
+#      - ~/.config/:/root/.config
 #  govstat:
 #    build: ./GOVstat
 #    ports:
@@ -46,28 +46,28 @@ services:
 #      SPRING_PROFILES_ACTIVE: compose
 #    volumes:
 #      - ~/.config/:/root/.config
-#  v2itracker:
-#    build: ./V2Itracker
-#    ports:
-#      - "8241:8241"
-#    links:
-#      - mongo
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#    volumes:
-#       - ~/.config/:/root/.config
-#  store-front-ui:
+  v2itracker:
+    build: ./V2Itracker
+    ports:
+      - "8241:8241"
+    links:
+      - mongo
+    environment:
+      SPRING_PROFILES_ACTIVE: compsoe
+    volumes:
+       - ~/.config/:/root/.config
+#  storefrontui:
 #    build: ./StoreFrontUI
 #    restart: always
 #    container_name: dse_frontend
 #    ports:
 #      - 4200:4200
-#  mongo:
-#   build: ./database
-#   container_name: dse_mongo_db
-#   ports:
-#     - 27017:27017
-#   volumes:
-#     - $HOME/data/db:/data/db
-#     - $HOME/data/bkp:/data/bkp
-#   restart: always
+  mongo:
+   build: ./database
+   container_name: dse_mongo_db
+   ports:
+     - 27017:27017
+   volumes:
+     - $HOME/data/db:/data/db
+     - $HOME/data/bkp:/data/bkp
+   restart: always
