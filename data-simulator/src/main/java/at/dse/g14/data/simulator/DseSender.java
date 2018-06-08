@@ -41,7 +41,7 @@ public class DseSender {
     log.info("create: {}", vehicle);
 
     return restTemplate
-        .postForObject("http://localhost:8001/manufacturer/{id}/vehicle",
+        .postForObject("http://vehicledata:8001/manufacturer/{id}/vehicle",
             vehicle,
             Vehicle.class,
             vehicle.getManufacturer().getId());
@@ -51,7 +51,7 @@ public class DseSender {
   public VehicleManufacturer createManufacturer(final VehicleManufacturer manufacturer) {
     log.info("create: {}", manufacturer);
 
-    return restTemplate.postForObject("http://localhost:8001/manufacturer/",
+    return restTemplate.postForObject("http://vehicledata:8001/manufacturer/",
         manufacturer,
         VehicleManufacturer.class);
   }
@@ -59,7 +59,7 @@ public class DseSender {
   public EmergencyService createEmergencyService(final EmergencyService emergencyService) {
     log.info("create: {}", emergencyService);
 
-    return restTemplate.postForObject("http://localhost:8001/emergencyService/",
+    return restTemplate.postForObject("http://vehicledata:8001/emergencyService/",
         emergencyService,
         EmergencyService.class);
   }

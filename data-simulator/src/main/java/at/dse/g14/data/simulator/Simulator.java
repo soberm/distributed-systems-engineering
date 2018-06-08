@@ -61,32 +61,32 @@ public class Simulator {
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car1.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car1.csv"))));
     car2 =
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car2.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car2.csv"))));
     car3 =
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car3.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car3.csv"))));
     car4 =
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car4.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car4.csv"))));
     car5 =
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car5.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car5.csv"))));
     car6 =
         new CSVReader(
             new BufferedReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("./data/car6.csv"))));
+                    getClass().getClassLoader().getResourceAsStream("data/car6.csv"))));
 
     final TimerTask timerTask =
         new TimerTask() {

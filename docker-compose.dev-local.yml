@@ -1,0 +1,43 @@
+version: '3.1'
+services:
+  registry:
+    build: ./registry
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka
+#  apigateway:
+#    build: ./APIgateway
+#    ports:
+#      - "4000:4000"
+#    links:
+#      - registry
+#    environment:
+#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka/
+  vehicledata:
+    build: ./VEHICLEdata
+    ports:
+      - "8001:8001"
+    links:
+      - registry
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka/
+    volumes:
+      - ~/.config/:/root/.config
+      #TODO: cannot connect to registry/eureka
+  datasimulator:
+      build: ./data-simulator
+      ports:
+        - "8138:8138"
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+      volumes:
+        - ~/.config/:/root/.config
+      restart: always
+      links:
+        - vehicledata
+
