@@ -4,7 +4,7 @@ import at.dse.g14.commons.service.CrudService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.Entity;
-import at.dse.g14.service.exception.NotificationAlreadyExistsException;
+import at.dse.g14.service.exception.EntityAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 
@@ -28,7 +28,7 @@ public abstract class AbstractCrudService<T extends Entity<ID>, ID> implements C
     validate(entity);
 
     if (findOne(entity.getId()) != null) {
-      throw new NotificationAlreadyExistsException(entity + " already exists.");
+      throw new EntityAlreadyExistsException(entity + " already exists.");
     }
 
     log.info("Saving " + entity);
