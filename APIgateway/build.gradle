@@ -40,9 +40,8 @@ dependencies {
     /*** SPRING CLOUD ***/
 
     compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
-
+    compile('org.springframework.cloud:spring-cloud-starter-kubernetes')
 }
 
 dependencyManagement {
