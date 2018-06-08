@@ -41,6 +41,7 @@ public class SpeedNotificationService extends AbstractCrudService<SpeedNotificat
 
   @Override
   public List<SpeedNotification> generateFrom(SpeedEventDTO speedEventDTO) throws ServiceException {
+    //TODO: Generate notification or notifications from DTO
     return null;
   }
 }

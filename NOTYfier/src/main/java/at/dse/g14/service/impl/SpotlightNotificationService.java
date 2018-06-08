@@ -43,6 +43,7 @@ public class SpotlightNotificationService extends AbstractCrudService<SpotlightN
 
   @Override
   public List<SpotlightNotification> generateFrom(SpotlightEventDTO spotlightEventDTO) throws ServiceException {
+    //TODO: Generate notification or notifications from DTO
     return null;
   }
 }

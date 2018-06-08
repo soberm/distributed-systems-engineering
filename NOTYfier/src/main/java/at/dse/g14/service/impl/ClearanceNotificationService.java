@@ -43,6 +43,7 @@ public class ClearanceNotificationService extends AbstractCrudService<ClearanceN
 
   @Override
   public List<ClearanceNotification> generateFrom(ClearanceEventDTO clearanceEventDTO) throws ServiceException {
+    //TODO: Generate notification or notifications from DTO
     return null;
   }
 }

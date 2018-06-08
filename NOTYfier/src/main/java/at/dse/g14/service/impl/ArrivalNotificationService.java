@@ -42,6 +42,7 @@ public class ArrivalNotificationService extends AbstractCrudService<ArrivalNotif
 
   @Override
   public List<ArrivalNotification> generateFrom(ArrivalEventDTO arrivalEventDTO) throws ServiceException {
+    //TODO: Generate notification or notifications from DTO
     return null;
   }
 }
