@@ -40,4 +40,16 @@ services:
       restart: always
       links:
         - vehicledata
+  notyfier:
+    build: ./NOTYfier
+    ports:
+      - "8248:8248"
+    links:
+      - registry
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka/
+    volumes:
+      - ~/.config/:/root/.config
 
