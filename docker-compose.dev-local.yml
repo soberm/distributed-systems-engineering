@@ -7,37 +7,37 @@ services:
 #    environment:
 #      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
 #      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka
-  apigateway:
-    build: ./APIgateway
-    ports:
-      - "4000:4000"
-  vehicledata:
-    build: ./VEHICLEdata
-    ports:
-      - "8001:8001"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ~/.config/:/root/.config
-  datasimulator:
-      build: ./data-simulator
-      ports:
-        - "8138:8138"
-      environment:
-        SPRING_PROFILES_ACTIVE: dev
-      volumes:
-        - ~/.config/:/root/.config
-      restart: always
-      links:
-        - vehicledata
-  notyfier:
-    build: ./NOTYfier
-    ports:
-      - "8248:8248"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ~/.config/:/root/.config
+#  apigateway:
+#    build: ./APIgateway
+#    ports:
+#      - "4000:4000"
+#  vehicledata:
+#    build: ./VEHICLEdata
+#    ports:
+#      - "8001:8001"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    volumes:
+#      - ~/.config/:/root/.config
+#  datasimulator:
+#      build: ./data-simulator
+#      ports:
+#        - "8138:8138"
+#      environment:
+#        SPRING_PROFILES_ACTIVE: dev
+#      volumes:
+#        - ~/.config/:/root/.config
+#      restart: always
+#      links:
+#        - vehicledata
+#  notyfier:
+#    build: ./NOTYfier
+#    ports:
+#      - "8248:8248"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    volumes:
+#      - ~/.config/:/root/.config
   govstat:
     build: ./GOVstat
     ports:
@@ -46,22 +46,22 @@ services:
       SPRING_PROFILES_ACTIVE: dev
     volumes:
       - ~/.config/:/root/.config
-  v2itracker:
-    build: ./V2Itracker
-    ports:
-      - "8241:8241"
-    links:
-      - mongo
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    volumes:
-       - ~/.config/:/root/.config
-  mongo:
-   build: ./database
-   container_name: dse_mongo_db
-   ports:
-     - 27017:27017
-   volumes:
-     - $HOME/data/db:/data/db
-     - $HOME/data/bkp:/data/bkp
-   restart: always
+#  v2itracker:
+#    build: ./V2Itracker
+#    ports:
+#      - "8241:8241"
+#    links:
+#      - mongo
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    volumes:
+#       - ~/.config/:/root/.config
+#  mongo:
+#   build: ./database
+#   container_name: dse_mongo_db
+#   ports:
+#     - 27017:27017
+#   volumes:
+#     - $HOME/data/db:/data/db
+#     - $HOME/data/bkp:/data/bkp
+#   restart: always
