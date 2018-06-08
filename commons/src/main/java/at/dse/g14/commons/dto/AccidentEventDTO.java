@@ -17,6 +17,8 @@ public class AccidentEventDTO {
     @Valid
     private LiveVehicleTrackDTO liveVehicleTrack;
 
-    private List<String> vehiclesInRange;
+    private List<String> vehiclesInBigRange;
+
+    private List<String> vehiclesInSmallRange;
 
 }

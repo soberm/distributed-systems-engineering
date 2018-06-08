@@ -41,7 +41,7 @@ public class CrashEventNotificationService extends AbstractCrudService<CrashEven
     log.info("Generating CrashEventNotifications for the vehicles near {}", accidentEventDTO);
     LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
     List<CrashEventNotification> crashEventNotificationsVehicles = new ArrayList<>();
-    for (String receiver : accidentEventDTO.getVehiclesInRange()) {
+    for (String receiver : accidentEventDTO.getVehiclesInBigRange()) {
       crashEventNotificationsVehicles.add(generateNotification(liveVehicleTrackDTO, receiver));
     }
     return crashEventNotificationsVehicles;

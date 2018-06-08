@@ -1,6 +1,6 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.SpeedEventDTO;
+import at.dse.g14.commons.dto.AccidentEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.SpeedNotification;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,16 +33,22 @@ public class SpeedNotificationService extends AbstractCrudService<SpeedNotificat
     return loadedSpeedNotification;
   }
 
-  private void validate(SpeedEventDTO speedEventDTO) throws ValidationException {
-    log.debug("Validating " + speedEventDTO);
-    if (!validator.validate(speedEventDTO).isEmpty()) {
-      throw new ValidationException("SpeedEventDTO not valid.");
+  @Override
+  public List<SpeedNotification> generateFrom(AccidentEventDTO accidentEventDTO)
+      throws ServiceException {
+    validate(accidentEventDTO);
+    log.info("Generating SpeedNotifications for {}", accidentEventDTO);
+    List<SpeedNotification> speedNotifications = new ArrayList<>();
+    for (String receiver : accidentEventDTO.getVehiclesInSmallRange()) {
+      speedNotifications.add(new SpeedNotification(null, receiver));
     }
+    return speedNotifications;
   }
 
-  @Override
-  public List<SpeedNotification> generateFrom(SpeedEventDTO speedEventDTO) throws ServiceException {
-    //TODO: Generate notification or notifications from DTO
-    return null;
+  private void validate(AccidentEventDTO accidentEventDTO) throws ValidationException {
+    log.debug("Validating " + accidentEventDTO);
+    if (!validator.validate(accidentEventDTO).isEmpty()) {
+      throw new ValidationException("AccidentEventDTO not valid.");
+    }
   }
 }
