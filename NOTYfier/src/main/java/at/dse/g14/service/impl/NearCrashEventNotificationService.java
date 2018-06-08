@@ -42,7 +42,7 @@ public class NearCrashEventNotificationService
     log.info("Generating NearCrashEventNotification for the vehicles near {}", accidentEventDTO);
     LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
     List<NearCrashEventNotification> nearCrashEventNotificationsVehicles = new ArrayList<>();
-    for (String receiver : accidentEventDTO.getVehiclesInRange()) {
+    for (String receiver : accidentEventDTO.getVehiclesInBigRange()) {
       nearCrashEventNotificationsVehicles.add(generateNotification(liveVehicleTrackDTO, receiver));
     }
     return nearCrashEventNotificationsVehicles;
