@@ -1,3 +1,11 @@
+In docker-compose, the **compose** spring profile of the projects is used.
+Make sure that you add the password for the remote postgres database in the projects
+* NOTYfier
+* GOVstat
+* VEHICLEdata
+
+Before committing changes, remove the passwords again! If you commit a password, change it to a new one and do not commit it!
+
 Before using the docker-compose.dev-local.yml file,
 the local google cloud credentials have to be saved to the host system with
 ```bash

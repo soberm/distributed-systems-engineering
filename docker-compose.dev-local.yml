@@ -11,25 +11,25 @@ services:
 #    build: ./APIgateway
 #    ports:
 #      - "4000:4000"
-  vehicledata:
-    build: ./VEHICLEdata
-    ports:
-      - "8001:8001"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    volumes:
-      - ~/.config/:/root/.config
-  datasimulator:
-      build: ./data-simulator
-      ports:
-        - "8138:8138"
-      environment:
-        SPRING_PROFILES_ACTIVE: compose
-      volumes:
-        - ~/.config/:/root/.config
-      restart: always
-      links:
-        - vehicledata
+#  vehicledata:
+#    build: ./VEHICLEdata
+#    ports:
+#      - "8001:8001"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    volumes:
+#      - ~/.config/:/root/.config
+#  datasimulator:
+#      build: ./data-simulator
+#      ports:
+#        - "8138:8138"
+#      environment:
+#        SPRING_PROFILES_ACTIVE: compose
+#      volumes:
+#        - ~/.config/:/root/.config
+#      restart: always
+#      links:
+#        - vehicledata
 #  notyfier:
 #    build: ./NOTYfier
 #    ports:
@@ -38,14 +38,14 @@ services:
 #      SPRING_PROFILES_ACTIVE: dev
 #    volumes:
 #      - ~/.config/:/root/.config
-#  govstat:
-#    build: ./GOVstat
-#    ports:
-#      - "8242:8242"
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#    volumes:
-#      - ~/.config/:/root/.config
+  govstat:
+    build: ./GOVstat
+    ports:
+      - "8242:8242"
+    environment:
+      SPRING_PROFILES_ACTIVE: compose
+    volumes:
+      - ~/.config/:/root/.config
 #  v2itracker:
 #    build: ./V2Itracker
 #    ports:
