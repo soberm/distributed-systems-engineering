@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
-public abstract class Notification {
+public abstract class Notification implements at.dse.g14.entity.Entity<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

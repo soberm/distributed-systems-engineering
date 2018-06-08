@@ -51,8 +51,6 @@ public class AccidentEventMessageHandler implements MessageHandler {
       } else if (liveVehicleTrackDTO.getNearCrashEvent()) {
         handleNearCrashEvent(accidentEventDTO);
       }
-      // } catch (ServiceException | IOException e) {
-      // TODO: On Other Exceptions an endless loop will occurs because the message is not ack.
     } catch (Exception e) {
       log.error("Could not handle AccidentEvent-Message. Message ignored.", e);
     }
