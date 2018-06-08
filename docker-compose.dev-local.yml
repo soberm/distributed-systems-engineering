@@ -40,6 +40,7 @@ services:
       restart: always
       links:
         - vehicledata
+        #TODO: cannot connect to registry/eureka
   notyfier:
     build: ./NOTYfier
     ports:
@@ -52,6 +53,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka/
     volumes:
       - ~/.config/:/root/.config
+      #TODO: cannot connect to registry/eureka
   govstat:
     build: ./GOVstat
     ports:
@@ -64,4 +66,14 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry:8761/eureka/
     volumes:
       - ~/.config/:/root/.config
+      #TODO: cannot connect to registry/eureka
+  mongo:
+    build: ./database
+    container_name: dse_mongo_db
+    ports:
+      - 27017:27017
+    volumes:
+      - $HOME/data/db:/data/db
+      - $HOME/data/bkp:/data/bkp
+    restart: always
 
