@@ -1,44 +1,44 @@
- Deployments
-kind: Deployment
-apiVersion: apps/v1beta1
-metadata:
-  name: storefrontui
-  labels:
-      app: storefrontui
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: storefrontui
-  template:
-    metadata:
-      labels:
-        app: storefrontui
-        tier: web
-    spec:
-      containers:
-        - name: storefrontui
-          image: gcr.io/dse-group-14/storefrontui
-          ports:
-              - containerPort: 4200
-          imagePullPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: storefrontui
-  labels:
-    app: storefrontui
-spec:
-  selector:
-    app: storefrontui
-    tier: web
-  ports:
-  - port: 80
-    targetPort: 4200
-  type: LoadBalancer
-  loadBalancerIP: "104.155.74.195"
----
+#Deployments
+#kind: Deployment
+#apiVersion: apps/v1beta1
+#metadata:
+#  name: storefrontui
+#  labels:
+#      app: storefrontui
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      app: storefrontui
+#  template:
+#    metadata:
+#      labels:
+#        app: storefrontui
+#        tier: web
+#    spec:
+#      containers:
+#        - name: storefrontui
+#          image: gcr.io/dse-group-14/storefrontui
+#          ports:
+#              - containerPort: 4200
+#          imagePullPolicy: Always
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: storefrontui
+#  labels:
+#    app: storefrontui
+#spec:
+#  selector:
+#    app: storefrontui
+#    tier: web
+#  ports:
+#  - port: 80
+#    targetPort: 4200
+#  type: LoadBalancer
+#  loadBalancerIP: "104.155.74.195"
+#---
 kind: Deployment
 apiVersion: apps/v1beta1
 metadata:
@@ -84,3 +84,50 @@ spec:
   ports:
     - port: 8001
       targetPort: 8001
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: datasimulator
+  labels:
+      app: datasimulator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: datasimulator
+  template:
+    metadata:
+      labels:
+        app: datasimulator
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: datasimulator
+          image: gcr.io/dse-group-14/data-simulator
+          ports:
+              - containerPort: 8138
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: datasimulator
+  labels:
+    app: datasimulator
+spec:
+  selector:
+    app: datasimulator
+    tier: backend
+  ports:
+    - port: 8138
+      targetPort: 8138
+---
