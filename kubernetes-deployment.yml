@@ -1,44 +1,44 @@
 #Deployments
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: storefrontui
-#  labels:
-#      app: storefrontui
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: storefrontui
-#  template:
-#    metadata:
-#      labels:
-#        app: storefrontui
-#        tier: web
-#    spec:
-#      containers:
-#        - name: storefrontui
-#          image: gcr.io/dse-group-14/storefrontui
-#          ports:
-#              - containerPort: 4200
-#          imagePullPolicy: Always
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: storefrontui
-#  labels:
-#    app: storefrontui
-#spec:
-#  selector:
-#    app: storefrontui
-#    tier: web
-#  ports:
-#  - port: 80
-#    targetPort: 4200
-#  type: LoadBalancer
-#  loadBalancerIP: "104.155.74.195"
-#---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: storefrontui
+  labels:
+      app: storefrontui
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: storefrontui
+  template:
+    metadata:
+      labels:
+        app: storefrontui
+        tier: web
+    spec:
+      containers:
+        - name: storefrontui
+          image: gcr.io/dse-group-14/storefrontui
+          ports:
+              - containerPort: 4200
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storefrontui
+  labels:
+    app: storefrontui
+spec:
+  selector:
+    app: storefrontui
+    tier: web
+  ports:
+  - port: 80
+    targetPort: 4200
+  type: LoadBalancer
+  loadBalancerIP: "104.155.74.195"
+---
 kind: Deployment
 apiVersion: apps/v1beta1
 metadata:
@@ -64,6 +64,14 @@ spec:
           image: gcr.io/dse-group-14/vehicledata
           ports:
               - containerPort: 8001
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/vehicledatadb",
+                 "--spring.datasource.username=vehicledatauser",
+                 "--spring.datasource.password=[Add Password here]",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8001"]
+
           livenessProbe:
             initialDelaySeconds: 60
             httpGet:
@@ -131,3 +139,56 @@ spec:
     - port: 8138
       targetPort: 8138
 ---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: govstat
+  labels:
+      app: govstat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: govstat
+  template:
+    metadata:
+      labels:
+        app: govstat
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: datasimulator
+          image: gcr.io/dse-group-14/govstat
+          ports:
+              - containerPort: 8242
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/govstatdb",
+                 "--spring.datasource.username=govstatuser",
+                 "--spring.datasource.password=[Add Password here]",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8242"
+                 ]
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: govstat
+  labels:
+    app: govstat
+spec:
+  selector:
+    app: govstat
+    tier: backend
+  ports:
+    - port: 8242
+      targetPort: 8242
