@@ -1,4 +1,3 @@
-#Deployments
 kind: Deployment
 apiVersion: apps/v1beta1
 metadata:
@@ -38,6 +37,46 @@ spec:
     targetPort: 4200
   type: LoadBalancer
   loadBalancerIP: "104.155.74.195"
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: apigateway
+  labels:
+      app: apigateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apigateway
+  template:
+    metadata:
+      labels:
+        app: apigateway
+        tier: frontend
+    spec:
+      containers:
+        - name: apigateway
+          image: gcr.io/dse-group-14/apigateway
+          ports:
+              - containerPort: 4000
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+  labels:
+    app: apigateway
+spec:
+  selector:
+    app: apigateway
+    tier: web
+  ports:
+  - port: 4000
+    targetPort: 4000
+  type: LoadBalancer
+  loadBalancerIP: "35.195.254.163"
 ---
 kind: Deployment
 apiVersion: apps/v1beta1
@@ -357,4 +396,17 @@ spec:
 ---
 
 
-
+#apiVersion: rbac.authorization.k8s.io/v1beta1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: fabric8-rbac
+#subjects:
+#  - kind: ServiceAccount
+#    # Reference to upper's `metadata.name`
+#    name: default
+#    # Reference to upper's `metadata.namespace`
+#    namespace: default
+#roleRef:
+#  kind: ClusterRole
+#  name: cluster-admin
+#  apiGroup: rbac.authorization.k8s.io
