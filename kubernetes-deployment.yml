@@ -160,7 +160,7 @@ spec:
         - env:
           - name: SPRING_PROFILES_ACTIVE
             value: compose
-          name: datasimulator
+          name: govstat
           image: gcr.io/dse-group-14/govstat
           ports:
               - containerPort: 8242
@@ -192,3 +192,57 @@ spec:
   ports:
     - port: 8242
       targetPort: 8242
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: notyfier
+  labels:
+      app: notyfier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: notyfier
+  template:
+    metadata:
+      labels:
+        app: notyfier
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: notyfier
+          image: gcr.io/dse-group-14/notyfier
+          ports:
+              - containerPort: 8248
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/notyfierdb",
+                 "--spring.datasource.username=notyfieruser",
+                 "--spring.datasource.password=[Add Password here]",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8248"
+                 ]
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: notyfier
+  labels:
+    app: notyfier
+spec:
+  selector:
+    app: notyfier
+    tier: backend
+  ports:
+    - port: 8248
+      targetPort: 8248
