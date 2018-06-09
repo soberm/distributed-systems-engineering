@@ -1,4 +1,4 @@
-# Deployments
+ Deployments
 kind: Deployment
 apiVersion: apps/v1beta1
 metadata:
@@ -57,16 +57,13 @@ spec:
         tier: backend
     spec:
       containers:
-        - name: vehicledata
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: vehicledata
           image: gcr.io/dse-group-14/vehicledata
           ports:
               - containerPort: 8001
-          args: ["--server.port=8001",
-                 "--spring.datasource.url=jjdbc:postgresql://35.233.112.7:5432/vehicledatadb",
-                 "--spring.datasource.username=vehicledatauser",
-                 "--spring.datasource.password=[Add Password here]",
-                 "--spring.datasource.driverClassName=org.postgresql.Driver",
-                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect"]
           livenessProbe:
             initialDelaySeconds: 60
             httpGet:
@@ -87,4 +84,3 @@ spec:
   ports:
     - port: 8001
       targetPort: 8001
----
