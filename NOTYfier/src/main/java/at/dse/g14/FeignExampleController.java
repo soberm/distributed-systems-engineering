@@ -1,7 +1,9 @@
 package at.dse.g14;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,8 +25,9 @@ public class FeignExampleController {
         return feignClientExample.getGreet();
     }
 
-    @RequestMapping(value = "/information")
+    @GetMapping(value = "/information", produces = "application/json")
+    @ResponseBody
     public String available() {
-        return "Here is information from the NOTYfier service";
+        return "{\"information\": \"Here it is\"}";
     }
 }
