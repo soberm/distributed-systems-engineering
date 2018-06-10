@@ -5,8 +5,12 @@ import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.CrashEventNotification;
 import at.dse.g14.entity.NearCrashEventNotification;
+import at.dse.g14.entity.SpeedNotification;
+import at.dse.g14.entity.SpotlightNotification;
 import at.dse.g14.service.ICrashEventNotificationService;
 import at.dse.g14.service.INearCrashEventNotificationService;
+import at.dse.g14.service.ISpeedNotificationService;
+import at.dse.g14.service.ISpotlightNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +30,20 @@ public class AccidentEventMessageHandler implements MessageHandler {
   private final ObjectMapper objectMapper;
   private final ICrashEventNotificationService crashEventNotificationService;
   private final INearCrashEventNotificationService nearCrashEventNotificationService;
+  private final ISpotlightNotificationService spotlightNotificationService;
+  private final ISpeedNotificationService speedNotificationService;
 
   public AccidentEventMessageHandler(
       ObjectMapper objectMapper,
       ICrashEventNotificationService crashEventNotificationService,
-      INearCrashEventNotificationService nearCrashEventNotificationService) {
+      INearCrashEventNotificationService nearCrashEventNotificationService,
+      ISpotlightNotificationService spotlightNotificationService,
+      ISpeedNotificationService speedNotificationService) {
     this.objectMapper = objectMapper;
     this.crashEventNotificationService = crashEventNotificationService;
     this.nearCrashEventNotificationService = nearCrashEventNotificationService;
+    this.spotlightNotificationService = spotlightNotificationService;
+    this.speedNotificationService = speedNotificationService;
   }
 
   @Override
@@ -51,8 +61,6 @@ public class AccidentEventMessageHandler implements MessageHandler {
       } else if (liveVehicleTrackDTO.getNearCrashEvent()) {
         handleNearCrashEvent(accidentEventDTO);
       }
-      // } catch (ServiceException | IOException e) {
-      // TODO: On Other Exceptions an endless loop will occurs because the message is not ack.
     } catch (Exception e) {
       log.error("Could not handle AccidentEvent-Message. Message ignored.", e);
     }
@@ -63,10 +71,23 @@ public class AccidentEventMessageHandler implements MessageHandler {
 
   private void handleCrashEvent(AccidentEventDTO accidentEventDTO) throws ServiceException {
     log.info("Handling CrashEvent of {}", accidentEventDTO);
+
     List<CrashEventNotification> crashEventNotifications =
         crashEventNotificationService.generateFrom(accidentEventDTO);
     for (CrashEventNotification crashEventNotification : crashEventNotifications) {
       crashEventNotificationService.update(crashEventNotification);
+    }
+
+    List<SpotlightNotification> spotlightNotifications =
+        spotlightNotificationService.generateFrom(accidentEventDTO);
+    for (SpotlightNotification spotlightNotification : spotlightNotifications) {
+      spotlightNotificationService.update(spotlightNotification);
+    }
+
+    List<SpeedNotification> speedNotifications =
+        speedNotificationService.generateFrom(accidentEventDTO);
+    for (SpeedNotification speedNotification : speedNotifications) {
+      speedNotificationService.update(speedNotification);
     }
   }
 

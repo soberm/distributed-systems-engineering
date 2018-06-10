@@ -7,9 +7,9 @@ import at.dse.g14.entity.NearCrashEventNotification;
 
 import java.util.List;
 
+public interface INearCrashEventNotificationService
+    extends CrudService<NearCrashEventNotification, Long> {
 
-public interface INearCrashEventNotificationService extends CrudService<NearCrashEventNotification, Long> {
-
-    List<NearCrashEventNotification> generateFrom(AccidentEventDTO accidentEventDTO)
-            throws ServiceException;
+  List<NearCrashEventNotification> generateFrom(AccidentEventDTO accidentEventDTO)
+      throws ServiceException;
 }

@@ -26,7 +26,39 @@ public class PubSubConfig {
   }
 
   @Bean
+  public PubSubInboundChannelAdapter messageChannelAdapterClearance(
+      @Qualifier("clearanceEventInputChannel") MessageChannel inputChannel,
+      PubSubOperations pubSubTemplate) {
+    PubSubInboundChannelAdapter adapter =
+        new PubSubInboundChannelAdapter(pubSubTemplate, "notyfier-clearance");
+    adapter.setOutputChannel(inputChannel);
+    adapter.setAckMode(AckMode.MANUAL);
+    return adapter;
+  }
+
+  @Bean
+  public PubSubInboundChannelAdapter messageChannelAdapterArrival(
+      @Qualifier("arrivalEventInputChannel") MessageChannel inputChannel,
+      PubSubOperations pubSubTemplate) {
+    PubSubInboundChannelAdapter adapter =
+        new PubSubInboundChannelAdapter(pubSubTemplate, "notyfier-arrival");
+    adapter.setOutputChannel(inputChannel);
+    adapter.setAckMode(AckMode.MANUAL);
+    return adapter;
+  }
+
+  @Bean
   public MessageChannel accidentEventInputChannel() {
+    return new DirectChannel();
+  }
+
+  @Bean
+  public MessageChannel clearanceEventInputChannel() {
+    return new DirectChannel();
+  }
+
+  @Bean
+  public MessageChannel arrivalEventInputChannel() {
     return new DirectChannel();
   }
 }

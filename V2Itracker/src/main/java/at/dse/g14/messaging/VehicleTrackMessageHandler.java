@@ -44,8 +44,6 @@ public class VehicleTrackMessageHandler implements MessageHandler {
     try {
       VehicleTrackDTO vehicleTrackDTO = objectMapper.readValue(payload, VehicleTrackDTO.class);
       vehicleTrackService.update(convertToEntity(vehicleTrackDTO));
-    //} catch (ServiceException | IOException e) {
-      //TODO: On Other Exceptions an endless loop will occurs because the message is not ack.
     } catch (Exception e) {
       log.error("Could not handle VehicleTrack-Message. Message ignored.", e);
     }
