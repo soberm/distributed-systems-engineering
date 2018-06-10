@@ -1,6 +1,7 @@
 package at.dse.g14.service.impl;
 
 import at.dse.g14.commons.dto.AccidentEventDTO;
+import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
@@ -8,6 +9,7 @@ import at.dse.g14.entity.CrashEventNotification;
 import at.dse.g14.persistence.CrashEventNotificationRepository;
 import at.dse.g14.service.AbstractCrudService;
 import at.dse.g14.service.ICrashEventNotificationService;
+import at.dse.g14.web.client.VehicleDataClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +17,22 @@ import org.springframework.stereotype.Service;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
 public class CrashEventNotificationService extends AbstractCrudService<CrashEventNotification, Long>
     implements ICrashEventNotificationService {
 
+  private final VehicleDataClient vehicleDataClient;
+
   @Autowired
   public CrashEventNotificationService(
       final Validator validator,
-      final CrashEventNotificationRepository crashEventNotificationRepository) {
+      final CrashEventNotificationRepository crashEventNotificationRepository,
+      final VehicleDataClient vehicleDataClient) {
     super(crashEventNotificationRepository, validator);
+    this.vehicleDataClient = vehicleDataClient;
   }
 
   @Override
@@ -33,18 +40,40 @@ public class CrashEventNotificationService extends AbstractCrudService<CrashEven
       throws ServiceException {
     validate(accidentEventDTO);
     log.info("Generating CrashEventNotifications for {}", accidentEventDTO);
-    // TODO: Generate for other receivers
-    return generateForVehicles(accidentEventDTO);
+    List<CrashEventNotification> crashEventNotifications = generateForVehicles(accidentEventDTO);
+    crashEventNotifications.add(generateForVehicleManufacturer(accidentEventDTO));
+    crashEventNotifications.add(generateForEmergencyService(accidentEventDTO));
+    return crashEventNotifications;
   }
 
   private List<CrashEventNotification> generateForVehicles(AccidentEventDTO accidentEventDTO) {
     log.info("Generating CrashEventNotifications for the vehicles near {}", accidentEventDTO);
     LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
     List<CrashEventNotification> crashEventNotificationsVehicles = new ArrayList<>();
-    for (String receiver : accidentEventDTO.getVehiclesInRange()) {
+    for (String receiver : accidentEventDTO.getVehiclesInBigRange()) {
       crashEventNotificationsVehicles.add(generateNotification(liveVehicleTrackDTO, receiver));
     }
     return crashEventNotificationsVehicles;
+  }
+
+  private CrashEventNotification generateForVehicleManufacturer(AccidentEventDTO accidentEventDTO) {
+    log.info(
+        "Generating CrashEventNotification for the VehicleManufacturer of {}", accidentEventDTO);
+    LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
+    String receiver =
+        vehicleDataClient.getVehicleManufacturer(liveVehicleTrackDTO.getVin()).getId();
+    return generateNotification(liveVehicleTrackDTO, receiver);
+  }
+
+  private CrashEventNotification generateForEmergencyService(AccidentEventDTO accidentEventDTO) {
+    log.info("Generating CrashEventNotification for a EmergencyService of {}", accidentEventDTO);
+    LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
+    List<EmergencyService> emergencyServices = vehicleDataClient.getEmergencyServices();
+    Random rand = new Random();
+    EmergencyService emergencyService =
+        emergencyServices.get(rand.nextInt(emergencyServices.size()));
+    log.info("{} was chosen to be notified for {}", emergencyService, accidentEventDTO);
+    return generateNotification(liveVehicleTrackDTO, emergencyService.getId());
   }
 
   private CrashEventNotification generateNotification(

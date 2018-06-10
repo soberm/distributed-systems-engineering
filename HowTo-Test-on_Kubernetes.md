@@ -12,6 +12,9 @@ Automatische Knotenreparatur:   Aktiviert
 Alte Autorisierung:             Deaktiviert
 Stackdriver Logging:            Aktiviert
 Stackdriver Monitoring:         Aktiviert
+-- ganz unten:
+MEHR - Zugriffsbereiche
+Uneingeschränkten Zugriff auf alle Cloud-APIs zulassen
 ```
 
 2.) Setup your local gcloud console with the following commands to connect to the cluster:

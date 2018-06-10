@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -26,6 +27,9 @@ public class DseSender {
   private final ObjectMapper objectMapper;
   private final RestTemplate restTemplate;
 
+  @Value("${vehicledata.address}")
+  private String vehicledataAddress;
+
   @Autowired
   public DseSender(
       final VehicleTrackOutboundGateway gateway,
@@ -41,7 +45,7 @@ public class DseSender {
     log.info("create: {}", vehicle);
 
     return restTemplate
-        .postForObject("http://localhost:8001/manufacturer/{id}/vehicle",
+        .postForObject(vehicledataAddress + "/manufacturer/{id}/vehicle",
             vehicle,
             Vehicle.class,
             vehicle.getManufacturer().getId());
@@ -51,7 +55,7 @@ public class DseSender {
   public VehicleManufacturer createManufacturer(final VehicleManufacturer manufacturer) {
     log.info("create: {}", manufacturer);
 
-    return restTemplate.postForObject("http://localhost:8001/manufacturer/",
+    return restTemplate.postForObject(vehicledataAddress + "/manufacturer/",
         manufacturer,
         VehicleManufacturer.class);
   }
@@ -59,7 +63,7 @@ public class DseSender {
   public EmergencyService createEmergencyService(final EmergencyService emergencyService) {
     log.info("create: {}", emergencyService);
 
-    return restTemplate.postForObject("http://localhost:8001/emergencyService/",
+    return restTemplate.postForObject(vehicledataAddress + "/emergencyService/",
         emergencyService,
         EmergencyService.class);
   }

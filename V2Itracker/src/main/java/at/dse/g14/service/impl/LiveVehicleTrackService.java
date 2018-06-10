@@ -28,7 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class LiveVehicleTrackService implements ILiveVehicleTrackService {
 
-  private static final int RANGE = 10;
+  private static final int BIG_RANGE = 10;
+  private static final int SMALL_RANGE = 1;
 
   private final Validator validator;
   private final LiveVehicleTrackRepository liveVehicleTrackRepository;
@@ -72,17 +73,23 @@ public class LiveVehicleTrackService implements ILiveVehicleTrackService {
   private void handleAccidentEvent(LiveVehicleTrack liveVehicleTrack) {
     Double[] location = liveVehicleTrack.getLocation();
     Point accidentPoint = new Point(location[0], location[1]);
-    Distance rangeToOtherVehicles = new Distance(RANGE, Metrics.KILOMETERS);
+    Distance bigRangeToOtherVehicles = new Distance(BIG_RANGE, Metrics.KILOMETERS);
+    Distance smallRangeToOtherVehicles = new Distance(SMALL_RANGE, Metrics.KILOMETERS);
 
-    List<LiveVehicleTrack> vehiclesInRange = findByLocationNear(accidentPoint, rangeToOtherVehicles);
-    List<String> vehicleVINs = vehiclesInRange
+    List<LiveVehicleTrack> vehiclesInBigRange = findByLocationNear(accidentPoint, bigRangeToOtherVehicles);
+    List<LiveVehicleTrack> vehiclesInSmallRange = findByLocationNear(accidentPoint, smallRangeToOtherVehicles);
+    List<String> vehicleBigRangeVINs = vehiclesInBigRange
             .stream()
-            .map(v -> v.getVin())
+            .map(LiveVehicleTrack::getVin)
+            .collect(Collectors.toList());
+    List<String> vehicleSmallRangeVINs = vehiclesInSmallRange
+            .stream()
+            .map(LiveVehicleTrack::getVin)
             .collect(Collectors.toList());
 
     AccidentEventDTO accidentEventDTO = new AccidentEventDTO(
             convertToLiveVehicleTrackDTO(liveVehicleTrack),
-            vehicleVINs);
+            vehicleBigRangeVINs, vehicleSmallRangeVINs);
     try {
       accidentEventOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(accidentEventDTO));
     } catch (JsonProcessingException e) {
