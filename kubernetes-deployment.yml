@@ -45,7 +45,7 @@ metadata:
   labels:
       app: apigateway
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: apigateway
@@ -78,60 +78,60 @@ spec:
   type: LoadBalancer
   loadBalancerIP: "35.195.254.163"
 ---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: vehicledata
-#  labels:
-#      app: vehicledata
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: vehicledata
-#  template:
-#    metadata:
-#      labels:
-#        app: vehicledata
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: compose
-#          name: vehicledata
-#          image: gcr.io/dse-group-14/vehicledata
-#          ports:
-#              - containerPort: 8001
-#          args: [
-#                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/vehicledatadb",
-#                 "--spring.datasource.username=vehicledatauser",
-#                 "--spring.datasource.password=[Add password here]",
-#                 "--spring.datasource.driverClassName=org.postgresql.Driver",
-#                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
-#                 "--server.port=8001"]
-#
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: vehicledata
-#  labels:
-#    app: vehicledata
-#spec:
-#  selector:
-#    app: vehicledata
-#    tier: backend
-#  ports:
-#    - port: 8001
-#      targetPort: 8001
-#---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: vehicledata
+  labels:
+      app: vehicledata
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vehicledata
+  template:
+    metadata:
+      labels:
+        app: vehicledata
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: vehicledata
+          image: eu.gcr.io/dse-group-14/vehicledata
+          ports:
+              - containerPort: 8001
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/vehicledatadb",
+                 "--spring.datasource.username=vehicledatauser",
+                 "--spring.datasource.password=[Add password here]",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8001"]
+
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: vehicledata-service
+  labels:
+    app: vehicledata-service
+spec:
+  selector:
+    app: vehicledata
+    tier: backend
+  ports:
+    - port: 8001
+      targetPort: 8001
+---
 #kind: Deployment
 #apiVersion: apps/v1beta1
 #metadata:
@@ -239,7 +239,7 @@ metadata:
   labels:
       app: notyfier
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: notyfier
