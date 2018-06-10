@@ -58,3 +58,17 @@ remove container cluster, for example for the regitry:
 ```bash
 gcloud container clusters delete registry-cluster
 ```
+# Service role creation
+
+This only works with the admin-cluster role
+
+get cluster password with:
+```bash
+gcloud container clusters describe cluster-dse-group-14 --zone europe-west1-c
+```
+
+
+use it with:
+```bash
+kubectl --username=admin --password=Gv07CfgApRMXYxuD delete -f kubernetes-deployment.yml
+```

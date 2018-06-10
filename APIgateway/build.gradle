@@ -39,10 +39,11 @@ dependencies {
 
     /*** SPRING CLOUD ***/
 
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.4.RELEASE'
 
+//    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+//    compile group: 'io.fabric8', name: 'spring-cloud-starter-kubernetes', version: '0.1.6'
+//    compile group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: '1.3.3.RELEASE'
 }
 
 dependencyManagement {
