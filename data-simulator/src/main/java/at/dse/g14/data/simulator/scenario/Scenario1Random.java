@@ -1,5 +1,7 @@
 package at.dse.g14.data.simulator.scenario;
 
+import at.dse.g14.commons.dto.ArrivalEventDTO;
+import at.dse.g14.commons.dto.ClearanceEventDTO;
 import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
@@ -13,8 +15,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,18 +32,16 @@ public class Scenario1Random implements Scenario {
   private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
   private static final double CRASH_EVENT_PROBABILITY = 0.1;
   private static final int CRASH_COUNTER_MAX = 10;
-
+  final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+  private final DseSender sender;
+  private final Map<Vehicle, CSVReader> vehicleDataMap;
+  private final Map<Vehicle, VehicleTrackDTO> crashes;
   private CSVReader car1;
   private CSVReader car2;
   private CSVReader car3;
   private CSVReader car4;
   private CSVReader car5;
   private CSVReader car6;
-
-  private final DseSender sender;
-
-  private final Map<Vehicle, CSVReader> vehicleDataMap;
-  private final Map<Vehicle, Integer> crashes;
 
   public Scenario1Random(final DseSender sender) {
     this.sender = sender;
@@ -86,15 +84,7 @@ public class Scenario1Random implements Scenario {
                 new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream("data/car6.csv"))));
 
-    final TimerTask timerTask =
-        new TimerTask() {
-          @Override
-          public void run() {
-            createInitData();
-          }
-        };
-    final Timer timer = new Timer("Timer");
-    timer.schedule(timerTask, 2000L);
+    executor.schedule(this::createInitData, 2, TimeUnit.SECONDS);
   }
 
   private void createInitData() {
@@ -130,16 +120,16 @@ public class Scenario1Random implements Scenario {
     service3 = sender.createEmergencyService(service3);
 
     vehicleDataMap.putIfAbsent(vehicle1, car1);
-//    vehicleDataMap.putIfAbsent(vehicle2, car2);
-//    vehicleDataMap.putIfAbsent(vehicle3, car3);
-//    vehicleDataMap.putIfAbsent(vehicle4, car4);
-//    vehicleDataMap.putIfAbsent(vehicle5, car5);
-//    vehicleDataMap.putIfAbsent(vehicle6, car6);
+    vehicleDataMap.putIfAbsent(vehicle2, car2);
+    vehicleDataMap.putIfAbsent(vehicle3, car3);
+    vehicleDataMap.putIfAbsent(vehicle4, car4);
+    vehicleDataMap.putIfAbsent(vehicle5, car5);
+    vehicleDataMap.putIfAbsent(vehicle6, car6);
   }
 
   @Override
   public void run() {
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    log.info("run");
     executor.scheduleAtFixedRate(this::simulateTrackData, 5, 2, TimeUnit.SECONDS);
   }
 
@@ -156,20 +146,28 @@ public class Scenario1Random implements Scenario {
           break;
         }
 
-        final VehicleTrackDTO track =
-            VehicleTrackDTO.builder()
-                .vin(String.valueOf(entry.getKey().getVin()))
-                .modelType(entry.getKey().getModelType())
-                .passengers(random.nextInt(1, 4))
-                .location(constructGpsPoint(line))
-                .speed(BigDecimal.valueOf(Double.parseDouble(line[7])))
-                .distanceVehicleAhead(BigDecimal.valueOf(random.nextLong(0, 500)))
-                .distanceVehicleBehind(BigDecimal.valueOf(random.nextLong(0, 500)))
-                .nearCrashEvent(getRandomNearCrashEvent(random))
-                .crashEvent(getCrashEvent(entry.getKey(), random))
-                .build();
+        if (!crashes.containsKey(entry.getKey())) {
+          final VehicleTrackDTO track =
+              VehicleTrackDTO.builder()
+                  .vin(String.valueOf(entry.getKey().getVin()))
+                  .modelType(entry.getKey().getModelType())
+                  .passengers(random.nextInt(1, 4))
+                  .location(constructGpsPoint(line))
+                  .speed(BigDecimal.valueOf(Double.parseDouble(line[7])))
+                  .distanceVehicleAhead(BigDecimal.valueOf(random.nextLong(0, 500)))
+                  .distanceVehicleBehind(BigDecimal.valueOf(random.nextLong(0, 500)))
+                  .nearCrashEvent(getRandomNearCrashEvent(random))
+                  .crashEvent(getRandomCrashEvent(random))
+                  .build();
 
-        sender.sendTrackData(track);
+          sender.sendTrackData(track);
+
+          if (track.getCrashEvent()) {
+            log.info("crash event detected!");
+            crashes.put(entry.getKey(), track);
+            executor.schedule(() -> handleCrashStart(entry.getKey()), 60, TimeUnit.SECONDS);
+          }
+        }
       }
 
     } catch (IOException e) {
@@ -185,33 +183,18 @@ public class Scenario1Random implements Scenario {
     return random.nextFloat() < CRASH_EVENT_PROBABILITY;
   }
 
-  private boolean getCrashEvent(final Vehicle vehicle, final ThreadLocalRandom random) {
-    final boolean isCrash;
-    if (!crashes.containsKey(vehicle)) {
-      isCrash = getRandomCrashEvent(random);
-      if (isCrash) {
-        log.info("new crash: {}", vehicle);
-        crashes.put(vehicle, 1);
-      }
-    } else {
-      int count = crashes.get(vehicle);
-      if (count < CRASH_COUNTER_MAX) {
-        isCrash = true;
-        crashes.put(vehicle, ++count);
-        log.info("vehicle crash count: {}", count);
-      } else {
-        isCrash = false;
-        crashes.remove(vehicle);
-        log.info("vehicle crashes no more {}", vehicle);
-      }
-    }
-    return isCrash;
+  private void handleCrashStart(final Vehicle vehicle) {
+    executor.schedule(() -> handleCrashOver(vehicle), 10, TimeUnit.SECONDS);
+    sender.sendEvent(new ArrivalEventDTO(true));
+  }
+
+  private void handleCrashOver(final Vehicle vehicle) {
+    sender.sendEvent(new ClearanceEventDTO(true));
+    crashes.remove(vehicle);
+    log.info("crash over");
   }
 
   private Double[] constructGpsPoint(final String[] line) {
-    return new Double[]{
-        Double.parseDouble(line[2]),
-        Double.parseDouble(line[3])
-    };
+    return new Double[]{Double.parseDouble(line[2]), Double.parseDouble(line[3])};
   }
 }

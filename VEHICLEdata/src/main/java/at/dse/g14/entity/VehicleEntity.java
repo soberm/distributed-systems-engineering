@@ -28,7 +28,7 @@ public class VehicleEntity implements Entity {
   @Id
   @GeneratedValue(generator = "system-uuid")
   @GenericGenerator(name = "system-uuid", strategy = "uuid")
-  private String id;
+  private String vin;
 
   @NotBlank
   private String modelType;
