@@ -26,7 +26,11 @@ public class LiveVehicleTrackController {
   }
 
   @GetMapping
-  public List<LiveVehicleTrack> getLiveVehicleTracks() throws ServiceException {
+  public List<LiveVehicleTrack> getLiveVehicleTracks(
+      @RequestParam(required = false) String manufacturer) throws ServiceException {
+    if (manufacturer != null) {
+      return liveVehicleTrackService.findByManufacturer(manufacturer);
+    }
     return liveVehicleTrackService.findAll();
   }
 
@@ -41,5 +45,4 @@ public class LiveVehicleTrackController {
 
     return liveVehicleTrackService.findByLocationNear(requestedPoint, rangeToOtherVehicles);
   }
-
 }
