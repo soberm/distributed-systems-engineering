@@ -1,4 +1,5 @@
 <select [(ngModel)]="manufacturersSelect" id="manufacturer-dropdown">
   <option value="0" disabled selected>Please select a Car manufacturer</option>
-  <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer">{{manufacturer}}</option>
+  <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.name">{{manufacturer.name}}</option>
 </select>
+<button [disabled]="!isSelected()" (click)="showVehicleInformation()" class="btn btn-primary">Show</button>
