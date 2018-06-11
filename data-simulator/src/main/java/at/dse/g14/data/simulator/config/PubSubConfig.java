@@ -15,7 +15,7 @@ public class PubSubConfig {
 
   public static final String CHANNEL_EVENT_CLEARANCE = "clearanceEventInputChannel";
   public static final String CHANNEL_EVENT_ARRIVAL = "arrivalEventInputChannel";
-  public static final String CHANNEL_TRACK = "arrivalEventInputChannel";
+  public static final String CHANNEL_TRACK = "vehicleTrackInputChannel";
 
   @Bean
   @ServiceActivator(inputChannel = CHANNEL_EVENT_CLEARANCE)

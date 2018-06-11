@@ -65,15 +65,16 @@ public class AccidentStatisticsService implements IAccidentStatisticsService {
 
     @Override
     public void delete(Long id) throws ServiceException {
-        validate(id);
         log.info("Deleted AccidentStatistics " + id);
         accidentStatisticsRepository.deleteById(id);
     }
 
     @Override
     public AccidentStatistics findOne(Long id) throws ServiceException {
-        validate(id);
         log.info("Finding AccidentStatistics " + id);
+        if(id == null){
+            return null;
+        }
         try {
             return accidentStatisticsRepository.findById(id).get();
         } catch (NoSuchElementException | IllegalArgumentException e) {
@@ -91,13 +92,6 @@ public class AccidentStatisticsService implements IAccidentStatisticsService {
         log.debug("Validating " + accidentStatistics);
         if (!validator.validate(accidentStatistics).isEmpty()) {
             throw new ValidationException("AccidentStatistics not valid.");
-        }
-    }
-
-    private void validate(Long id) throws ValidationException {
-        log.debug("Validating Id for AccidentStatistics " + id);
-        if (id < 0) {
-            throw new ValidationException("Id must be greater than 0.");
         }
     }
 

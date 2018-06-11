@@ -31,11 +31,16 @@ public class Scenario1Random implements Scenario {
 
   private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
   private static final double CRASH_EVENT_PROBABILITY = 0.1;
-  private static final int CRASH_COUNTER_MAX = 10;
-  final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+
+  private static final int ARRIVAL_TIME_SEC = 60;
+  private static final int CLEARANCE_TIME_SEC = 10;
+
+  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+
   private final DseSender sender;
   private final Map<Vehicle, CSVReader> vehicleDataMap;
   private final Map<Vehicle, VehicleTrackDTO> crashes;
+
   private CSVReader car1;
   private CSVReader car2;
   private CSVReader car3;
@@ -165,7 +170,8 @@ public class Scenario1Random implements Scenario {
           if (track.getCrashEvent()) {
             log.info("crash event detected!");
             crashes.put(entry.getKey(), track);
-            executor.schedule(() -> handleCrashStart(entry.getKey()), 60, TimeUnit.SECONDS);
+            executor.schedule(() -> handleCrashStart(entry.getKey()), ARRIVAL_TIME_SEC,
+                TimeUnit.SECONDS);
           }
         }
       }
@@ -184,7 +190,7 @@ public class Scenario1Random implements Scenario {
   }
 
   private void handleCrashStart(final Vehicle vehicle) {
-    executor.schedule(() -> handleCrashOver(vehicle), 10, TimeUnit.SECONDS);
+    executor.schedule(() -> handleCrashOver(vehicle), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
     sender.sendEvent(new ArrivalEventDTO(true));
   }
 
