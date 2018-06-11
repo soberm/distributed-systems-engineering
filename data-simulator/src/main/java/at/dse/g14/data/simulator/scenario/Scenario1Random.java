@@ -1,9 +1,10 @@
-package at.dse.g14.data.simulator;
+package at.dse.g14.data.simulator.scenario;
 
 import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
 import at.dse.g14.commons.dto.VehicleTrackDTO;
+import at.dse.g14.data.simulator.DseSender;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,20 +15,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
-import javax.annotation.PostConstruct;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Lukas Baronyai
  * @version ${buildVersion}
  * @since 1.0.0
  */
-@Service
 @Slf4j
-public class Simulator {
+public class Scenario1Random implements Scenario {
 
   private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
   private static final double CRASH_EVENT_PROBABILITY = 0.1;
@@ -45,14 +45,13 @@ public class Simulator {
   private final Map<Vehicle, CSVReader> vehicleDataMap;
   private final Map<Vehicle, Integer> crashes;
 
-  public Simulator(DseSender sender) {
+  public Scenario1Random(final DseSender sender) {
     this.sender = sender;
 
     vehicleDataMap = new HashMap<>();
     crashes = new HashMap<>();
   }
 
-  @PostConstruct
   public void init() {
     log.info("init reader");
 
@@ -98,7 +97,7 @@ public class Simulator {
     timer.schedule(timerTask, 2000L);
   }
 
-  public void createInitData() {
+  private void createInitData() {
     log.info("create init data");
     VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW");
     VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW");
@@ -138,7 +137,12 @@ public class Simulator {
 //    vehicleDataMap.putIfAbsent(vehicle6, car6);
   }
 
-  @Scheduled(fixedRate = 2000, initialDelay = 5000)
+  @Override
+  public void run() {
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    executor.scheduleAtFixedRate(this::simulateTrackData, 5, 2, TimeUnit.SECONDS);
+  }
+
   public void simulateTrackData() {
     try {
 
