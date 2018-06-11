@@ -47,7 +47,7 @@ public class DseSender {
     log.info("create: {}", vehicle);
 
     return restTemplate
-        .postForObject(vehicledataAddress + "/manufacturer/{id}/vehicle",
+        .postForObject(vehicledataAddress + "/manufacturer/{vin}/vehicle",
             vehicle,
             Vehicle.class,
             vehicle.getManufacturer().getId());
@@ -58,7 +58,7 @@ public class DseSender {
     log.info("getVehiclesOfManufacturer: {}", manufacturer);
 
     final Vehicle[] vehicles = restTemplate
-        .getForObject(vehicledataAddress + "/manufacturer/{id}/vehicle",
+        .getForObject(vehicledataAddress + "/manufacturer/{vin}/vehicle",
             Vehicle[].class,
             manufacturer.getId());
 

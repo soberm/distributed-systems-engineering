@@ -81,7 +81,7 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public Vehicle update(final Vehicle vehicle) throws ServiceException {
     validate(vehicle);
-    if (vehicle.getId() != null) {
+    if (vehicle.getVin() != null) {
       throw new ValidationException("No ID provided");
     }
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));

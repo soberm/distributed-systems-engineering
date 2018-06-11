@@ -91,6 +91,12 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
   }
 
   @Override
+  public VehicleManufacturer findByVin(final String vin) throws ServiceException {
+    Vehicle vehicle = vehicleService.findOne(vin);
+    return vehicle == null ? null : vehicle.getManufacturer();
+  }
+
+  @Override
   public List<VehicleManufacturer> findAll() throws ServiceException {
     return convertToDto((List<VehicleManufacturerEntity>) manufacturerRepository.findAll());
   }

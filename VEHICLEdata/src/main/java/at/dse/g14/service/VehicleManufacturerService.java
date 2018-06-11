@@ -2,6 +2,7 @@ package at.dse.g14.service;
 
 import at.dse.g14.commons.dto.VehicleManufacturer;
 import at.dse.g14.commons.service.CrudService;
+import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleManufacturerEntity;
 import java.util.List;
@@ -13,11 +14,13 @@ import java.util.List;
  */
 public interface VehicleManufacturerService extends CrudService<VehicleManufacturer, String> {
 
-  VehicleManufacturer convertToDto(VehicleManufacturerEntity entity);
+  VehicleManufacturer findByVin(final String vin) throws ServiceException;
 
-  List<VehicleManufacturer> convertToDto(List<VehicleManufacturerEntity> entities);
+  VehicleManufacturer convertToDto(final VehicleManufacturerEntity entity);
 
-  VehicleManufacturerEntity convertToEntity(VehicleManufacturer dto);
+  List<VehicleManufacturer> convertToDto(final List<VehicleManufacturerEntity> entities);
 
-  void validate(VehicleManufacturer manufacturer) throws ValidationException;
+  VehicleManufacturerEntity convertToEntity(final VehicleManufacturer dto);
+
+  void validate(final VehicleManufacturer manufacturer) throws ValidationException;
 }

@@ -154,7 +154,7 @@ public class Simulator {
 
         final VehicleTrackDTO track =
             VehicleTrackDTO.builder()
-                .vin(String.valueOf(entry.getKey().getId()))
+                .vin(String.valueOf(entry.getKey().getVin()))
                 .modelType(entry.getKey().getModelType())
                 .passengers(random.nextInt(1, 4))
                 .location(constructGpsPoint(line))

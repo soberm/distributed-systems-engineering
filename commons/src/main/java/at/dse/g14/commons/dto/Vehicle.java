@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 public class Vehicle implements DTO {
 
-  private String id;
+  private String vin;
 
   @NotBlank
   private String modelType;
