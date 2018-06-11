@@ -3,6 +3,7 @@ package at.dse.g14.data.simulator;
 import at.dse.g14.commons.dto.ArrivalEventDTO;
 import at.dse.g14.commons.dto.ClearanceEventDTO;
 import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.dto.RangeRequest;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
 import at.dse.g14.commons.dto.VehicleTrackDTO;
@@ -11,6 +12,7 @@ import at.dse.g14.data.simulator.config.PubSubConfig.ClearanceEventOutboundGatew
 import at.dse.g14.data.simulator.config.PubSubConfig.VehicleTrackOutboundGateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,9 @@ public class DseSender {
 
   @Value("${vehicledata.address}")
   private String vehicledataAddress;
+
+  @Value("${trackdata.address}")
+  private String trackdataAddress;
 
   @Autowired
   public DseSender(
@@ -121,5 +126,16 @@ public class DseSender {
     } catch (JsonProcessingException e) {
       log.error("Could not send ClearanceEventDTO to PubSub.", e);
     }
+  }
+
+  public List<Vehicle> getVehicleToNotify(final Double[] location, final long kilometers) {
+    log.info("get vehicles to notify for location {} around {}km", location, kilometers);
+
+    final Vehicle[] vehicles =
+        restTemplate.postForObject(
+            trackdataAddress + "/live-vehicle-track/range",
+            new RangeRequest(location, new BigDecimal(kilometers)),
+            Vehicle[].class);
+    return Arrays.asList(vehicles);
   }
 }
