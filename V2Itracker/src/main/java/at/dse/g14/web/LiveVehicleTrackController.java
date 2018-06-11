@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +25,13 @@ public class LiveVehicleTrackController {
     this.liveVehicleTrackService = liveVehicleTrackService;
   }
 
+  @GetMapping
+  public List<LiveVehicleTrack> getLiveVehicleTracks() throws ServiceException {
+    return liveVehicleTrackService.findAll();
+  }
+
   @PostMapping("/range")
-  public List<LiveVehicleTrack> getLiveVehicleTracks(@RequestBody RangeRequest rangeRequest)
+  public List<LiveVehicleTrack> getLiveVehicleTracksInRange(@RequestBody RangeRequest rangeRequest)
       throws ServiceException {
     log.info("{} arrived.", rangeRequest);
     Double[] location = rangeRequest.getLocation();
@@ -39,4 +41,5 @@ public class LiveVehicleTrackController {
 
     return liveVehicleTrackService.findByLocationNear(requestedPoint, rangeToOtherVehicles);
   }
+
 }
