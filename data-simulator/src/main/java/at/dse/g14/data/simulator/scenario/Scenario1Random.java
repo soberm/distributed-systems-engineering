@@ -120,11 +120,11 @@ public class Scenario1Random implements Scenario {
     service3 = sender.createEmergencyService(service3);
 
     vehicleDataMap.putIfAbsent(vehicle1, car1);
-    //    vehicleDataMap.putIfAbsent(vehicle2, car2);
-    //    vehicleDataMap.putIfAbsent(vehicle3, car3);
-    //    vehicleDataMap.putIfAbsent(vehicle4, car4);
-    //    vehicleDataMap.putIfAbsent(vehicle5, car5);
-    //    vehicleDataMap.putIfAbsent(vehicle6, car6);
+    vehicleDataMap.putIfAbsent(vehicle2, car2);
+    vehicleDataMap.putIfAbsent(vehicle3, car3);
+    vehicleDataMap.putIfAbsent(vehicle4, car4);
+    vehicleDataMap.putIfAbsent(vehicle5, car5);
+    vehicleDataMap.putIfAbsent(vehicle6, car6);
   }
 
   @Override
