@@ -6,4 +6,5 @@
 export const environment = {
   production: false,
   API_URL: 'http://localhost:4000',
+  VEHICLE_DATA_SERVICE: 'vehicledata'
 };

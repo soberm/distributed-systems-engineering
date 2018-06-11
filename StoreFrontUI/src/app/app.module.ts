@@ -7,13 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { GmapsComponent } from './components/gmaps/gmaps.component';
 import { FormsModule } from '@angular/forms';
+import { ManufacturerComponent } from './components/manufacturer/manufacturer.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GmapsComponent
+    GmapsComponent,
+    ManufacturerComponent
   ],
   imports: [
     BrowserModule,
