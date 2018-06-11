@@ -7,6 +7,8 @@ import at.dse.g14.commons.dto.VehicleTrackDTO;
 import at.dse.g14.data.simulator.config.PubSubConfig.VehicleTrackOutboundGateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,10 +47,22 @@ public class DseSender {
     log.info("create: {}", vehicle);
 
     return restTemplate
-        .postForObject(vehicledataAddress + "/manufacturer/{id}/vehicle",
+        .postForObject(vehicledataAddress + "/manufacturer/{vin}/vehicle",
             vehicle,
             Vehicle.class,
             vehicle.getManufacturer().getId());
+
+  }
+
+  public List<Vehicle> getVehiclesOfManufacturer(final VehicleManufacturer manufacturer) {
+    log.info("getVehiclesOfManufacturer: {}", manufacturer);
+
+    final Vehicle[] vehicles = restTemplate
+        .getForObject(vehicledataAddress + "/manufacturer/{vin}/vehicle",
+            Vehicle[].class,
+            manufacturer.getId());
+
+    return Arrays.asList(vehicles);
 
   }
 
@@ -57,6 +71,12 @@ public class DseSender {
 
     return restTemplate.postForObject(vehicledataAddress + "/manufacturer/",
         manufacturer,
+        VehicleManufacturer.class);
+  }
+
+  public VehicleManufacturer getManufacturer(final VehicleManufacturer manufacturer) {
+    log.info("getManufacturer: {}", manufacturer);
+    return restTemplate.getForObject(vehicledataAddress + "/manufacturer/" + manufacturer.getId(),
         VehicleManufacturer.class);
   }
 

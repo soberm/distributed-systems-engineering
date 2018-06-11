@@ -1,7 +1,5 @@
 package at.dse.g14.commons.dto;
 
-import java.util.Set;
-import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,13 +21,8 @@ public class VehicleManufacturer implements DTO {
   @NotBlank
   private String name;
 
-  @NotNull
-  private Set<Vehicle> vehicles;
-
-  public VehicleManufacturer(String id, String name,
-      Set<Vehicle> vehicles) {
+  public VehicleManufacturer(String id, String name) {
     this.id = id;
     this.name = name;
-    this.vehicles = vehicles;
   }
 }
