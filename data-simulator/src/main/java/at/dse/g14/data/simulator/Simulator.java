@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
@@ -101,10 +100,9 @@ public class Simulator {
 
   public void createInitData() {
     log.info("create init data");
-    VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW", new HashSet<>());
-    VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW", new HashSet<>());
-    VehicleManufacturer manufacturer3 =
-        new VehicleManufacturer(null, "Tesla", new HashSet<>());
+    VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW");
+    VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW");
+    VehicleManufacturer manufacturer3 = new VehicleManufacturer(null, "Tesla");
 
     manufacturer1 = sender.createManufacturer(manufacturer1);
     manufacturer2 = sender.createManufacturer(manufacturer2);

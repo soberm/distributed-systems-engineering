@@ -34,7 +34,7 @@ public class VehicleManufacturerController {
     return manufacturerService.save(manufacturer);
   }
 
-  @GetMapping("/{vid}")
+  @GetMapping("/{id}")
   public VehicleManufacturer getVehicleManufacturer(@PathVariable("id") final String id)
       throws ServiceException {
     return manufacturerService.findOne(id);
