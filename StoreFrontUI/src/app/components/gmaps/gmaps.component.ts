@@ -1,6 +1,8 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { } from '@types/googlemaps';
 import MarkerOptions = google.maps.MarkerOptions;
+import {EventEmitter} from "selenium-webdriver";
+import {MapVehicleInformation} from "../manufacturer/model/MapVehicleInformation";
 
 @Component({
   selector: 'app-gmaps',
@@ -11,13 +13,15 @@ export class GmapsComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
 
+  @Input() mapVehicleInformations: Map<string, MapVehicleInformation>;
   latitude:number;
   longitude:number;
+  // @Output() messageEvent = new EventEmitter<string>();
 
-  ngOnInit() {
-    var mapProp = {
+    ngOnInit() {
+    let mapProp = {
       center: new google.maps.LatLng(18.5793, 73.8143),
-      zoom: 15,
+      zoom: 12,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
@@ -27,19 +31,18 @@ export class GmapsComponent implements OnInit {
     this.map.setMapTypeId(mapTypeId)
   }
 
-  setCenter(e:any){
+  refresh(e:any){
     e.preventDefault();
-    this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
-    new google.maps.Marker({
-      position: new google.maps.LatLng(48.210033, 16.363449),
-      map: this.map,
-      label: "A"
-    });
-    new google.maps.Marker({
-      position: new google.maps.LatLng(48.220033, 16.373449),
-      map: this.map,
-      label: "B"
-    });
+    let vehicleInformation: MapVehicleInformation;
+    for (let key of Array.from(this.mapVehicleInformations.keys())) {
+      vehicleInformation = this.mapVehicleInformations.get(key);
+      new google.maps.Marker({
+        position: new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation.longitude),
+        map: this.map,
+        label: vehicleInformation.vehicleAlias.toString()
+      });
+    }
+    this.map.setCenter(new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation .longitude));
   }
 
 }
