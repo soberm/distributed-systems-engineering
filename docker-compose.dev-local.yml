@@ -57,12 +57,12 @@ services:
     volumes:
       - ~/.config/:/root/.config
     restart: always
-  storefrontui:
-    build: ./StoreFrontUI
-    restart: always
-    container_name: dse_frontend
-    ports:
-      - 4200:4200
+#  storefrontui:
+#    build: ./StoreFrontUI
+#    restart: always
+#    container_name: dse_frontend
+#    ports:
+#      - 4200:4200
   mongo:
    build: ./database
    container_name: dse_mongo_db

@@ -3,3 +3,12 @@
   <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.name">{{manufacturer.name}}</option>
 </select>
 <button [disabled]="!isSelected()" (click)="showVehicleInformation()" class="btn btn-primary">Show</button>
+
+<mat-list>
+  <mat-list-item *ngFor="let vehicle of vehicles">
+    <h3 matLine>Vehicle {{vehicle.vin}}</h3>
+    <p matLine>
+      <span> {{vehicle.modelType}} </span>
+    </p>
+  </mat-list-item>
+</mat-list>

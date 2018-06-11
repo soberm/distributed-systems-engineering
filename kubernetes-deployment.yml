@@ -152,7 +152,7 @@ spec:
 #      containers:
 #        - env:
 #          - name: SPRING_PROFILES_ACTIVE
-#            value: compose
+#            value: kubernetes
 #          name: datasimulator
 #          image: gcr.io/dse-group-14/data-simulator
 #          ports:
