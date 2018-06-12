@@ -124,7 +124,7 @@ export class EmergencyComponent implements OnInit {
       return;
     }
     this.alive = true;
-    TimerObservable.create(2000, this.interval)
+    TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive)
       .subscribe(() => {
         this.showNotifications();

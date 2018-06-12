@@ -67,7 +67,6 @@ export class ManufacturerComponent implements OnInit {
     this.mapVehicleInformations = new Map();
     this.alive = false;
     this.interval = 2000;
-    // this.markers = [];
     this.doCenter = true;
   }
 
@@ -174,7 +173,7 @@ export class ManufacturerComponent implements OnInit {
       return;
     }
     this.alive = true;
-    TimerObservable.create(2000, this.interval)
+    TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive)
       .subscribe(() => {
         this.showVehicleInformation();

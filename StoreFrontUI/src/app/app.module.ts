@@ -8,6 +8,7 @@ import { MaterialModule } from './material.module';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import {DialogVehicleNotificationDialog} from "./components/manufacturer/manufacturer.component";
+import { TraffiauthorityComponent } from './components/traffiauthority/traffiauthority.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {DialogVehicleNotificationDialog} from "./components/manufacturer/manufac
     AppComponent,
     routingComponents,
     NavbarComponent,
-    DialogVehicleNotificationDialog
+    DialogVehicleNotificationDialog,
+    TraffiauthorityComponent
   ],
   imports: [
     BrowserModule,
