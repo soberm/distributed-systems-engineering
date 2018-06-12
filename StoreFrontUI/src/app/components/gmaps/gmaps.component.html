@@ -4,20 +4,4 @@
   <button (click)="setMapType('roadmap')" class="btn btn-warning">Road Map</button>
   <button (click)="setMapType('hybrid')" class="btn btn-warning">Hybrid</button>
 </div>
-<div #gmap style=”width:100%;height:400px;”></div>
-
-
-<!--<form class="form-inline" #form="ngForm" (ngSubmit)="refresh($event)" ac>-->
-  <!--<div class="form-group">-->
-    <!--<input type="text" class="form-control" name="latitude" [(ngModel)]="latitude" placeholder="Enter latitude" required>-->
-  <!--</div>-->
-  <!--<div class="form-group">-->
-    <!--<input type="text" class="form-control" name="longitude" [(ngModel)]="longitude" placeholder="Enter longitude" required>-->
-  <!--</div>-->
-  <!--<button type="submit" class="btn btn-primary" [disabled]="form.invalid">Go</button>-->
-<!--</form>-->
-
-<div class="notification is-primary">
-  <h3>Child</h3>
-  Say {{mapVehicleInformations}}
-</div>
+<div #gmap style=”width:100%;height:600px;”></div>

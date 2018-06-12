@@ -5,8 +5,6 @@ import {MapVehicleInformation} from "./model/MapVehicleInformation";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {GmapsComponent} from "../gmaps/gmaps.component";
-import Marker = google.maps.Marker;
-import {DatasimulatorComponent} from "../datasimulator/datasimulator.component";
 
 interface ManufacturerResponse {
   id: string
@@ -26,6 +24,21 @@ interface VehicleResponse {
   crashEvent: boolean
 }
 
+interface NotificationResponse {
+  id: number,
+  vin: string,
+  aliasInMap: string,
+  modelType: string
+  passengers: number
+  location: number[]
+  speed: number,
+  distanceVehicleAhead: number,
+  distanceVehicleBehind: number,
+  type: string,
+  date: string
+}
+
+
 @Component({
   selector: 'app-manufacturer',
   templateUrl: './manufacturer.component.html',
@@ -42,28 +55,21 @@ export class ManufacturerComponent implements OnInit {
   mapVehicleInformations: Map<string, MapVehicleInformation>;
   private alive: boolean;
   private interval: number;
-  private markers: Marker[];
   doCenter: boolean;
+  notifications: NotificationResponse[];
 
+  @ViewChild("gmapsComponent") gmapsComponent: GmapsComponent;
 
   constructor(private http: HttpClient) {
     this.mapVehicleInformations = new Map();
-    this.alive = true;
-    this.interval = 1000;
-    this.markers = [];
+    this.alive = false;
+    this.interval = 2000;
+    // this.markers = [];
     this.doCenter = true;
   }
 
   ngOnInit() {
     this.loadManufacturers();
-
-    let mapProp = {
-      center: new google.maps.LatLng(18.5793, 73.8143),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-
     this.startLive();
   }
 
@@ -74,7 +80,7 @@ export class ManufacturerComponent implements OnInit {
   loadManufacturers() {
     this.http.get<ManufacturerResponse[]>(this.manufacturerURL + 'getAll').subscribe(data => {
       this.manufacturers = data as ManufacturerResponse[];
-      if (this.manufacturers.length > 0) {
+      if (this.manufacturers != null && this.manufacturers.length > 0) {
         console.log("got something");
         this.manufacturersSelect = this.manufacturers[0].name
       }
@@ -92,6 +98,9 @@ export class ManufacturerComponent implements OnInit {
         params: new HttpParams().set('manufacturer', id)
       }).subscribe(data => {
         this.vehicles = data as VehicleResponse[];
+        if(this.vehicles == null) {
+          return;
+        }
         for (let i = 0; i < this.vehicles.length; i++) {
           let vehicle = this.vehicles[i];
           let vehicleInformation;
@@ -105,7 +114,26 @@ export class ManufacturerComponent implements OnInit {
           }
           this.mapVehicleInformations.set(vehicle.vin, vehicleInformation);
           console.log("vehicle " + vehicle.vin + " is at \n" + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
-          // this.refresh();
+        }
+      }, error => {
+        console.error(error);
+        return [];
+      });
+    }
+  }
+
+  showNotifications() {
+    if (this.manufacturers != null) {
+      console.log(this.manufacturersSelect);
+      let id: string = this.manufacturers.find(manufacturer => manufacturer.name == this.manufacturersSelect).id;
+      this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
+        params: new HttpParams().set('receive', id)
+      }).subscribe(data => {
+        this.notifications = data as NotificationResponse[];
+        if(this.notifications != null && this.notifications.length > 0) {
+          for (let i = 0; i < this.notifications.length; i++) {
+            console.log("notification: " + this.notifications[i].id);
+          }
         }
       }, error => {
         console.error(error);
@@ -124,52 +152,22 @@ export class ManufacturerComponent implements OnInit {
   }
 
   startLive() {
+    console.log("Started live");
+    if(this.alive == true) {
+      return;
+    }
     this.alive = true;
     TimerObservable.create(2000, this.interval)
       .takeWhile(() => this.alive)
       .subscribe(() => {
         this.showVehicleInformation();
-        this.refresh();
+        this.showNotifications();
+        this.gmapsComponent.refresh();
       });
   }
 
   stopLive() {
+    console.log("Stopped live");
     this.alive = false;
-  }
-
-
-  @ViewChild('gmap') gmapElement: any;
-  map: google.maps.Map;
-
-  // @Input() mapVehicleInformations: Map<string, MapVehicleInformation>;
-  latitude: number;
-  longitude: number;
-
-  // @Output() messageEvent = new EventEmitter<string>();
-
-  setMapType(mapTypeId: string) {
-    this.map.setMapTypeId(mapTypeId)
-  }
-
-  refresh() {
-    let vehicleInformation: MapVehicleInformation;
-    for (let i = 0; i < this.markers.length; i++) {
-      this.markers[i].setMap(null);
-    }
-    for (let key of Array.from(this.mapVehicleInformations.keys())) {
-      vehicleInformation = this.mapVehicleInformations.get(key);
-      console.log("Information in map " + vehicleInformation.vehicleAlias + ": "
-        + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
-      let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation.longitude),
-        map: this.map,
-        label: vehicleInformation.vehicleAlias.toString()
-      });
-      this.markers.push(marker);
-    }
-    if (vehicleInformation != null && this.doCenter) {
-      this.map.setCenter(new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation.longitude));
-      this.doCenter = false;
-    }
   }
 }
