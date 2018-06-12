@@ -27,6 +27,7 @@ public class ScenarioRestController {
 
   @GetMapping("/start")
   public void startScenario(@RequestParam(required = false) final Integer id) {
+    log.info("start scenario {}", id);
     if (id != null) {
       simulatorManager.startScenario(id);
     } else {
@@ -36,6 +37,7 @@ public class ScenarioRestController {
 
   @GetMapping("/stop")
   public void stopScenario() {
+    log.info("stop scenario");
     simulatorManager.stopScenario();
   }
 }

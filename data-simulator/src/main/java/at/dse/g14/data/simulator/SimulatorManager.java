@@ -33,13 +33,15 @@ public class SimulatorManager {
 
     switch (id) {
       case 1:
+        log.info("start scenario 1");
         currentScenario = new Scenario1Random(dseSender);
         break;
       case 2:
+        log.info("start scenario 2");
         currentScenario = new Scenario2Crash(dseSender);
         break;
       default:
-        log.info("unknown scenario ID");
+        log.error("unknown scenario ID");
     }
 
     currentScenario.init();
@@ -49,6 +51,7 @@ public class SimulatorManager {
   }
 
   public void stopScenario() {
+    log.info("stop scenario");
     currentScenario.stop();
   }
 }

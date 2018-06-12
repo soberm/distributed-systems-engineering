@@ -126,6 +126,7 @@ public abstract class AbstractScenario implements Runnable {
   }
 
   public void stop() {
+    log.info("stop scenario");
     executor.shutdown();
   }
 }
