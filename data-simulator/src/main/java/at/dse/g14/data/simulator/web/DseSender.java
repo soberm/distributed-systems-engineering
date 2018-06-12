@@ -148,7 +148,7 @@ public class DseSender {
   public void sendStatistics(final AccidentStatisticsDTO statistics) {
     log.info("send statistics {}", statistics);
     try {
-      clearanceEventOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(statistics));
+      statisticsOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(statistics));
     } catch (JsonProcessingException e) {
       log.error("Could not send ClearanceEventDTO to PubSub.", e);
     }
