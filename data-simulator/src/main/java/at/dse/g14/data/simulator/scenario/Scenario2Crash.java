@@ -4,7 +4,7 @@ import at.dse.g14.commons.dto.ArrivalEventDTO;
 import at.dse.g14.commons.dto.ClearanceEventDTO;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleTrackDTO;
-import at.dse.g14.data.simulator.DseSender;
+import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.math.BigDecimal;

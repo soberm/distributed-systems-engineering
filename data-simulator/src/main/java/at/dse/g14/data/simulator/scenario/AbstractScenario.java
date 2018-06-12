@@ -3,7 +3,7 @@ package at.dse.g14.data.simulator.scenario;
 import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.Vehicle;
 import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.data.simulator.DseSender;
+import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,6 +23,7 @@ public abstract class AbstractScenario implements Runnable {
   protected final DseSender sender;
   protected final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
   protected final Map<Vehicle, CSVReader> vehicleDataMap;
+
   protected CSVReader car1;
   protected CSVReader car2;
   protected CSVReader car3;
@@ -69,7 +70,6 @@ public abstract class AbstractScenario implements Runnable {
                 new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream("data/car6.csv"))));
 
-//    executor.schedule(this::createInitData, 2, TimeUnit.SECONDS);
     createInitData();
   }
 
@@ -125,4 +125,7 @@ public abstract class AbstractScenario implements Runnable {
     return random.nextFloat() < CRASH_EVENT_PROBABILITY;
   }
 
+  public void stop() {
+    executor.shutdown();
+  }
 }

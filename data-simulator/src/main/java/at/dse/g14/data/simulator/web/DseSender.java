@@ -1,4 +1,4 @@
-package at.dse.g14.data.simulator;
+package at.dse.g14.data.simulator.web;
 
 import at.dse.g14.commons.dto.ArrivalEventDTO;
 import at.dse.g14.commons.dto.ClearanceEventDTO;
