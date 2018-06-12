@@ -36,7 +36,7 @@ public class NotificationService implements INotificationService {
 
   @Override
   public List<Notification> findTop10ByReceiver(String receiver) throws ServiceException {
-    return notificationRepository.findTop10ByReceiver(receiver);
+    return notificationRepository.findFirst10ByReceiverOrderByDateDesc(receiver);
   }
 
   @Override

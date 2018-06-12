@@ -3,11 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import {ManufacturerComponent} from "./components/manufacturer/manufacturer.component";
 import {DatasimulatorComponent} from "./components/datasimulator/datasimulator.component";
 import {GmapsComponent} from "./components/gmaps/gmaps.component";
-import {AppComponent} from "./app.component";
+import {EmergencyComponent} from "./components/emergency/emergency.component";
 
 const routes: Routes = [
   {path: 'manufacturer', component: ManufacturerComponent},
-  // {path: 'emergency-service'}
+  {path: 'emergency', component:EmergencyComponent}
 ];
 
 @NgModule({
@@ -16,4 +16,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export const routingComponents = [ManufacturerComponent, DatasimulatorComponent, GmapsComponent];
+export const routingComponents = [ManufacturerComponent, DatasimulatorComponent, GmapsComponent, EmergencyComponent];

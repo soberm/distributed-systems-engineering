@@ -18,5 +18,5 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
 
   List<Notification> findByReceiver(String receiver);
 
-  List<Notification> findTop10ByReceiver(String receiver);
+  List<Notification> findFirst10ByReceiverOrderByDateDesc(String receiver);
 }
