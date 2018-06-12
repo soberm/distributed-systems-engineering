@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * An application, which is responsible for saving VehicleTracks and analysing them.
@@ -11,10 +12,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author Michael Sober
  * @since 1.0
  */
+@EnableSwagger2
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableFeignClients
-// @EnableDiscoveryClient
 public class V2ITrackerApplication {
 
   public static void main(String[] args) {
