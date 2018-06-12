@@ -1,26 +1,7 @@
 package at.dse.g14.service.impl;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import at.dse.g14.entity.ArrivalNotification;
-import at.dse.g14.entity.ClearanceNotification;
-import at.dse.g14.entity.CrashEventNotification;
-import at.dse.g14.entity.NearCrashEventNotification;
-import at.dse.g14.entity.Notification;
-import at.dse.g14.entity.SpeedNotification;
-import at.dse.g14.entity.SpotlightNotification;
-import at.dse.g14.persistence.ArrivalNotificationRepository;
-import at.dse.g14.persistence.ClearanceNotificationRepository;
-import at.dse.g14.persistence.CrashEventNotificationRepository;
-import at.dse.g14.persistence.NearCrashEventNotificationRepository;
-import at.dse.g14.persistence.NotificationRepository;
-import at.dse.g14.persistence.SpeedNotificationRepository;
-import at.dse.g14.persistence.SpotlightNotificationRepository;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
+import at.dse.g14.entity.*;
+import at.dse.g14.persistence.*;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+/**
+ * Unit-Tests for the NotificationService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class NotificationServiceTest {

@@ -1,14 +1,15 @@
 package at.dse.g14.commons.dto.track;
 
-import java.math.BigDecimal;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -18,8 +19,7 @@ public class LiveVehicleTrackDTO {
 
   private String vin;
 
-  @NotNull
-  private String modelType;
+  @NotNull private String modelType;
 
   @Range(min = 0, max = 300)
   private Integer passengers;
@@ -38,9 +38,7 @@ public class LiveVehicleTrackDTO {
   @DecimalMin(value = "0.0")
   private BigDecimal distanceVehicleBehind;
 
-  @NotNull
-  private Boolean nearCrashEvent;
+  @NotNull private Boolean nearCrashEvent;
 
-  @NotNull
-  private Boolean crashEvent;
+  @NotNull private Boolean crashEvent;
 }

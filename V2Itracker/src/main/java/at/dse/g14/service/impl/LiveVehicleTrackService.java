@@ -13,11 +13,6 @@ import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
 import at.dse.g14.web.client.VehicleDataClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +21,19 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+/**
+ * This class implements the functionality around LiveVehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see ILiveVehicleTrackService
+ */
 @Slf4j
 @Service
 public class LiveVehicleTrackService implements ILiveVehicleTrackService {

@@ -8,17 +8,25 @@ import at.dse.g14.persistence.VehicleTrackRepository;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+/**
+ * This class implements the functionality around VehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see IVehicleTrackService
+ */
 @Slf4j
 @Service
 public class VehicleTrackService implements IVehicleTrackService {

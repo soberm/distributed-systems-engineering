@@ -16,6 +16,14 @@ import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the functionality around ClearanceNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see IClearanceNotificationService
+ */
 @Slf4j
 @Service
 public class ClearanceNotificationService extends AbstractCrudService<ClearanceNotification, Long>

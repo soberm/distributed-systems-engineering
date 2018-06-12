@@ -4,14 +4,21 @@ import at.dse.g14.entity.Entity;
 import at.dse.g14.entity.NearCrashEventNotification;
 import at.dse.g14.service.AbstractCrudService;
 import at.dse.g14.service.AbstractCrudServiceTest;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+/**
+ * Unit-Tests for the NearCrashEventNotificationService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class NearCrashEventNotificationServiceTest extends AbstractCrudServiceTest {

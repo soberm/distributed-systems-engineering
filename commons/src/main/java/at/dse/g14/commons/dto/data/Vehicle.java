@@ -20,8 +20,7 @@ public class Vehicle implements DTO {
 
   private String vin;
 
-  @NotBlank
-  private String modelType;
+  @NotBlank private String modelType;
 
   private VehicleManufacturer manufacturer;
 }
