@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClearanceEventDTO {
 
-  private Boolean cleared = true;
   private List<Vehicle> vehiclesToNotify;
 }

@@ -1,7 +1,7 @@
 package at.dse.g14.commons.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ArrivalEventDTO {
 
-    private Boolean arrived;
+    private List<Vehicle> vehiclesToNotify;
 
 }

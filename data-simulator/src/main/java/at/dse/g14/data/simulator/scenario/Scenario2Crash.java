@@ -81,12 +81,13 @@ public class Scenario2Crash extends AbstractScenario {
 
   private void handleCrashStart(final VehicleTrackDTO track) {
     executor.schedule(() -> handleCrashOver(track), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
-    sender.sendEvent(new ArrivalEventDTO(true));
+    final List<Vehicle> vehicles = sender.getVehicleToNotify(track.getLocation(), 10);
+    sender.sendEvent(new ArrivalEventDTO(vehicles));
   }
 
   private void handleCrashOver(final VehicleTrackDTO track) {
     final List<Vehicle> vehicles = sender.getVehicleToNotify(track.getLocation(), 10);
-    sender.sendEvent(new ClearanceEventDTO(true, vehicles));
+    sender.sendEvent(new ClearanceEventDTO(vehicles));
     crashedVehicle = null;
     log.info("crash over");
   }

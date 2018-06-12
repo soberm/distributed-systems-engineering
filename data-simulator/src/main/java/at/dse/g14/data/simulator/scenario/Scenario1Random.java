@@ -90,13 +90,15 @@ public class Scenario1Random extends AbstractScenario {
 
   private void handleCrashStart(final Vehicle vehicle) {
     executor.schedule(() -> handleCrashOver(vehicle), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
-    sender.sendEvent(new ArrivalEventDTO(true));
+    final List<Vehicle> vehicles =
+        sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
+    sender.sendEvent(new ArrivalEventDTO(vehicles));
   }
 
   private void handleCrashOver(final Vehicle vehicle) {
     final List<Vehicle> vehicles =
         sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
-    sender.sendEvent(new ClearanceEventDTO(true, vehicles));
+    sender.sendEvent(new ClearanceEventDTO(vehicles));
     crashes.remove(vehicle);
     log.info("crash over");
   }
