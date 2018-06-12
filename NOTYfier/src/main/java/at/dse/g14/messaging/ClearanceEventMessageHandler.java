@@ -2,6 +2,7 @@ package at.dse.g14.messaging;
 
 import at.dse.g14.commons.dto.events.ClearanceEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
+import at.dse.g14.entity.ClearanceNotification;
 import at.dse.g14.service.IClearanceNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
@@ -12,6 +13,8 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
+
+import java.util.List;
 
 @Slf4j
 @MessageEndpoint
@@ -47,6 +50,10 @@ public class ClearanceEventMessageHandler implements MessageHandler {
 
   private void handleClearanceEvent(ClearanceEventDTO clearanceEventDTO) throws ServiceException {
     log.info("Handling {}", clearanceEventDTO);
-    // TODO: Handle ArrivalEvent
+    List<ClearanceNotification> clearanceNotifications =
+        clearanceNotificationService.generateFrom(clearanceEventDTO);
+    for (ClearanceNotification clearanceNotification : clearanceNotifications) {
+      clearanceNotificationService.update(clearanceNotification);
+    }
   }
 }

@@ -2,6 +2,7 @@ package at.dse.g14.messaging;
 
 import at.dse.g14.commons.dto.events.ArrivalEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
+import at.dse.g14.entity.ArrivalNotification;
 import at.dse.g14.service.IArrivalNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
@@ -12,6 +13,8 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
+
+import java.util.List;
 
 @Slf4j
 @MessageEndpoint
@@ -46,6 +49,10 @@ public class ArrivalEventMessageHandler implements MessageHandler {
 
   private void handleArrivalEvent(ArrivalEventDTO arrivalEventDTO) throws ServiceException {
     log.info("Handling ArrivalEvent of {}", arrivalEventDTO);
-    // TODO: Handle ArrivalEvent
+    List<ArrivalNotification> arrivalNotifications =
+        arrivalNotificationService.generateFrom(arrivalEventDTO);
+    for (ArrivalNotification arrivalNotification : arrivalNotifications) {
+      arrivalNotificationService.update(arrivalNotification);
+    }
   }
 }
