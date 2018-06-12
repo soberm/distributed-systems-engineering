@@ -30,6 +30,6 @@ public class DataSimulatorApplication implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     log.info("start");
-    simulatorManager.start();
+    simulatorManager.startScenario();
   }
 }
