@@ -10,7 +10,6 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +19,8 @@ public class Scenario2Crash extends AbstractScenario {
 
   private static final int ARRIVAL_TIME_SEC = 20;
   private static final int CLEARANCE_TIME_SEC = 10;
-  private static final int START_INTERVALL_SEC = 10;
-  private static final int SEND_INTERVALL_SEC = 5;
+  private static final int START_INTERVALL_MSEC = 2000;
+  private static final int SEND_INTERVALL_MSEC = 500;
 
   private Vehicle crashedVehicle;
   private AccidentStatisticsDTO accidentStatistics;
@@ -33,18 +32,17 @@ public class Scenario2Crash extends AbstractScenario {
 
   @Override
   public void run() {
-    long i = 1;
-    for (Entry<Vehicle, CSVReader> entry : vehicleDataMap.entrySet()) {
+
+    for (int i = 0; i < 6; i++) {
       executor.scheduleAtFixedRate(
-          () -> startVehicle(entry), START_INTERVALL_SEC * i, SEND_INTERVALL_SEC, TimeUnit.SECONDS);
-      i += 1;
+          this::startVehicle, START_INTERVALL_MSEC * i, SEND_INTERVALL_MSEC, TimeUnit.MILLISECONDS);
     }
   }
 
-  private void startVehicle(final Entry<Vehicle, CSVReader> entry) {
+  private void startVehicle() {
     try {
-      final Vehicle vehicle = entry.getKey();
-      final CSVReader reader = entry.getValue();
+      final Vehicle vehicle = vehicle1;
+      final CSVReader reader = car1;
 
       final ThreadLocalRandom random = ThreadLocalRandom.current();
       String[] line = reader.readNext();

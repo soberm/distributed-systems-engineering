@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface VehicleManufacturerService extends CrudService<VehicleManufacturer, String> {
 
+  VehicleManufacturer getByName(final String name);
+
   VehicleManufacturer findByVin(final String vin) throws ServiceException;
 
   VehicleManufacturer convertToDto(final VehicleManufacturerEntity entity);

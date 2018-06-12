@@ -1,5 +1,6 @@
 package at.dse.g14.entity;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -29,5 +30,6 @@ public class EmergencyServiceEntity implements Entity {
   private String id;
 
   @NotBlank
+  @Column(unique = true)
   private String name;
 }

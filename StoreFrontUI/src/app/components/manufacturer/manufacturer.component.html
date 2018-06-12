@@ -1,0 +1,50 @@
+<mat-sidenav-container class="example-container">
+  <!--Left side nav-->
+  <mat-sidenav [opened]="true" [disableClose]="true" mode="side">
+  <select [(ngModel)]="manufacturersSelect" id="manufacturer-dropdown" (ngModelChange)="onChange($event)">
+    <option value="0" disabled selected>Please select a Car manufacturer</option>
+    <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.name">{{manufacturer.name}}</option>
+  </select>
+    <br>
+   <mat-list dense>
+      <mat-list-item *ngFor="let vehicle of vehicles">
+        <h3 matLine>Vehicle {{vehicle.vin}}</h3>
+        <h2 matLine>Alias Vehicle {{vehicle.aliasInMap}}</h2>
+        <p matLine>
+          <span> Model: {{vehicle.modelType}} </span>
+        </p>
+        <p matLine>
+          <span> Passengers: {{vehicle.passengers}} </span>
+        </p>
+        <p matLine>
+          <span> Location: {{vehicle.location}} </span>
+        </p>
+        <p matLine>
+          <span> Speed: {{vehicle.speed}} </span>
+        </p>
+        <p matLine>
+          <span> Distance Vehicle Ahead: {{vehicle.distanceVehicleAhead}} </span>
+        </p>
+        <p matLine>
+          <span> Distance Vehicle Behind: {{vehicle.distanceVehicleBehind}} </span>
+        </p>
+        <p matLine>
+          <span> Near Crash Event: {{vehicle.nearCrashEvent}} </span>
+        </p>
+        <p matLine>
+          <span> Crash Event: {{vehicle.crashEvent}} </span>
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+  <!--Right side nav-->
+  <mat-sidenav position="end" [opened]="true" [disableClose]="true" mode="side">
+  </mat-sidenav>
+  <mat-sidenav-content class="my-sidnav-content">
+    <app-gmaps #gmapsComponent [mapVehicleInformations]="mapVehicleInformations"
+    [doCenter]="doCenter"></app-gmaps>
+    <app-datasimulator (startLiveEvent)="startLive()" (stopLiveEvent)="stopLive()"></app-datasimulator>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+

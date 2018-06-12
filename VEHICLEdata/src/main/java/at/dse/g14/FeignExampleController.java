@@ -1,12 +1,13 @@
 package at.dse.g14;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @RestController
 public class FeignExampleController {

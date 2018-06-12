@@ -1,13 +1,17 @@
 package at.dse.g14.entity;
 
-import java.math.BigDecimal;
-import javax.persistence.Entity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+import javax.persistence.Entity;
+import java.math.BigDecimal;
+
+/**
+ * An entity which represents the notification, which informs stakeholders about a crash that
+ * occurred.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Data
 @Entity
 @NoArgsConstructor

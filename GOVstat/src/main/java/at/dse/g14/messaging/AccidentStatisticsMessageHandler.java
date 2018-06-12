@@ -6,7 +6,6 @@ import at.dse.g14.entity.AccidentStatistics;
 import at.dse.g14.service.IAccidentStatisticsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
-import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cloud.gcp.pubsub.support.GcpPubSubHeaders;
@@ -16,6 +15,16 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
+import java.io.IOException;
+
+/**
+ * A MessageHandler which retrieves AccidentStatistic-Messages from the configured Google Pub/Sub
+ * topic and handles them.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see MessageHandler
+ */
 @Slf4j
 @MessageEndpoint
 public class AccidentStatisticsMessageHandler implements MessageHandler {
@@ -33,6 +42,13 @@ public class AccidentStatisticsMessageHandler implements MessageHandler {
     this.accidentStatisticsService = accidentStatisticsService;
   }
 
+  /**
+   * Handles an AccidentStatistics-Message. If the AccidentStatistics already exist, it will be
+   * updated.
+   *
+   * @param message which contains the payload with the AccidentStatistics.
+   * @throws MessagingException if an error occurs, while retrieving the message.
+   */
   @Override
   @ServiceActivator(inputChannel = "accidentStatisticsChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
@@ -52,6 +68,12 @@ public class AccidentStatisticsMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Converts an AccidentStatisticsDTO to an AccidentStatics entity.
+   *
+   * @param accidentStatisticsDTO which should get converted to an entity.
+   * @return the entity, which got created from mapping the dto.
+   */
   private AccidentStatistics convertToEntity(AccidentStatisticsDTO accidentStatisticsDTO) {
     return modelMapper.map(accidentStatisticsDTO, AccidentStatistics.class);
   }

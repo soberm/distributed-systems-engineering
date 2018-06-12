@@ -44,6 +44,16 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
   @Override
   public EmergencyService save(final EmergencyService service) throws ServiceException {
     validate(service);
+
+    if (service.getId() != null) {
+      return service;
+    } else {
+      final EmergencyService found = getByName(service.getName());
+      if (found != null) {
+        return found;
+      }
+    }
+
     final EmergencyServiceEntity entity = serviceRepository.save(convertToEntity(service));
     return convertToDto(entity);
   }
@@ -103,5 +113,11 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
           "EmergencyService not valid: \n"
               + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
+  }
+
+  @Override
+  public EmergencyService getByName(final String name) {
+    final EmergencyServiceEntity entity = serviceRepository.getByName(name);
+    return (entity != null) ? convertToDto(entity) : null;
   }
 }

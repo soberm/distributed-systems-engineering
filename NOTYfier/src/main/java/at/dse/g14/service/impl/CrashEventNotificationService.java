@@ -10,13 +10,22 @@ import at.dse.g14.persistence.CrashEventNotificationRepository;
 import at.dse.g14.service.AbstractCrudService;
 import at.dse.g14.service.ICrashEventNotificationService;
 import at.dse.g14.web.client.VehicleDataClient;
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class implements the functionality around CrashEventNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see ICrashEventNotificationService
+ */
 @Slf4j
 @Service
 public class CrashEventNotificationService extends AbstractCrudService<CrashEventNotification, Long>
@@ -60,6 +69,7 @@ public class CrashEventNotificationService extends AbstractCrudService<CrashEven
     LiveVehicleTrackDTO liveVehicleTrackDTO = accidentEventDTO.getLiveVehicleTrack();
     String receiver =
         vehicleDataClient.getVehicleManufacturer(liveVehicleTrackDTO.getVin()).getId();
+    log.error("RECEIVER Manufacturer: " + receiver);
     return generateNotification(liveVehicleTrackDTO, receiver);
   }
 

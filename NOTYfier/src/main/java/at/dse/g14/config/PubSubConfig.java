@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.messaging.MessageChannel;
 
+/**
+ * Google Pub/Sub configuration of the application.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Configuration
 @Profile("!test")
 public class PubSubConfig {

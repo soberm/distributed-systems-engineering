@@ -16,6 +16,14 @@ import org.springframework.messaging.MessagingException;
 
 import java.util.List;
 
+/**
+ * A MessageHandler which retrieves ClearanceEvent-Messages from the configured Google Pub/Sub topic
+ * and handles them.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see MessageHandler
+ */
 @Slf4j
 @MessageEndpoint
 public class ClearanceEventMessageHandler implements MessageHandler {
@@ -29,6 +37,12 @@ public class ClearanceEventMessageHandler implements MessageHandler {
     this.clearanceNotificationService = clearanceNotificationService;
   }
 
+  /**
+   * Handles an ClearanceEvent, by generating all notifications.
+   *
+   * @param message which contains the payload with the ClearanceEvent.
+   * @throws MessagingException if an error occurs, while retrieving the message.
+   */
   @Override
   @ServiceActivator(inputChannel = "clearanceEventInputChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
@@ -48,6 +62,12 @@ public class ClearanceEventMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Generates and saves the messages for the ClearanceEvent.
+   *
+   * @param clearanceEventDTO which should be handled.
+   * @throws ServiceException if an error, while generating and saving the notification occurs.
+   */
   private void handleClearanceEvent(ClearanceEventDTO clearanceEventDTO) throws ServiceException {
     log.info("Handling {}", clearanceEventDTO);
     List<ClearanceNotification> clearanceNotifications =

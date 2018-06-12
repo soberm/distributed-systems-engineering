@@ -1,8 +1,9 @@
 package at.dse.g14;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 @Component
 class FeignClientExampleFallback implements FeignClientExample {
