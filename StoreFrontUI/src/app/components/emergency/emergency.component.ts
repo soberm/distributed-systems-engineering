@@ -61,7 +61,7 @@ export class EmergencyComponent implements OnInit {
     this.http.get<EmergencyServiceResponse[]>(environment.VEHICLE_DATA_SERVICE + 'emergencyService').subscribe(data => {
       this.emergencyServices = data as EmergencyServiceResponse[];
       if (this.emergencyServices != null && this.emergencyServices.length > 0) {
-        console.log("got something");
+        // console.log("got something");
         this.emergencyServiceSelect = this.emergencyServices[0].name
       }
     }, error => {
@@ -72,7 +72,7 @@ export class EmergencyComponent implements OnInit {
 
   showNotifications() {
     if (this.emergencyServices != null) {
-      console.log(this.emergencyServiceSelect);
+      // console.log(this.emergencyServiceSelect);
       let id: string = this.emergencyServices.find(emergencyService => emergencyService.name == this.emergencyServiceSelect).id;
       this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
         params: new HttpParams().set('receiver', id).append('top', 'true')
@@ -93,10 +93,10 @@ export class EmergencyComponent implements OnInit {
               vehicleInformation = new MapVehicleInformation(i, notification.location[1], notification.location[0]);
               notification.aliasInMap = i.toString();
             }
-            this.mapVehicleInformations.set(notification.vin, vehicleInformation);
-            console.log("notification: " + notification.id);
+            // console.log("notification: " + notification.id);
             if (notification.type == "CrashEventNotification") {
               this.crashNotifications.push(notification);
+              this.mapVehicleInformations.set(notification.vin + i, vehicleInformation);
             } else if(notification.type == "NearCrashEventNotification") {
               this.nearCrashNotifications.push(notification);
             }

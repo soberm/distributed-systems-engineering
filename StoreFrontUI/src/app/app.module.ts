@@ -7,14 +7,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
+import {DialogVehicleNotificationDialog} from "./components/manufacturer/manufacturer.component";
 
 
 @NgModule({
+  entryComponents: [DialogVehicleNotificationDialog],
   declarations: [
     AppComponent,
     routingComponents,
-    NavbarComponent
+    NavbarComponent,
+    DialogVehicleNotificationDialog
   ],
   imports: [
     BrowserModule,
