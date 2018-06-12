@@ -56,7 +56,8 @@ export class ManufacturerComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
-  notifications: NotificationResponse[];
+  crashNotifications: NotificationResponse[];
+  nearCrashNotifications: NotificationResponse[];
 
   @ViewChild("gmapsComponent") gmapsComponent: GmapsComponent;
 
@@ -127,12 +128,26 @@ export class ManufacturerComponent implements OnInit {
       console.log(this.manufacturersSelect);
       let id: string = this.manufacturers.find(manufacturer => manufacturer.name == this.manufacturersSelect).id;
       this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
-        params: new HttpParams().set('receive', id)
+        params: new HttpParams().set('receiver', id).append('top', 'true')
       }).subscribe(data => {
-        this.notifications = data as NotificationResponse[];
-        if(this.notifications != null && this.notifications.length > 0) {
-          for (let i = 0; i < this.notifications.length; i++) {
-            console.log("notification: " + this.notifications[i].id);
+        let notifications: NotificationResponse[];
+        notifications = data as NotificationResponse[];
+        if(notifications != null && notifications.length > 0) {
+          this.crashNotifications = [];
+          this.nearCrashNotifications = [];
+          for (let i = 0; i < notifications.length; i++) {
+            let notification = notifications[i];
+            let existingVehicle = this.mapVehicleInformations.get(notification.vin);
+            if(existingVehicle == null) {
+              return;
+            }
+            notification.aliasInMap = existingVehicle.vehicleAlias.toString();
+            console.log("notification: " + notification.id);
+            if (notification.type == "CrashEventNotification") {
+              this.crashNotifications.push(notification);
+            } else if(notification.type == "NearCrashEventNotification") {
+              this.nearCrashNotifications.push(notification);
+            }
           }
         }
       }, error => {
