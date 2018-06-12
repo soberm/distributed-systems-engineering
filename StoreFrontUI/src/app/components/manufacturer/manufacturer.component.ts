@@ -5,6 +5,7 @@ import {MapVehicleInformation} from "./model/MapVehicleInformation";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {GmapsComponent} from "../gmaps/gmaps.component";
+import {Router} from "@angular/router";
 
 interface ManufacturerResponse {
   id: string
