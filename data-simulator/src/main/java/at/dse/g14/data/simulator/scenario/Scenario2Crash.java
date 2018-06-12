@@ -17,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Scenario2Crash extends AbstractScenario {
 
-  private static final int ARRIVAL_TIME_SEC = 60;
+  private static final int ARRIVAL_TIME_SEC = 20;
   private static final int CLEARANCE_TIME_SEC = 10;
-  private static final int START_INTERVALL_SEC = 30;
+  private static final int START_INTERVALL_SEC = 10;
   private static final int SEND_INTERVALL_SEC = 5;
 
   private Vehicle crashedVehicle;
@@ -30,7 +30,7 @@ public class Scenario2Crash extends AbstractScenario {
 
   @Override
   public void run() {
-    int i = 1;
+    long i = 1;
     for (Entry<Vehicle, CSVReader> entry : vehicleDataMap.entrySet()) {
       executor.scheduleAtFixedRate(
           () -> startVehicle(entry), START_INTERVALL_SEC * i, SEND_INTERVALL_SEC, TimeUnit.SECONDS);
@@ -48,6 +48,7 @@ public class Scenario2Crash extends AbstractScenario {
 
       if (line.length != 8) {
         log.warn("line invalid, skip it");
+        return;
       }
 
       if (vehicle != crashedVehicle) {

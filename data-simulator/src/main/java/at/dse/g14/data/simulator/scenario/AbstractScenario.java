@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -70,7 +69,8 @@ public abstract class AbstractScenario implements Runnable {
                 new InputStreamReader(
                     getClass().getClassLoader().getResourceAsStream("data/car6.csv"))));
 
-    executor.schedule(this::createInitData, 2, TimeUnit.SECONDS);
+//    executor.schedule(this::createInitData, 2, TimeUnit.SECONDS);
+    createInitData();
   }
 
   private void createInitData() {

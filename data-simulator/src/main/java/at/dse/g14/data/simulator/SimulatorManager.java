@@ -1,7 +1,7 @@
 package at.dse.g14.data.simulator;
 
 import at.dse.g14.data.simulator.scenario.AbstractScenario;
-import at.dse.g14.data.simulator.scenario.Scenario1Random;
+import at.dse.g14.data.simulator.scenario.Scenario2Crash;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +14,8 @@ public class SimulatorManager {
   }
 
   public void start() {
-    final AbstractScenario scenario = new Scenario1Random(dseSender);
-//  final Scenario scenario = new Scenario2Crash(dseSender);
+//    final AbstractScenario scenario = new Scenario1Random(dseSender);
+    final AbstractScenario scenario = new Scenario2Crash(dseSender);
 
     scenario.init();
 
