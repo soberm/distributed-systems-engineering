@@ -31,8 +31,7 @@ public class EmergencyServiceController {
 
   @PostMapping
   public EmergencyService createEmergencyService(
-      @RequestBody final EmergencyService emergencyService)
-      throws ServiceException {
+      @RequestBody final EmergencyService emergencyService) throws ServiceException {
     return emergencyServiceService.save(emergencyService);
   }
 
@@ -49,8 +48,7 @@ public class EmergencyServiceController {
 
   @PutMapping
   public EmergencyService updateEmergencyService(
-      @RequestBody final EmergencyService emergencyService)
-      throws ServiceException {
+      @RequestBody final EmergencyService emergencyService) throws ServiceException {
     return emergencyServiceService.update(emergencyService);
   }
 }

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableFeignClients
-//@EnableDiscoveryClient
+// @EnableDiscoveryClient
 public class VehicleDataApplication {
 
   public static void main(String[] args) {

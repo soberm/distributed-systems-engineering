@@ -1,7 +1,6 @@
 package at.dse.g14.messaging;
 
 import at.dse.g14.commons.dto.VehicleTrackDTO;
-import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +13,6 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
-
-import java.io.IOException;
 
 @Slf4j
 @MessageEndpoint

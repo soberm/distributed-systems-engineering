@@ -20,31 +20,33 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "live_vehicle_tracks")
 public class LiveVehicleTrack {
 
-    @Id
-    private String vin;
+  @Id
+  private String vin;
 
-    @NotNull private String modelType;
+  @NotNull
+  private String modelType;
 
-    @Range(min = 0, max = 300)
-    private Integer passengers;
+  @Range(min = 0, max = 300)
+  private Integer passengers;
 
-    @NotNull
-    @GeoSpatialIndexed(useGeneratedName = true)
-    @Size(min = 2, max = 2)
-    private Double[] location;
+  @NotNull
+  @GeoSpatialIndexed(useGeneratedName = true)
+  @Size(min = 2, max = 2)
+  private Double[] location;
 
-    @DecimalMin(value = "0.0")
-//    @DecimalMax(value = "130.0")
-    private BigDecimal speed;
+  @DecimalMin(value = "0.0")
+  //    @DecimalMax(value = "130.0")
+  private BigDecimal speed;
 
-    @DecimalMin(value = "0.0")
-    private BigDecimal distanceVehicleAhead;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleAhead;
 
-    @DecimalMin(value = "0.0")
-    private BigDecimal distanceVehicleBehind;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleBehind;
 
-    @NotNull private Boolean nearCrashEvent;
+  @NotNull
+  private Boolean nearCrashEvent;
 
-    @NotNull private Boolean crashEvent;
-
+  @NotNull
+  private Boolean crashEvent;
 }

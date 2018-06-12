@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @Builder
 @NoArgsConstructor
-//@AllArgsConstructor
+// @AllArgsConstructor
 public class VehicleManufacturer implements DTO {
 
   private String id;

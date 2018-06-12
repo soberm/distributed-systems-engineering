@@ -7,9 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GOVStatApplicationConfig {
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
+  @Bean
+  public ModelMapper modelMapper() {
+    return new ModelMapper();
+  }
 }

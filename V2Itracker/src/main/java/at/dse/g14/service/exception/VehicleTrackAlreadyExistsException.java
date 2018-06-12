@@ -14,5 +14,4 @@ public class VehicleTrackAlreadyExistsException extends ServiceException {
   public VehicleTrackAlreadyExistsException(String message, Exception e) {
     super(message, e);
   }
-
 }

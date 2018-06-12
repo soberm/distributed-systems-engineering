@@ -30,9 +30,10 @@ public class VehicleTrackService implements IVehicleTrackService {
 
   @Autowired
   public VehicleTrackService(
-          final Validator validator, final VehicleTrackRepository vehicleTrackRepository,
-          final ILiveVehicleTrackService liveVehicleTrackService,
-          final ModelMapper modelMapper) {
+      final Validator validator,
+      final VehicleTrackRepository vehicleTrackRepository,
+      final ILiveVehicleTrackService liveVehicleTrackService,
+      final ModelMapper modelMapper) {
     this.validator = validator;
     this.vehicleTrackRepository = vehicleTrackRepository;
     this.liveVehicleTrackService = liveVehicleTrackService;
@@ -109,17 +110,13 @@ public class VehicleTrackService implements IVehicleTrackService {
     log.debug("Validating " + vehicleTrack);
     Set<ConstraintViolation<VehicleTrack>> violations = validator.validate(vehicleTrack);
     if (!violations.isEmpty()) {
-      throw new ValidationException("VehicleTrack not valid: \n" +
-          Arrays.toString(
-              violations.stream()
-                  .map(Object::toString)
-                  .toArray())
-      );
+      throw new ValidationException(
+          "VehicleTrack not valid: \n"
+              + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
   }
 
   private LiveVehicleTrack convertToLiveVehicleTrack(VehicleTrack vehicleTrack) {
     return modelMapper.map(vehicleTrack, LiveVehicleTrack.class);
   }
-
 }

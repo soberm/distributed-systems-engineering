@@ -1,10 +1,18 @@
 package at.dse.g14.service.impl;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.IVehicleTrackService;
 import at.dse.g14.service.exception.VehicleTrackAlreadyExistsException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,15 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

@@ -35,8 +35,8 @@ public class VehicleController {
   }
 
   @GetMapping("/{vid}")
-  public Vehicle getVehicle(@PathVariable("id") final String id,
-      @PathVariable("vid") final String vid)
+  public Vehicle getVehicle(
+      @PathVariable("id") final String id, @PathVariable("vid") final String vid)
       throws ServiceException {
     return vehicleService.findOne(id, vid);
   }

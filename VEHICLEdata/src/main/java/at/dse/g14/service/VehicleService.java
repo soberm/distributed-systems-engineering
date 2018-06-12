@@ -14,8 +14,7 @@ import java.util.List;
  */
 public interface VehicleService extends CrudService<Vehicle, String> {
 
-  Vehicle findOne(String vehicleId, String manufacturerId)
-      throws ServiceException;
+  Vehicle findOne(String vehicleId, String manufacturerId) throws ServiceException;
 
   List<Vehicle> findAllOfManufacturer(String manufacturerId);
 

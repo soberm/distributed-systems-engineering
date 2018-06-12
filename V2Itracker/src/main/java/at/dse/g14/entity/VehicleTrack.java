@@ -35,7 +35,7 @@ public class VehicleTrack {
   private Double[] location;
 
   @DecimalMin(value = "0.0")
-//  @DecimalMax(value = "130.0")
+  //  @DecimalMax(value = "130.0")
   private BigDecimal speed;
 
   @DecimalMin(value = "0.0")

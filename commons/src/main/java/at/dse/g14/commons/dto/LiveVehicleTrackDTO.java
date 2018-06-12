@@ -16,29 +16,31 @@ import org.hibernate.validator.constraints.Range;
 @AllArgsConstructor
 public class LiveVehicleTrackDTO {
 
-    private String vin;
+  private String vin;
 
-    @NotNull
-    private String modelType;
+  @NotNull
+  private String modelType;
 
-    @Range(min = 0, max = 300)
-    private Integer passengers;
+  @Range(min = 0, max = 300)
+  private Integer passengers;
 
-    @NotNull
-    @Size(min = 2, max = 2)
-    private Double[] location;
+  @NotNull
+  @Size(min = 2, max = 2)
+  private Double[] location;
 
-    @DecimalMin(value = "0.0")
-//    @DecimalMax(value = "130.0")
-    private BigDecimal speed;
+  @DecimalMin(value = "0.0")
+  //    @DecimalMax(value = "130.0")
+  private BigDecimal speed;
 
-    @DecimalMin(value = "0.0")
-    private BigDecimal distanceVehicleAhead;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleAhead;
 
-    @DecimalMin(value = "0.0")
-    private BigDecimal distanceVehicleBehind;
+  @DecimalMin(value = "0.0")
+  private BigDecimal distanceVehicleBehind;
 
-    @NotNull private Boolean nearCrashEvent;
+  @NotNull
+  private Boolean nearCrashEvent;
 
-    @NotNull private Boolean crashEvent;
+  @NotNull
+  private Boolean crashEvent;
 }

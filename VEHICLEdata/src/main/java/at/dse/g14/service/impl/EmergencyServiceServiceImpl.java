@@ -33,7 +33,8 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
 
   @Autowired
   public EmergencyServiceServiceImpl(
-      final EmergencyServiceRepository serviceRepository, final ModelMapper modelMapper,
+      final EmergencyServiceRepository serviceRepository,
+      final ModelMapper modelMapper,
       final Validator validator) {
     this.serviceRepository = serviceRepository;
     this.modelMapper = modelMapper;
@@ -98,12 +99,9 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
     log.debug("Validating " + service);
     Set<ConstraintViolation<EmergencyService>> violations = validator.validate(service);
     if (!violations.isEmpty()) {
-      throw new ValidationException("EmergencyService not valid: \n" +
-          Arrays.toString(
-              violations.stream()
-                  .map(Object::toString)
-                  .toArray())
-      );
+      throw new ValidationException(
+          "EmergencyService not valid: \n"
+              + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
   }
 }
