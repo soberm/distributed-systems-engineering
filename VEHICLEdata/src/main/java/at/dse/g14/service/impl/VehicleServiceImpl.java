@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -49,6 +50,11 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public Vehicle save(final Vehicle vehicle) throws ValidationException {
     validate(vehicle);
+
+    if (vehicle.getVin() == null || vehicle.getVin().isEmpty()) {
+      vehicle.setVin(UUID.randomUUID().toString());
+    }
+
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));
     return convertToDto(entity);
   }

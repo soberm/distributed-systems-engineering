@@ -18,8 +18,7 @@ public class EmergencyService {
 
   private String id;
 
-  @NotBlank
-  private String name;
+  @NotBlank private String name;
 
   public EmergencyService(String id, String name) {
     this.id = id;

@@ -4,19 +4,21 @@ import at.dse.g14.commons.dto.RangeRequest;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.service.ILiveVehicleTrackService;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * A Rest-Controller, which provides the necessary endpoints to retrieve LiveVehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Slf4j
 @RestController
 @RequestMapping("/live-vehicle-track")

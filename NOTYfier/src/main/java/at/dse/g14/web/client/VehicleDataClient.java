@@ -11,21 +11,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Feign-Client to access the rest-endpoints of the vehicle data service.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @FeignClient(
-    name = "vehicledata-service",
-    url = "${vehicledata.address}",
-    fallback = VehicleDataClientFallback.class)
+  name = "vehicledata-service",
+  url = "${vehicledata.address}",
+  fallback = VehicleDataClientFallback.class
+)
 public interface VehicleDataClient {
 
   @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/manufacturer",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    method = RequestMethod.GET,
+    value = "/manufacturer",
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+  )
   VehicleManufacturer getVehicleManufacturer(@RequestParam("vin") String vin);
 
   @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/emergencyService",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    method = RequestMethod.GET,
+    value = "/emergencyService",
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+  )
   List<EmergencyService> getEmergencyServices();
 }

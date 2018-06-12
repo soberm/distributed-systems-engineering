@@ -9,6 +9,7 @@ import at.dse.g14.persistence.VehicleRepository;
 import com.google.gson.Gson;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -64,16 +65,22 @@ public abstract class AbstractControllerTest {
     manufacturerEntity3 =
         manufacturerRepository.save(new VehicleManufacturerEntity(null, "Tesla", new HashSet<>()));
 
-    vehicleEntity1 = vehicleRepository.save(new VehicleEntity(null, "Polo", manufacturerEntity1));
-    vehicleEntity2 = vehicleRepository.save(new VehicleEntity(null, "Golf", manufacturerEntity1));
+    vehicleEntity1 = vehicleRepository
+        .save(new VehicleEntity(UUID.randomUUID().toString(), "Polo", manufacturerEntity1));
+    vehicleEntity2 = vehicleRepository
+        .save(new VehicleEntity(UUID.randomUUID().toString(), "Golf", manufacturerEntity1));
     vehicleEntity3 =
-        vehicleRepository.save(new VehicleEntity(null, "2er Cabrio", manufacturerEntity2));
+        vehicleRepository.save(
+            new VehicleEntity(UUID.randomUUID().toString(), "2er Cabrio", manufacturerEntity2));
     vehicleEntity4 =
-        vehicleRepository.save(new VehicleEntity(null, "2er Coupe", manufacturerEntity2));
+        vehicleRepository.save(
+            new VehicleEntity(UUID.randomUUID().toString(), "2er Coupe", manufacturerEntity2));
     vehicleEntity5 =
-        vehicleRepository.save(new VehicleEntity(null, "Model S", manufacturerEntity3));
+        vehicleRepository
+            .save(new VehicleEntity(UUID.randomUUID().toString(), "Model S", manufacturerEntity3));
     vehicleEntity6 =
-        vehicleRepository.save(new VehicleEntity(null, "Model X", manufacturerEntity3));
+        vehicleRepository
+            .save(new VehicleEntity(UUID.randomUUID().toString(), "Model X", manufacturerEntity3));
   }
 
   protected VehicleManufacturer convertToDto(VehicleManufacturerEntity entity) {

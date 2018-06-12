@@ -1,13 +1,14 @@
 package at.dse.g14.commons.dto;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -17,11 +18,9 @@ public class AccidentStatisticsDTO {
 
   private Long id;
 
-  @NotNull
-  private String vin;
+  @NotNull private String vin;
 
-  @NotNull
-  private String modelType;
+  @NotNull private String modelType;
 
   @NotNull
   @Size(min = 2, max = 2)

@@ -7,8 +7,7 @@ package at.dse.g14.commons.service.exception;
  */
 public class ValidationException extends ServiceException {
 
-  public ValidationException() {
-  }
+  public ValidationException() {}
 
   public ValidationException(final String message) {
     super(message);

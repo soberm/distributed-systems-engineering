@@ -13,7 +13,6 @@ import at.dse.g14.service.ISpeedNotificationService;
 import at.dse.g14.service.ISpotlightNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gcp.pubsub.support.GcpPubSubHeaders;
 import org.springframework.integration.annotation.MessageEndpoint;
@@ -22,6 +21,16 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
+import java.util.List;
+
+/**
+ * A MessageHandler which retrieves AccidentEvent-Messages from the configured Google Pub/Sub topic
+ * and handles them.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see MessageHandler
+ */
 @Slf4j
 @MessageEndpoint
 public class AccidentEventMessageHandler implements MessageHandler {
@@ -45,6 +54,12 @@ public class AccidentEventMessageHandler implements MessageHandler {
     this.speedNotificationService = speedNotificationService;
   }
 
+  /**
+   * Handles an AccidentEvent-Message, by generating all notifications.
+   *
+   * @param message which contains the payload with the AccidentEvent.
+   * @throws MessagingException if an error occurs, while retrieving the message.
+   */
   @Override
   @ServiceActivator(inputChannel = "accidentEventInputChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
@@ -68,6 +83,12 @@ public class AccidentEventMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Handles an CrashEvent, by generating notifications for all stakeholders of a crash.
+   *
+   * @param accidentEventDTO which contains the necessary information about the event.
+   * @throws ServiceException if an error generating or saving the notifications occur.
+   */
   private void handleCrashEvent(AccidentEventDTO accidentEventDTO) throws ServiceException {
     log.info("Handling CrashEvent of {}", accidentEventDTO);
 
@@ -90,6 +111,12 @@ public class AccidentEventMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Handles a CrashEvent that nearly occurred, by generationg notifications for all stakeholders.
+   *
+   * @param accidentEventDTO which contains the necessary information about the event.
+   * @throws ServiceException if an error generating or saving the notifications occur.
+   */
   private void handleNearCrashEvent(AccidentEventDTO accidentEventDTO) throws ServiceException {
     log.info("Handling NearCrashEvent of {}", accidentEventDTO);
     List<NearCrashEventNotification> nearCrashEventNotifications =

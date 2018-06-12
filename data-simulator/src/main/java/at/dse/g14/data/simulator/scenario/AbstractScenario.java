@@ -96,12 +96,12 @@ public abstract class AbstractScenario implements Runnable {
     manufacturer2 = sender.createManufacturer(manufacturer2);
     manufacturer3 = sender.createManufacturer(manufacturer3);
 
-    vehicle1 = new Vehicle(null, "Polo", manufacturer1);
-    vehicle2 = new Vehicle(null, "Golf", manufacturer1);
-    vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
-    vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
-    vehicle5 = new Vehicle(null, "Model S", manufacturer3);
-    vehicle6 = new Vehicle(null, "Model X", manufacturer3);
+    vehicle1 = new Vehicle("vehicle1", "Polo", manufacturer1);
+    vehicle2 = new Vehicle("vehicle2", "Golf", manufacturer1);
+    vehicle3 = new Vehicle("vehicle3", "2er Cabrio", manufacturer2);
+    vehicle4 = new Vehicle("vehicle4", "2er Coupe", manufacturer2);
+    vehicle5 = new Vehicle("vehicle5", "Model S", manufacturer3);
+    vehicle6 = new Vehicle("vehicle6", "Model X", manufacturer3);
 
     vehicle1 = sender.createVehicle(vehicle1);
     vehicle2 = sender.createVehicle(vehicle2);
