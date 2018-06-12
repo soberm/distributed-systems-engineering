@@ -1,6 +1,6 @@
 package at.dse.g14.web.client;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.web.client.impl.VehicleDataClientFallback;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;

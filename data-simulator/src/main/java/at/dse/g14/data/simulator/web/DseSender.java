@@ -1,13 +1,13 @@
 package at.dse.g14.data.simulator.web;
 
 import at.dse.g14.commons.dto.AccidentStatisticsDTO;
-import at.dse.g14.commons.dto.ArrivalEventDTO;
-import at.dse.g14.commons.dto.ClearanceEventDTO;
-import at.dse.g14.commons.dto.EmergencyService;
 import at.dse.g14.commons.dto.RangeRequest;
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.commons.dto.VehicleTrackDTO;
+import at.dse.g14.commons.dto.data.EmergencyService;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
 import at.dse.g14.data.simulator.config.PubSubConfig.ArrivalEventOutboundGateway;
 import at.dse.g14.data.simulator.config.PubSubConfig.ClearanceEventOutboundGateway;
 import at.dse.g14.data.simulator.config.PubSubConfig.StatisticsOutboundGateway;

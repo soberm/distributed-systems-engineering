@@ -1,6 +1,6 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.dto.data.EmergencyService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.EmergencyServiceService;
 import java.util.List;

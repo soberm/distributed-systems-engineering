@@ -1,10 +1,10 @@
 package at.dse.g14.data.simulator.scenario;
 
 import at.dse.g14.commons.dto.AccidentStatisticsDTO;
-import at.dse.g14.commons.dto.ArrivalEventDTO;
-import at.dse.g14.commons.dto.ClearanceEventDTO;
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleTrackDTO;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
 import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
 import java.io.IOException;

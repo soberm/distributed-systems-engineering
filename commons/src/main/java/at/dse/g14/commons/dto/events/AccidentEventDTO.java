@@ -1,5 +1,6 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.events;
 
+import at.dse.g14.commons.dto.track.LiveVehicleTrackDTO;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;

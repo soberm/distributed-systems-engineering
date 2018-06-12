@@ -1,5 +1,6 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.data;
 
+import at.dse.g14.commons.dto.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

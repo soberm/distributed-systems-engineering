@@ -1,8 +1,8 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.AccidentEventDTO;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.events.AccidentEventDTO;
+import at.dse.g14.commons.dto.track.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.config.PubSubConfig.AccidentEventOutboundGateway;

@@ -1,8 +1,8 @@
 package at.dse.g14.data.simulator.scenario;
 
-import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.EmergencyService;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;

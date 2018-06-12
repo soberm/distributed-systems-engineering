@@ -1,5 +1,6 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.track;
 
+import at.dse.g14.commons.dto.DTO;
 import java.math.BigDecimal;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;

@@ -1,6 +1,6 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.VehicleService;
 import java.util.List;

@@ -1,6 +1,6 @@
 package at.dse.g14.messaging;
 
-import at.dse.g14.commons.dto.VehicleTrackDTO;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
