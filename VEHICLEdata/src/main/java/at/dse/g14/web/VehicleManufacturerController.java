@@ -14,7 +14,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/manufacturer/")
+@RequestMapping("/manufacturer")
 public class VehicleManufacturerController {
 
   private final VehicleManufacturerService manufacturerService;
@@ -37,7 +37,7 @@ public class VehicleManufacturerController {
   }
 
   @GetMapping
-  public VehicleManufacturer getVehicleManufacturerByVid(@RequestParam("vid") final String vin)
+  public VehicleManufacturer getVehicleManufacturerByVin(@RequestParam("vin") final String vin)
       throws ServiceException {
     return manufacturerService.findByVin(vin);
   }
