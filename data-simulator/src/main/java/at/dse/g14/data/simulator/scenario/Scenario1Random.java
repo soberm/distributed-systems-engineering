@@ -27,6 +27,8 @@ public class Scenario1Random extends AbstractScenario {
 
   private static final int ARRIVAL_TIME_SEC = 60;
   private static final int CLEARANCE_TIME_SEC = 10;
+  private static final int START_INTERVALL_MSEC = 2000;
+  private static final int SEND_INTERVALL_MSEC = 500;
 
   private final Map<Vehicle, VehicleTrackDTO> crashes;
   private final Map<Vehicle, Long> crashStart;
@@ -43,7 +45,8 @@ public class Scenario1Random extends AbstractScenario {
   @Override
   public void run() {
     log.info("run");
-    executor.scheduleAtFixedRate(this::simulateTrackData, 5, 2, TimeUnit.SECONDS);
+    executor.scheduleAtFixedRate(this::simulateTrackData, START_INTERVALL_MSEC, SEND_INTERVALL_MSEC,
+        TimeUnit.MILLISECONDS);
   }
 
   public void simulateTrackData() {
