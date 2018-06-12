@@ -1,6 +1,6 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.dto.data.EmergencyService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.EmergencyServiceEntity;
@@ -33,7 +33,8 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
 
   @Autowired
   public EmergencyServiceServiceImpl(
-      final EmergencyServiceRepository serviceRepository, final ModelMapper modelMapper,
+      final EmergencyServiceRepository serviceRepository,
+      final ModelMapper modelMapper,
       final Validator validator) {
     this.serviceRepository = serviceRepository;
     this.modelMapper = modelMapper;
@@ -98,12 +99,9 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
     log.debug("Validating " + service);
     Set<ConstraintViolation<EmergencyService>> violations = validator.validate(service);
     if (!violations.isEmpty()) {
-      throw new ValidationException("EmergencyService not valid: \n" +
-          Arrays.toString(
-              violations.stream()
-                  .map(Object::toString)
-                  .toArray())
-      );
+      throw new ValidationException(
+          "EmergencyService not valid: \n"
+              + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
   }
 }

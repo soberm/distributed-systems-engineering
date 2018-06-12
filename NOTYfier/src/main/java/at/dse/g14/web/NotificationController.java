@@ -25,7 +25,7 @@ public class NotificationController {
   @GetMapping
   public List<Notification> getNotifications(@RequestParam(required = false) String receiver)
       throws ServiceException {
-    //TODO: Map to DTOs and the DTOs need a type to distinguish different message types
+    // TODO: Map to DTOs and the DTOs need a type to distinguish different message types
     if (receiver == null || receiver.isEmpty()) {
       return notificationService.findAll();
     }

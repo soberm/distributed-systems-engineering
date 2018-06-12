@@ -1,22 +1,18 @@
 package at.dse.g14.data.simulator.scenario;
 
-import at.dse.g14.commons.dto.ArrivalEventDTO;
-import at.dse.g14.commons.dto.ClearanceEventDTO;
-import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.commons.dto.VehicleTrackDTO;
-import at.dse.g14.data.simulator.DseSender;
+import at.dse.g14.commons.dto.AccidentStatisticsDTO;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
+import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -27,109 +23,21 @@ import lombok.extern.slf4j.Slf4j;
  * @since 1.0.0
  */
 @Slf4j
-public class Scenario1Random implements Scenario {
-
-  private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
-  private static final double CRASH_EVENT_PROBABILITY = 0.1;
+public class Scenario1Random extends AbstractScenario {
 
   private static final int ARRIVAL_TIME_SEC = 60;
   private static final int CLEARANCE_TIME_SEC = 10;
 
-  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
-
-  private final DseSender sender;
-  private final Map<Vehicle, CSVReader> vehicleDataMap;
   private final Map<Vehicle, VehicleTrackDTO> crashes;
-
-  private CSVReader car1;
-  private CSVReader car2;
-  private CSVReader car3;
-  private CSVReader car4;
-  private CSVReader car5;
-  private CSVReader car6;
+  private final Map<Vehicle, Long> crashStart;
+  private final Map<Vehicle, AccidentStatisticsDTO> crashStats;
 
   public Scenario1Random(final DseSender sender) {
-    this.sender = sender;
+    super(sender);
 
-    vehicleDataMap = new HashMap<>();
-    crashes = new HashMap<>();
-  }
-
-  public void init() {
-    log.info("init reader");
-
-    car1 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car1.csv"))));
-    car2 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car2.csv"))));
-    car3 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car3.csv"))));
-    car4 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car4.csv"))));
-    car5 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car5.csv"))));
-    car6 =
-        new CSVReader(
-            new BufferedReader(
-                new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("data/car6.csv"))));
-
-    executor.schedule(this::createInitData, 2, TimeUnit.SECONDS);
-  }
-
-  private void createInitData() {
-    log.info("create init data");
-    VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW");
-    VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW");
-    VehicleManufacturer manufacturer3 = new VehicleManufacturer(null, "Tesla");
-
-    manufacturer1 = sender.createManufacturer(manufacturer1);
-    manufacturer2 = sender.createManufacturer(manufacturer2);
-    manufacturer3 = sender.createManufacturer(manufacturer3);
-
-    Vehicle vehicle1 = new Vehicle(null, "Polo", manufacturer1);
-    Vehicle vehicle2 = new Vehicle(null, "Golf", manufacturer1);
-    Vehicle vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
-    Vehicle vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
-    Vehicle vehicle5 = new Vehicle(null, "Model S", manufacturer3);
-    Vehicle vehicle6 = new Vehicle(null, "Model X", manufacturer3);
-
-    vehicle1 = sender.createVehicle(vehicle1);
-    vehicle2 = sender.createVehicle(vehicle2);
-    vehicle3 = sender.createVehicle(vehicle3);
-    vehicle4 = sender.createVehicle(vehicle4);
-    vehicle5 = sender.createVehicle(vehicle5);
-    vehicle6 = sender.createVehicle(vehicle6);
-
-    EmergencyService service1 = new EmergencyService(null, "Polizei");
-    EmergencyService service2 = new EmergencyService(null, "Feuerwehr");
-    EmergencyService service3 = new EmergencyService(null, "Rettung");
-
-    service1 = sender.createEmergencyService(service1);
-    service2 = sender.createEmergencyService(service2);
-    service3 = sender.createEmergencyService(service3);
-
-    vehicleDataMap.putIfAbsent(vehicle1, car1);
-    vehicleDataMap.putIfAbsent(vehicle2, car2);
-    vehicleDataMap.putIfAbsent(vehicle3, car3);
-    vehicleDataMap.putIfAbsent(vehicle4, car4);
-    vehicleDataMap.putIfAbsent(vehicle5, car5);
-    vehicleDataMap.putIfAbsent(vehicle6, car6);
+    this.crashes = new HashMap<>();
+    this.crashStart = new HashMap<>();
+    this.crashStats = new HashMap<>();
   }
 
   @Override
@@ -169,9 +77,7 @@ public class Scenario1Random implements Scenario {
 
           if (track.getCrashEvent()) {
             log.info("crash event detected!");
-            crashes.put(entry.getKey(), track);
-            executor.schedule(() -> handleCrashStart(entry.getKey()), ARRIVAL_TIME_SEC,
-                TimeUnit.SECONDS);
+            initCrash(entry.getKey(), track);
           }
         }
       }
@@ -181,26 +87,48 @@ public class Scenario1Random implements Scenario {
     }
   }
 
-  private boolean getRandomNearCrashEvent(final ThreadLocalRandom random) {
-    return random.nextFloat() < NEAR_CRASH_EVENT_PROBABILITY;
-  }
+  private void initCrash(final Vehicle vehicle, final VehicleTrackDTO track) {
+    crashes.put(vehicle, track);
+    crashStart.put(vehicle, System.currentTimeMillis());
 
-  private boolean getRandomCrashEvent(final ThreadLocalRandom random) {
-    return random.nextFloat() < CRASH_EVENT_PROBABILITY;
+    final AccidentStatisticsDTO statisticsDTO =
+        AccidentStatisticsDTO.builder()
+            .vin(vehicle.getVin())
+            .modelType(vehicle.getModelType())
+            .location(track.getLocation())
+            .passengers(track.getPassengers())
+            .arrivalTimeEmergencyService(0)
+            .clearanceTimeAccidentSpot(0)
+            .build();
+
+    crashStats.put(vehicle, statisticsDTO);
+    executor.schedule(() -> handleCrashStart(vehicle), ARRIVAL_TIME_SEC, TimeUnit.SECONDS);
   }
 
   private void handleCrashStart(final Vehicle vehicle) {
+    final List<Vehicle> vehicles =
+        sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
+    sender.sendEvent(new ArrivalEventDTO(vehicles));
+
+    final long startTime = crashStart.get(vehicle);
+    final long currentTime = System.currentTimeMillis();
+    crashStats.get(vehicle).setArrivalTimeEmergencyService((int) (currentTime - startTime));
+
     executor.schedule(() -> handleCrashOver(vehicle), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
-    sender.sendEvent(new ArrivalEventDTO(true));
   }
 
   private void handleCrashOver(final Vehicle vehicle) {
-    sender.sendEvent(new ClearanceEventDTO(true));
+    final List<Vehicle> vehicles =
+        sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
+    sender.sendEvent(new ClearanceEventDTO(vehicles));
+
+    final long startTime = crashStart.get(vehicle);
+    final long currentTime = System.currentTimeMillis();
+    crashStats.get(vehicle).setClearanceTimeAccidentSpot((int) (currentTime - startTime));
+
+    sender.sendStatistics(crashStats.get(vehicle));
+
     crashes.remove(vehicle);
     log.info("crash over");
-  }
-
-  private Double[] constructGpsPoint(final String[] line) {
-    return new Double[]{Double.parseDouble(line[2]), Double.parseDouble(line[3])};
   }
 }

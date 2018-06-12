@@ -1,12 +1,10 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.data.simulator.scenario;
 
 /**
  * @author Lukas Baronyai
  * @version ${buildVersion}
  * @since 1.0.0
  */
-public interface DTO {
-
-  //  Long getId();
+public class ScenarioEnum {
 
 }

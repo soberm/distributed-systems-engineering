@@ -1,18 +1,17 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.ClearanceEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.ClearanceNotification;
 import at.dse.g14.persistence.ClearanceNotificationRepository;
 import at.dse.g14.service.AbstractCrudService;
 import at.dse.g14.service.IClearanceNotificationService;
+import java.util.List;
+import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.validation.Validator;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -42,8 +41,9 @@ public class ClearanceNotificationService extends AbstractCrudService<ClearanceN
   }
 
   @Override
-  public List<ClearanceNotification> generateFrom(ClearanceEventDTO clearanceEventDTO) throws ServiceException {
-    //TODO: Generate notification or notifications from DTO
+  public List<ClearanceNotification> generateFrom(ClearanceEventDTO clearanceEventDTO)
+      throws ServiceException {
+    // TODO: Generate notification or notifications from DTO
     return null;
   }
 }

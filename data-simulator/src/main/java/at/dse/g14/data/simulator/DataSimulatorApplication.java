@@ -14,22 +14,22 @@ import org.springframework.stereotype.Component;
  * @since 1.0.0
  */
 @SpringBootApplication
-//@EnableDiscoveryClient
+// @EnableDiscoveryClient
 @EnableScheduling
 @Component
 @Slf4j
 public class DataSimulatorApplication implements CommandLineRunner {
 
+  @Autowired
+  private SimulatorManager simulatorManager;
+
   public static void main(String[] args) {
     SpringApplication.run(DataSimulatorApplication.class, args);
   }
 
-  @Autowired
-  private SimulatorManager simulatorManager;
-
   @Override
   public void run(String... args) throws Exception {
     log.info("start");
-    simulatorManager.start();
+    simulatorManager.startScenario();
   }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableCircuitBreaker
 @EnableFeignClients
 @RestController
-//@EnableDiscoveryClient
+// @EnableDiscoveryClient
 public class NotyfierApplication {
 
   public static void main(String[] args) {

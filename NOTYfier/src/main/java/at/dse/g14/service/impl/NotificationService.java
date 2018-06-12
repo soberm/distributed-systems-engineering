@@ -4,11 +4,10 @@ import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.Notification;
 import at.dse.g14.persistence.NotificationRepository;
 import at.dse.g14.service.INotificationService;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service

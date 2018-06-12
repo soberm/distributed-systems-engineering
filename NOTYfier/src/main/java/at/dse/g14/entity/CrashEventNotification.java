@@ -1,9 +1,12 @@
 package at.dse.g14.entity;
 
-import lombok.*;
-
-import javax.persistence.Entity;
 import java.math.BigDecimal;
+import javax.persistence.Entity;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity

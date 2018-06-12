@@ -1,4 +1,4 @@
-package at.dse.g14.entity;
+package at.dse.g14.commons.dto.track;
 
 import java.math.BigDecimal;
 import javax.validation.constraints.DecimalMin;
@@ -9,18 +9,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "live_vehicle_tracks")
-public class LiveVehicleTrack {
+@AllArgsConstructor
+public class LiveVehicleTrackDTO {
 
-  @Id
   private String vin;
 
   @NotNull
@@ -30,7 +25,6 @@ public class LiveVehicleTrack {
   private Integer passengers;
 
   @NotNull
-  @GeoSpatialIndexed(useGeneratedName = true)
   @Size(min = 2, max = 2)
   private Double[] location;
 

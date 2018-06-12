@@ -1,6 +1,6 @@
 package at.dse.g14.messaging;
 
-import at.dse.g14.commons.dto.ClearanceEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.IClearanceNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;

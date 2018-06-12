@@ -4,15 +4,14 @@ import at.dse.g14.commons.service.exception.ServiceException;
 
 public class LiveVehicleTrackAlreadyExistsException extends ServiceException {
 
-    public LiveVehicleTrackAlreadyExistsException() {
-    }
+  public LiveVehicleTrackAlreadyExistsException() {
+  }
 
-    public LiveVehicleTrackAlreadyExistsException(String message) {
-        super(message);
-    }
+  public LiveVehicleTrackAlreadyExistsException(String message) {
+    super(message);
+  }
 
-    public LiveVehicleTrackAlreadyExistsException(String message, Exception e) {
-        super(message, e);
-    }
-
+  public LiveVehicleTrackAlreadyExistsException(String message, Exception e) {
+    super(message, e);
+  }
 }

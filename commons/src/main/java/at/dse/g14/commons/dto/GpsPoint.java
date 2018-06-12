@@ -24,5 +24,4 @@ public class GpsPoint {
   @DecimalMin(value = "-180.0")
   @DecimalMax(value = "+180.0")
   private BigDecimal lon;
-
 }

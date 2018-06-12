@@ -1,6 +1,5 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,16 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class Vehicle implements DTO {
+// @AllArgsConstructor
+public class EmergencyService {
 
-  private String vin;
+  private String id;
 
   @NotBlank
-  private String modelType;
+  private String name;
 
-  private VehicleManufacturer manufacturer;
+  public EmergencyService(String id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }

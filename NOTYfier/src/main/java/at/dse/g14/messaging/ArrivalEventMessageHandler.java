@@ -1,6 +1,6 @@
 package at.dse.g14.messaging;
 
-import at.dse.g14.commons.dto.ArrivalEventDTO;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.IArrivalNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;

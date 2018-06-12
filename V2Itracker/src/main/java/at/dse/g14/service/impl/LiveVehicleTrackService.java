@@ -1,8 +1,8 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.AccidentEventDTO;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.events.AccidentEventDTO;
+import at.dse.g14.commons.dto.track.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.config.PubSubConfig.AccidentEventOutboundGateway;
@@ -13,6 +13,11 @@ import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
 import at.dse.g14.web.client.VehicleDataClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +25,6 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
-
-import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

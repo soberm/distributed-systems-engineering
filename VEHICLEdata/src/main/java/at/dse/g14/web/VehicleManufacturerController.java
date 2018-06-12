@@ -1,6 +1,6 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.VehicleManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,7 @@ public class VehicleManufacturerController {
   }
 
   @GetMapping("getAll")
-  public List<VehicleManufacturer> getAllVehicleManufacturers()
-          throws ServiceException {
+  public List<VehicleManufacturer> getAllVehicleManufacturers() throws ServiceException {
     return manufacturerService.findAll();
   }
 

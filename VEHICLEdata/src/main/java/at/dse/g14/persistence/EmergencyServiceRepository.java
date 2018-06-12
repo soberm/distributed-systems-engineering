@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
  * @since 1.0.0
  */
 @Repository
-public interface EmergencyServiceRepository extends CrudRepository<EmergencyServiceEntity, String> {
+public interface EmergencyServiceRepository
+    extends CrudRepository<EmergencyServiceEntity, String> {
 
 }

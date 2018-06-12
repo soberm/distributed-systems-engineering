@@ -1,11 +1,10 @@
 package at.dse.g14.commons.dto;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -13,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class RangeRequest {
 
-    private Double[] location;
+  private Double[] location;
 
-    private BigDecimal rangeKilometre;
+  private BigDecimal rangeKilometre;
 }

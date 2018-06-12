@@ -16,6 +16,7 @@ public class PubSubConfig {
   public static final String CHANNEL_EVENT_CLEARANCE = "clearanceEventInputChannel";
   public static final String CHANNEL_EVENT_ARRIVAL = "arrivalEventInputChannel";
   public static final String CHANNEL_TRACK = "vehicleTrackInputChannel";
+  public static final String CHANNEL_STATISTICS = "accidentStatisticsChannel";
 
   @Bean
   @ServiceActivator(inputChannel = CHANNEL_EVENT_CLEARANCE)
@@ -35,6 +36,12 @@ public class PubSubConfig {
     return new PubSubMessageHandler(pubsubTemplate, "vehicle-tracks");
   }
 
+  @Bean
+  @ServiceActivator(inputChannel = CHANNEL_STATISTICS)
+  public MessageHandler statisticsMessageSender(PubSubOperations pubsubTemplate) {
+    return new PubSubMessageHandler(pubsubTemplate, "accident-statistics");
+  }
+
   @MessagingGateway(defaultRequestChannel = CHANNEL_EVENT_CLEARANCE)
   public interface ClearanceEventOutboundGateway {
 
@@ -49,6 +56,12 @@ public class PubSubConfig {
 
   @MessagingGateway(defaultRequestChannel = CHANNEL_TRACK)
   public interface VehicleTrackOutboundGateway {
+    void sendToPubsub(String text);
+  }
+
+  @MessagingGateway(defaultRequestChannel = CHANNEL_STATISTICS)
+  public interface StatisticsOutboundGateway {
+
     void sendToPubsub(String text);
   }
 }

@@ -1,5 +1,6 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.data;
 
+import at.dse.g14.commons.dto.DTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @Builder
 @NoArgsConstructor
-//@AllArgsConstructor
+// @AllArgsConstructor
 public class VehicleManufacturer implements DTO {
 
   private String id;
