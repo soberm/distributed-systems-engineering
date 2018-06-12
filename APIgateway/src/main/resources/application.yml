@@ -1,0 +1,46 @@
+server:
+  port: 7000
+
+ribbon:
+  eureka:
+    enabled: false
+
+spring:
+  application:
+    name: api-gateway
+
+zuul:
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+
+  routes:
+    notyfier:
+      path: /notyfier/**
+      serviceId: notyfier
+      stripPrefix: false
+      sensitiveHeaders:
+
+    data-simulator:
+      path: /simulator/**
+      serviceId: data-simulator
+      stripPrefix: false
+      sensitiveHeaders:
+
+    gov-stat:
+      path: /gov-stat/**
+      serviceId: gov-stat
+      stripPrefix: false
+      sensitiveHeaders:
+
+    v2i-tracker:
+      path: /tracker/**
+      serviceId: v2i-tracker
+      stripPrefix: false
+      sensitiveHeaders:
+
+    vehicle-data:
+      path: /vehicle-data/**
+      serviceId: vehicle-data
+      stripPrefix: false
+      sensitiveHeaders:
