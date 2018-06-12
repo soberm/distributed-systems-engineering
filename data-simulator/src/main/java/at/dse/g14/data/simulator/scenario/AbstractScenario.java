@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractScenario implements Runnable {
 
-  private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.2;
-  private static final double CRASH_EVENT_PROBABILITY = 0.1;
+  private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.1;
+  private static final double CRASH_EVENT_PROBABILITY = 0.05;
 
   protected final DseSender sender;
   protected final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
@@ -30,6 +30,19 @@ public abstract class AbstractScenario implements Runnable {
   protected CSVReader car4;
   protected CSVReader car5;
   protected CSVReader car6;
+
+  protected VehicleManufacturer manufacturer1;
+  protected VehicleManufacturer manufacturer2;
+  protected VehicleManufacturer manufacturer3;
+  protected Vehicle vehicle1;
+  protected Vehicle vehicle2;
+  protected Vehicle vehicle3;
+  protected Vehicle vehicle4;
+  protected Vehicle vehicle5;
+  protected Vehicle vehicle6;
+  protected EmergencyService service1;
+  protected EmergencyService service2;
+  protected EmergencyService service3;
 
   protected AbstractScenario(DseSender sender) {
     this.sender = sender;
@@ -75,20 +88,20 @@ public abstract class AbstractScenario implements Runnable {
 
   private void createInitData() {
     log.info("create init data");
-    VehicleManufacturer manufacturer1 = new VehicleManufacturer(null, "BMW");
-    VehicleManufacturer manufacturer2 = new VehicleManufacturer(null, "VW");
-    VehicleManufacturer manufacturer3 = new VehicleManufacturer(null, "Tesla");
+    manufacturer1 = new VehicleManufacturer(null, "BMW");
+    manufacturer2 = new VehicleManufacturer(null, "VW");
+    manufacturer3 = new VehicleManufacturer(null, "Tesla");
 
     manufacturer1 = sender.createManufacturer(manufacturer1);
     manufacturer2 = sender.createManufacturer(manufacturer2);
     manufacturer3 = sender.createManufacturer(manufacturer3);
 
-    Vehicle vehicle1 = new Vehicle(null, "Polo", manufacturer1);
-    Vehicle vehicle2 = new Vehicle(null, "Golf", manufacturer1);
-    Vehicle vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
-    Vehicle vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
-    Vehicle vehicle5 = new Vehicle(null, "Model S", manufacturer3);
-    Vehicle vehicle6 = new Vehicle(null, "Model X", manufacturer3);
+    vehicle1 = new Vehicle(null, "Polo", manufacturer1);
+    vehicle2 = new Vehicle(null, "Golf", manufacturer1);
+    vehicle3 = new Vehicle(null, "2er Cabrio", manufacturer2);
+    vehicle4 = new Vehicle(null, "2er Coupe", manufacturer2);
+    vehicle5 = new Vehicle(null, "Model S", manufacturer3);
+    vehicle6 = new Vehicle(null, "Model X", manufacturer3);
 
     vehicle1 = sender.createVehicle(vehicle1);
     vehicle2 = sender.createVehicle(vehicle2);
@@ -97,9 +110,9 @@ public abstract class AbstractScenario implements Runnable {
     vehicle5 = sender.createVehicle(vehicle5);
     vehicle6 = sender.createVehicle(vehicle6);
 
-    EmergencyService service1 = new EmergencyService(null, "Polizei");
-    EmergencyService service2 = new EmergencyService(null, "Feuerwehr");
-    EmergencyService service3 = new EmergencyService(null, "Rettung");
+    service1 = new EmergencyService(null, "Polizei");
+    service2 = new EmergencyService(null, "Feuerwehr");
+    service3 = new EmergencyService(null, "Rettung");
 
     service1 = sender.createEmergencyService(service1);
     service2 = sender.createEmergencyService(service2);
@@ -126,6 +139,7 @@ public abstract class AbstractScenario implements Runnable {
   }
 
   public void stop() {
+    log.info("stop scenario");
     executor.shutdown();
   }
 }

@@ -54,6 +54,9 @@ public abstract class AbstractControllerTest {
 
   @Before
   public void setup() {
+    vehicleRepository.deleteAll();
+    manufacturerRepository.deleteAll();
+
     manufacturerEntity1 =
         manufacturerRepository.save(new VehicleManufacturerEntity(null, "BMW", new HashSet<>()));
     manufacturerEntity2 =

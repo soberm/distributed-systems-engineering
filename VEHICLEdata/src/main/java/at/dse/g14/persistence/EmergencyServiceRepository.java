@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface EmergencyServiceRepository
     extends CrudRepository<EmergencyServiceEntity, String> {
 
+  EmergencyServiceEntity getByName(final String name);
+
 }

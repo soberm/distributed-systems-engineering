@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface VehicleManufacturerRepository
     extends CrudRepository<VehicleManufacturerEntity, String> {
 
+  VehicleManufacturerEntity getByName(final String name);
 }

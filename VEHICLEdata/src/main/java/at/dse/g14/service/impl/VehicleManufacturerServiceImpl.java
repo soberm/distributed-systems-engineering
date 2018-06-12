@@ -52,6 +52,16 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
   @Override
   public VehicleManufacturer save(final VehicleManufacturer manufacturer) throws ServiceException {
     validate(manufacturer);
+
+    if (manufacturer.getId() != null) {
+      return manufacturer;
+    } else {
+      final VehicleManufacturer found = getByName(manufacturer.getName());
+      if (found != null) {
+        return found;
+      }
+    }
+
     final VehicleManufacturerEntity entity =
         manufacturerRepository.save(convertToEntity(manufacturer));
     return convertToDto(entity);
@@ -88,6 +98,12 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
       throw new ServiceException("Unknown manufacturerId " + manufacturerId);
     }
     return convertToDto(foundManufacturer.get());
+  }
+
+  @Override
+  public VehicleManufacturer getByName(final String name) {
+    final VehicleManufacturerEntity entity = manufacturerRepository.getByName(name);
+    return (entity != null) ? convertToDto(entity) : null;
   }
 
   @Override
