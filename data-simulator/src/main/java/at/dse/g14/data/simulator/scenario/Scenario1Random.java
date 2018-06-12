@@ -1,5 +1,6 @@
 package at.dse.g14.data.simulator.scenario;
 
+import at.dse.g14.commons.dto.AccidentStatisticsDTO;
 import at.dse.g14.commons.dto.ArrivalEventDTO;
 import at.dse.g14.commons.dto.ClearanceEventDTO;
 import at.dse.g14.commons.dto.Vehicle;
@@ -12,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -29,14 +28,16 @@ public class Scenario1Random extends AbstractScenario {
   private static final int ARRIVAL_TIME_SEC = 60;
   private static final int CLEARANCE_TIME_SEC = 10;
 
-  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
-
   private final Map<Vehicle, VehicleTrackDTO> crashes;
+  private final Map<Vehicle, Long> crashStart;
+  private final Map<Vehicle, AccidentStatisticsDTO> crashStats;
 
   public Scenario1Random(final DseSender sender) {
     super(sender);
 
-    crashes = new HashMap<>();
+    this.crashes = new HashMap<>();
+    this.crashStart = new HashMap<>();
+    this.crashStats = new HashMap<>();
   }
 
   @Override
@@ -76,9 +77,7 @@ public class Scenario1Random extends AbstractScenario {
 
           if (track.getCrashEvent()) {
             log.info("crash event detected!");
-            crashes.put(entry.getKey(), track);
-            executor.schedule(
-                () -> handleCrashStart(entry.getKey()), ARRIVAL_TIME_SEC, TimeUnit.SECONDS);
+            initCrash(entry.getKey(), track);
           }
         }
       }
@@ -88,17 +87,47 @@ public class Scenario1Random extends AbstractScenario {
     }
   }
 
+  private void initCrash(final Vehicle vehicle, final VehicleTrackDTO track) {
+    crashes.put(vehicle, track);
+    crashStart.put(vehicle, System.currentTimeMillis());
+
+    final AccidentStatisticsDTO statisticsDTO =
+        AccidentStatisticsDTO.builder()
+            .vin(vehicle.getVin())
+            .modelType(vehicle.getModelType())
+            .location(track.getLocation())
+            .passengers(track.getPassengers())
+            .arrivalTimeEmergencyService(0)
+            .clearanceTimeAccidentSpot(0)
+            .build();
+
+    crashStats.put(vehicle, statisticsDTO);
+    executor.schedule(() -> handleCrashStart(vehicle), ARRIVAL_TIME_SEC, TimeUnit.SECONDS);
+  }
+
   private void handleCrashStart(final Vehicle vehicle) {
-    executor.schedule(() -> handleCrashOver(vehicle), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
     final List<Vehicle> vehicles =
         sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
     sender.sendEvent(new ArrivalEventDTO(vehicles));
+
+    final long startTime = crashStart.get(vehicle);
+    final long currentTime = System.currentTimeMillis();
+    crashStats.get(vehicle).setArrivalTimeEmergencyService((int) (currentTime - startTime));
+
+    executor.schedule(() -> handleCrashOver(vehicle), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
   }
 
   private void handleCrashOver(final Vehicle vehicle) {
     final List<Vehicle> vehicles =
         sender.getVehicleToNotify(crashes.get(vehicle).getLocation(), 10);
     sender.sendEvent(new ClearanceEventDTO(vehicles));
+
+    final long startTime = crashStart.get(vehicle);
+    final long currentTime = System.currentTimeMillis();
+    crashStats.get(vehicle).setClearanceTimeAccidentSpot((int) (currentTime - startTime));
+
+    sender.sendStatistics(crashStats.get(vehicle));
+
     crashes.remove(vehicle);
     log.info("crash over");
   }

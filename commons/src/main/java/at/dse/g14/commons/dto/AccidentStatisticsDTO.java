@@ -1,14 +1,13 @@
 package at.dse.g14.commons.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -24,8 +23,9 @@ public class AccidentStatisticsDTO {
     @NotNull
     private String modelType;
 
-    @Valid
-    private GpsPoint location;
+  @NotNull
+  @Size(min = 2, max = 2)
+  private Double[] location;
 
     @Range(min = 0, max = 300)
     private Integer passengers;

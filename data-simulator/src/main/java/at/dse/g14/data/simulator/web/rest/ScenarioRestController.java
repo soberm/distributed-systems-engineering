@@ -26,13 +26,12 @@ public class ScenarioRestController {
   }
 
   @GetMapping("/start")
-  public void startScenario() {
-    simulatorManager.startScenario();
-  }
-
-  @GetMapping("/start")
-  public void startScenario(@RequestParam final int id) {
-    simulatorManager.startScenario(id);
+  public void startScenario(@RequestParam(required = false) final Integer id) {
+    if (id != null) {
+      simulatorManager.startScenario(id);
+    } else {
+      simulatorManager.startScenario();
+    }
   }
 
   @GetMapping("/stop")

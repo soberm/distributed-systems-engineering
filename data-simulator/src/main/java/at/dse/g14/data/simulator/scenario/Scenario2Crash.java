@@ -1,5 +1,6 @@
 package at.dse.g14.data.simulator.scenario;
 
+import at.dse.g14.commons.dto.AccidentStatisticsDTO;
 import at.dse.g14.commons.dto.ArrivalEventDTO;
 import at.dse.g14.commons.dto.ClearanceEventDTO;
 import at.dse.g14.commons.dto.Vehicle;
@@ -23,6 +24,8 @@ public class Scenario2Crash extends AbstractScenario {
   private static final int SEND_INTERVALL_SEC = 5;
 
   private Vehicle crashedVehicle;
+  private AccidentStatisticsDTO accidentStatistics;
+  private long crashStartTime;
 
   public Scenario2Crash(final DseSender sender) {
     super(sender);
@@ -69,9 +72,7 @@ public class Scenario2Crash extends AbstractScenario {
 
         if (track.getCrashEvent()) {
           log.info("crash event detected!");
-          crashedVehicle = vehicle;
-          handleCrashStart(track);
-          executor.schedule(() -> handleCrashStart(track), ARRIVAL_TIME_SEC, TimeUnit.SECONDS);
+          initCrash(vehicle, track);
         }
       }
     } catch (IOException e) {
@@ -79,16 +80,46 @@ public class Scenario2Crash extends AbstractScenario {
     }
   }
 
+  private void initCrash(final Vehicle vehicle, final VehicleTrackDTO track) {
+    crashedVehicle = vehicle;
+    crashStartTime = System.currentTimeMillis();
+
+    accidentStatistics =
+        AccidentStatisticsDTO.builder()
+            .vin(vehicle.getVin())
+            .modelType(vehicle.getModelType())
+            .location(track.getLocation())
+            .passengers(track.getPassengers())
+            .arrivalTimeEmergencyService(0)
+            .clearanceTimeAccidentSpot(0)
+            .build();
+
+    executor.schedule(() -> handleCrashStart(track), ARRIVAL_TIME_SEC, TimeUnit.SECONDS);
+  }
+
   private void handleCrashStart(final VehicleTrackDTO track) {
-    executor.schedule(() -> handleCrashOver(track), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
     final List<Vehicle> vehicles = sender.getVehicleToNotify(track.getLocation(), 10);
     sender.sendEvent(new ArrivalEventDTO(vehicles));
+
+    final long currentTime = System.currentTimeMillis();
+    accidentStatistics.setArrivalTimeEmergencyService((int) (currentTime - crashStartTime));
+
+    executor.schedule(() -> handleCrashOver(track), CLEARANCE_TIME_SEC, TimeUnit.SECONDS);
   }
 
   private void handleCrashOver(final VehicleTrackDTO track) {
     final List<Vehicle> vehicles = sender.getVehicleToNotify(track.getLocation(), 10);
     sender.sendEvent(new ClearanceEventDTO(vehicles));
+
+    final long currentTime = System.currentTimeMillis();
+    accidentStatistics.setClearanceTimeAccidentSpot((int) (currentTime - crashStartTime));
+
+    sender.sendStatistics(accidentStatistics);
+
     crashedVehicle = null;
+    crashStartTime = 0;
+    accidentStatistics = null;
+
     log.info("crash over");
   }
 }
