@@ -102,7 +102,8 @@ public class VehicleManufacturerServiceImpl implements VehicleManufacturerServic
 
   @Override
   public VehicleManufacturer getByName(final String name) {
-    return convertToDto(manufacturerRepository.getByName(name));
+    final VehicleManufacturerEntity entity = manufacturerRepository.getByName(name);
+    return (entity != null) ? convertToDto(entity) : null;
   }
 
   @Override

@@ -117,6 +117,7 @@ public class EmergencyServiceServiceImpl implements EmergencyServiceService {
 
   @Override
   public EmergencyService getByName(final String name) {
-    return convertToDto(serviceRepository.getByName(name));
+    final EmergencyServiceEntity entity = serviceRepository.getByName(name);
+    return (entity != null) ? convertToDto(entity) : null;
   }
 }
