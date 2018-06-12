@@ -6,9 +6,10 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
+ * An application, which is responsible for saving AccidentStatistics.
+ *
  * @author Michael Sober
- * @version ${buildVersion}
- * @since 1.0.0
+ * @since 1.0
  */
 @SpringBootApplication
 @EnableCircuitBreaker
