@@ -36,10 +36,14 @@ public class NotificationController {
    * @throws ServiceException if an error finding the notifications occur.
    */
   @GetMapping
-  public List<Notification> getNotifications(@RequestParam(required = false) String receiver)
+  public List<Notification> getNotifications(
+      @RequestParam(required = false) String receiver, @RequestParam(required = false) Boolean top)
       throws ServiceException {
     if (receiver == null || receiver.isEmpty()) {
       return notificationService.findAll();
+    }
+    if (top) {
+      return notificationService.findTop10ByReceiver(receiver);
     }
     return notificationService.findByReceiver(receiver);
   }

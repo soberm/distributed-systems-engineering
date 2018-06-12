@@ -35,6 +35,11 @@ public class NotificationService implements INotificationService {
   }
 
   @Override
+  public List<Notification> findTop10ByReceiver(String receiver) throws ServiceException {
+    return notificationRepository.findTop10ByReceiver(receiver);
+  }
+
+  @Override
   public List<Notification> findByReceiver(String receiver) throws ServiceException {
     log.info("Finding all notifications for {}", receiver);
     return notificationRepository.findByReceiver(receiver);

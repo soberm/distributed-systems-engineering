@@ -17,4 +17,6 @@ import java.util.List;
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
 
   List<Notification> findByReceiver(String receiver);
+
+  List<Notification> findTop10ByReceiver(String receiver);
 }
