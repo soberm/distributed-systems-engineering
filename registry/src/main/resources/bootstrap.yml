@@ -6,10 +6,6 @@ server:
 spring:
   application:
     name: registry
-  boot:
-    admin:
-      client:
-        url: http://localhost:8123
 
 eureka:
   instance:
