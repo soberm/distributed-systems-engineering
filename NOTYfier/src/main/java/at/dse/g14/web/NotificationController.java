@@ -42,7 +42,7 @@ public class NotificationController {
     if (receiver == null || receiver.isEmpty()) {
       return notificationService.findAll();
     }
-    if (top) {
+    if (top != null && top) {
       return notificationService.findTop10ByReceiver(receiver);
     }
     return notificationService.findByReceiver(receiver);
