@@ -24,6 +24,12 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * Unit-Tests for the LiveVehicleTrackService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class LiveVehicleTrackServiceTest {

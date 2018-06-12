@@ -13,6 +13,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * An entity which represents the latest information about a moving vehicle.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Data
 @Builder
 @AllArgsConstructor

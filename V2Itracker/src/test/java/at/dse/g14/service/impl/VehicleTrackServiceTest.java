@@ -22,6 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * Unit-Tests for the VehicleTrackService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class VehicleTrackServiceTest {

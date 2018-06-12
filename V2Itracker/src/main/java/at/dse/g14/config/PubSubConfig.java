@@ -14,6 +14,12 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
+/**
+ * Google Pub/Sub configuration of the application.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Configuration
 @Profile("!test")
 public class PubSubConfig {

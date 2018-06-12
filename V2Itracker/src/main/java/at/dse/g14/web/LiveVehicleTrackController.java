@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * A Rest-Controller, which provides the necessary endpoints to retrieve LiveVehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Slf4j
 @RestController
 @RequestMapping("/live-vehicle-track")

@@ -19,6 +19,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class implements the functionality around VehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see IVehicleTrackService
+ */
 @Slf4j
 @Service
 public class VehicleTrackService implements IVehicleTrackService {

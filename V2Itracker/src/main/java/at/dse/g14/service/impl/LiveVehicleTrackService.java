@@ -26,6 +26,13 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class implements the functionality around LiveVehicleTracks.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see ILiveVehicleTrackService
+ */
 @Slf4j
 @Service
 public class LiveVehicleTrackService implements ILiveVehicleTrackService {
