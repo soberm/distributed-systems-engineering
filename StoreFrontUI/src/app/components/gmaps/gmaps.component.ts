@@ -31,8 +31,8 @@ export class GmapsComponent implements OnInit {
     this.map.setMapTypeId(mapTypeId)
   }
 
-  refresh(e:any){
-    e.preventDefault();
+  refresh(){
+    // e.preventDefault();
     let vehicleInformation: MapVehicleInformation;
     for (let key of Array.from(this.mapVehicleInformations.keys())) {
       vehicleInformation = this.mapVehicleInformations.get(key);
