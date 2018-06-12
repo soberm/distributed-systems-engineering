@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  *
  * @author Michael Sober
  * @since 1.0
- * @see CrudRepository
  */
 @RestController
 @RequestMapping("/accident-statistics")

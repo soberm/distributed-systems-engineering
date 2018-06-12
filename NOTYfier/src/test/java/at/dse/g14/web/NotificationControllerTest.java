@@ -1,17 +1,8 @@
 package at.dse.g14.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import at.dse.g14.entity.ArrivalNotification;
-import at.dse.g14.entity.ClearanceNotification;
-import at.dse.g14.entity.Notification;
-import at.dse.g14.entity.SpeedNotification;
-import at.dse.g14.entity.SpotlightNotification;
+import at.dse.g14.entity.*;
 import at.dse.g14.service.impl.NotificationService;
 import com.google.gson.Gson;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +15,18 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Unit-Tests for the NotificationController.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc

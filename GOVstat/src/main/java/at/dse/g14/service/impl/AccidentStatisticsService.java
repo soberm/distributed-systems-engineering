@@ -1,5 +1,6 @@
 package at.dse.g14.service.impl;
 
+import at.dse.g14.commons.service.CrudService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.AccidentStatistics;
@@ -14,6 +15,13 @@ import javax.validation.Validator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * This class implements the functionality around AccidentStatistics.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see CrudService
+ */
 @Slf4j
 @Service
 public class AccidentStatisticsService implements IAccidentStatisticsService {

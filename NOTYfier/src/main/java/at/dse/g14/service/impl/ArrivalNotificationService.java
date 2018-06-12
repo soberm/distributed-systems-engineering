@@ -16,6 +16,14 @@ import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the functionality around ArrivalNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see IArrivalNotificationService
+ */
 @Slf4j
 @Service
 public class ArrivalNotificationService extends AbstractCrudService<ArrivalNotification, Long>

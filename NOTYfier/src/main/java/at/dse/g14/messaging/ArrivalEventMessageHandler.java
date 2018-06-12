@@ -16,6 +16,14 @@ import org.springframework.messaging.MessagingException;
 
 import java.util.List;
 
+/**
+ * A MessageHandler which retrieves ArrivalEvent-Messages from the configured Google Pub/Sub topic
+ * and handles them.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see MessageHandler
+ */
 @Slf4j
 @MessageEndpoint
 public class ArrivalEventMessageHandler implements MessageHandler {
@@ -29,6 +37,12 @@ public class ArrivalEventMessageHandler implements MessageHandler {
     this.arrivalNotificationService = arrivalNotificationService;
   }
 
+  /**
+   * Handles an ArrivalEvent, by generating all notifications.
+   *
+   * @param message which contains the payload with the ArrivalEvent.
+   * @throws MessagingException if an error occurs, while retrieving the message.
+   */
   @Override
   @ServiceActivator(inputChannel = "arrivalEventInputChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
@@ -47,6 +61,12 @@ public class ArrivalEventMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Generates and saves the messages for the ArrivalEvent.
+   *
+   * @param arrivalEventDTO which should be handled.
+   * @throws ServiceException if an error, while generating and saving the notification occurs.
+   */
   private void handleArrivalEvent(ArrivalEventDTO arrivalEventDTO) throws ServiceException {
     log.info("Handling ArrivalEvent of {}", arrivalEventDTO);
     List<ArrivalNotification> arrivalNotifications =

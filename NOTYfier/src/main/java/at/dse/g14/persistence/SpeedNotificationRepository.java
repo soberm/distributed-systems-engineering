@@ -4,5 +4,12 @@ import at.dse.g14.entity.SpeedNotification;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository to manage SpeedNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see CrudRepository
+ */
 @Repository
 public interface SpeedNotificationRepository extends CrudRepository<SpeedNotification, Long> {}

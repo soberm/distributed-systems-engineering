@@ -11,23 +11,22 @@ import java.util.List;
 @RestController
 public class FeignExampleController {
 
-    @Autowired
-    private FeignClientExample feignClientExample;
+  @Autowired private FeignClientExample feignClientExample;
 
-    @RequestMapping("/getall-hi")
-    public List<String> getAllGreetings() {
-        List<String> greetings = feignClientExample.getGreetings();
-        return greetings;
-    }
+  @RequestMapping("/getall-hi")
+  public List<String> getAllGreetings() {
+    List<String> greetings = feignClientExample.getGreetings();
+    return greetings;
+  }
 
-    @RequestMapping("/hi")
-    public String getGreet() {
-        return feignClientExample.getGreet();
-    }
+  @RequestMapping("/hi")
+  public String getGreet() {
+    return feignClientExample.getGreet();
+  }
 
-    @GetMapping(value = "/information", produces = "application/json")
-    @ResponseBody
-    public String available() {
-        return "{\"information\": \"Here it is\"}";
-    }
+  @GetMapping(value = "/information", produces = "application/json")
+  @ResponseBody
+  public String available() {
+    return "{\"information\": \"Here it is\"}";
+  }
 }

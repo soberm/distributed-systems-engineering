@@ -4,7 +4,7 @@ import at.dse.g14.commons.service.CrudService;
 import at.dse.g14.entity.AccidentStatistics;
 
 /**
- * This class represents a service, which contains all business logic regarding AccidentStatistics.
+ * This interface represents the needed functionality around AccidentStatistics.
  *
  * @author Michael Sober
  * @since 1.0
