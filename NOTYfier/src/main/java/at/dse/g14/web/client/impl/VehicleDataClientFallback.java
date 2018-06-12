@@ -1,7 +1,7 @@
 package at.dse.g14.web.client.impl;
 
-import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.EmergencyService;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.web.client.VehicleDataClient;
 import java.util.Arrays;
 import java.util.List;

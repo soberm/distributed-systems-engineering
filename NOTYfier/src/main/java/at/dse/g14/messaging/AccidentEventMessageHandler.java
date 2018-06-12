@@ -1,7 +1,7 @@
 package at.dse.g14.messaging;
 
-import at.dse.g14.commons.dto.AccidentEventDTO;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
+import at.dse.g14.commons.dto.events.AccidentEventDTO;
+import at.dse.g14.commons.dto.track.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.CrashEventNotification;
 import at.dse.g14.entity.NearCrashEventNotification;
@@ -13,6 +13,7 @@ import at.dse.g14.service.ISpeedNotificationService;
 import at.dse.g14.service.ISpotlightNotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gcp.pubsub.support.GcpPubSubHeaders;
 import org.springframework.integration.annotation.MessageEndpoint;
@@ -20,8 +21,6 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
-
-import java.util.List;
 
 @Slf4j
 @MessageEndpoint

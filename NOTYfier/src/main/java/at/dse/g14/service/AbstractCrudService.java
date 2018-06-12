@@ -5,12 +5,11 @@ import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.Entity;
 import at.dse.g14.service.exception.EntityAlreadyExistsException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
-
-import javax.validation.Validator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.CrudRepository;
 
 @Slf4j
 public abstract class AbstractCrudService<T extends Entity<ID>, ID> implements CrudService<T, ID> {
