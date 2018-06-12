@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +28,12 @@ public abstract class Notification implements at.dse.g14.entity.Entity<Long> {
   private Long id;
 
   private String receiver;
+
+  private LocalDateTime date;
+
+  public Notification(Long id, String receiver) {
+    this.id = id;
+    this.receiver = receiver;
+    this.date = LocalDateTime.now();
+  }
 }
