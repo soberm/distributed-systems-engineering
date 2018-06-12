@@ -6,6 +6,7 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {GmapsComponent} from "../gmaps/gmaps.component";
 import Marker = google.maps.Marker;
+import {DatasimulatorComponent} from "../datasimulator/datasimulator.component";
 
 interface ManufacturerResponse {
   id: string
@@ -63,12 +64,7 @@ export class ManufacturerComponent implements OnInit {
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
-    TimerObservable.create(2000, this.interval)
-      .takeWhile(() => this.alive)
-      .subscribe(() => {
-        this.showVehicleInformation();
-        this.refresh();
-      });
+    this.startLive();
   }
 
   isSelected() {
@@ -124,6 +120,20 @@ export class ManufacturerComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.alive = false;
+  }
+
+  startLive() {
+    this.alive = true;
+    TimerObservable.create(2000, this.interval)
+      .takeWhile(() => this.alive)
+      .subscribe(() => {
+        this.showVehicleInformation();
+        this.refresh();
+      });
+  }
+
+  stopLive() {
     this.alive = false;
   }
 
