@@ -8,12 +8,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author Lukas Baronyai
  * @version ${buildVersion}
  * @since 1.0.0
  */
+@EnableSwagger2
 @SpringBootApplication
 @EnableZuulProxy
 @EnableCircuitBreaker
