@@ -5,9 +5,8 @@ package at.dse.g14.entity;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-
 public interface Entity {
 
-//  Long getId();
+  //  Long getId();
 
 }

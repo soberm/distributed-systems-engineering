@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableFeignClients
-//@EnableDiscoveryClient
+// @EnableDiscoveryClient
 public class V2ITrackerApplication {
 
   public static void main(String[] args) {

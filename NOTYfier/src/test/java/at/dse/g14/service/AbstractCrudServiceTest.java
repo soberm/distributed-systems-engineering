@@ -1,15 +1,14 @@
 package at.dse.g14.service;
 
-import at.dse.g14.entity.Entity;
-import org.hamcrest.collection.IsEmptyCollection;
-import org.junit.Assert;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import at.dse.g14.entity.Entity;
+import java.util.Arrays;
+import java.util.List;
+import org.hamcrest.collection.IsEmptyCollection;
+import org.junit.Assert;
 
 public abstract class AbstractCrudServiceTest<T extends Entity<ID>, ID> {
 

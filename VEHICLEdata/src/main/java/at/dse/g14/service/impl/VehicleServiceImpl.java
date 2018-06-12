@@ -1,6 +1,6 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleEntity;
@@ -58,8 +58,8 @@ public class VehicleServiceImpl implements VehicleService {
       throws ServiceException {
 
     final Optional<VehicleEntity> foundVehicle = vehicleRepository.findById(vehicleId);
-    final Optional<VehicleManufacturerEntity> foundManufacturer = manufacturerRepository
-        .findById(manufacturerId);
+    final Optional<VehicleManufacturerEntity> foundManufacturer =
+        manufacturerRepository.findById(manufacturerId);
 
     if (!foundVehicle.isPresent()) {
       throw new ServiceException("Unknown vehicleId " + vehicleId);
@@ -145,12 +145,9 @@ public class VehicleServiceImpl implements VehicleService {
     log.debug("Validating " + vehicle);
     Set<ConstraintViolation<Vehicle>> violations = validator.validate(vehicle);
     if (!violations.isEmpty()) {
-      throw new ValidationException("Vehicle not valid: \n" +
-          Arrays.toString(
-              violations.stream()
-                  .map(Object::toString)
-                  .toArray())
-      );
+      throw new ValidationException(
+          "Vehicle not valid: \n"
+              + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
   }
 }

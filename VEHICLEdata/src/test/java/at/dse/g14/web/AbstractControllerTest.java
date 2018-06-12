@@ -1,7 +1,7 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.entity.VehicleEntity;
 import at.dse.g14.entity.VehicleManufacturerEntity;
 import at.dse.g14.persistence.VehicleManufacturerRepository;

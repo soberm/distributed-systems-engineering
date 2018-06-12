@@ -14,20 +14,19 @@ import org.springframework.messaging.MessageChannel;
 @Profile("!test")
 public class PubSubConfig {
 
-    @Bean
-    public PubSubInboundChannelAdapter messageChannelAdapter(
-            @Qualifier("accidentStatisticsChannel") MessageChannel inputChannel,
-            PubSubOperations pubSubTemplate) {
-        PubSubInboundChannelAdapter adapter =
-                new PubSubInboundChannelAdapter(pubSubTemplate, "gov-stat");
-        adapter.setOutputChannel(inputChannel);
-        adapter.setAckMode(AckMode.MANUAL);
-        return adapter;
-    }
+  @Bean
+  public PubSubInboundChannelAdapter messageChannelAdapter(
+      @Qualifier("accidentStatisticsChannel") MessageChannel inputChannel,
+      PubSubOperations pubSubTemplate) {
+    PubSubInboundChannelAdapter adapter =
+        new PubSubInboundChannelAdapter(pubSubTemplate, "gov-stat");
+    adapter.setOutputChannel(inputChannel);
+    adapter.setAckMode(AckMode.MANUAL);
+    return adapter;
+  }
 
-    @Bean
-    public MessageChannel accidentStatisticsChannel() {
-        return new DirectChannel();
-    }
-
+  @Bean
+  public MessageChannel accidentStatisticsChannel() {
+    return new DirectChannel();
+  }
 }

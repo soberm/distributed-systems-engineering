@@ -1,6 +1,6 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.dto.data.EmergencyService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.EmergencyServiceService;
 import java.util.List;
@@ -31,8 +31,7 @@ public class EmergencyServiceController {
 
   @PostMapping
   public EmergencyService createEmergencyService(
-      @RequestBody final EmergencyService emergencyService)
-      throws ServiceException {
+      @RequestBody final EmergencyService emergencyService) throws ServiceException {
     return emergencyServiceService.save(emergencyService);
   }
 
@@ -49,8 +48,7 @@ public class EmergencyServiceController {
 
   @PutMapping
   public EmergencyService updateEmergencyService(
-      @RequestBody final EmergencyService emergencyService)
-      throws ServiceException {
+      @RequestBody final EmergencyService emergencyService) throws ServiceException {
     return emergencyServiceService.update(emergencyService);
   }
 }

@@ -44,5 +44,4 @@ public class PubSubConfig {
   public interface AccidentEventOutboundGateway {
     void sendToPubsub(String text);
   }
-
 }

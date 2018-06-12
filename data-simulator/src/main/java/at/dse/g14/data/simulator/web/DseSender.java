@@ -1,16 +1,20 @@
-package at.dse.g14.data.simulator;
+package at.dse.g14.data.simulator.web;
 
-import at.dse.g14.commons.dto.ArrivalEventDTO;
-import at.dse.g14.commons.dto.ClearanceEventDTO;
-import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.Vehicle;
-import at.dse.g14.commons.dto.VehicleManufacturer;
-import at.dse.g14.commons.dto.VehicleTrackDTO;
+import at.dse.g14.commons.dto.AccidentStatisticsDTO;
+import at.dse.g14.commons.dto.RangeRequest;
+import at.dse.g14.commons.dto.data.EmergencyService;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
+import at.dse.g14.commons.dto.events.ClearanceEventDTO;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
 import at.dse.g14.data.simulator.config.PubSubConfig.ArrivalEventOutboundGateway;
 import at.dse.g14.data.simulator.config.PubSubConfig.ClearanceEventOutboundGateway;
+import at.dse.g14.data.simulator.config.PubSubConfig.StatisticsOutboundGateway;
 import at.dse.g14.data.simulator.config.PubSubConfig.VehicleTrackOutboundGateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -32,23 +36,30 @@ public class DseSender {
   private final ClearanceEventOutboundGateway clearanceEventOutboundGateway;
   private final ArrivalEventOutboundGateway arrivalEventOutboundGateway;
   private final VehicleTrackOutboundGateway vehicleTrackOutboundGateway;
+  private final StatisticsOutboundGateway statisticsOutboundGateway;
+
   private final ObjectMapper objectMapper;
   private final RestTemplate restTemplate;
 
   @Value("${vehicledata.address}")
   private String vehicledataAddress;
 
+  @Value("${trackdata.address}")
+  private String trackdataAddress;
+
   @Autowired
   public DseSender(
       final ClearanceEventOutboundGateway clearanceEventOutboundGateway,
       final VehicleTrackOutboundGateway vehicleTrackOutboundGateway,
       final ArrivalEventOutboundGateway arrivalEventOutboundGateway,
-      final ObjectMapper objectMapper,
-      final RestTemplateBuilder restTemplateBuilder) {
+      final StatisticsOutboundGateway statisticsOutboundGateway,
+      final RestTemplateBuilder restTemplateBuilder,
+      final ObjectMapper objectMapper) {
 
     this.clearanceEventOutboundGateway = clearanceEventOutboundGateway;
     this.arrivalEventOutboundGateway = arrivalEventOutboundGateway;
     this.vehicleTrackOutboundGateway = vehicleTrackOutboundGateway;
+    this.statisticsOutboundGateway = statisticsOutboundGateway;
 
     this.restTemplate = restTemplateBuilder.build();
     this.objectMapper = objectMapper;
@@ -118,6 +129,26 @@ public class DseSender {
     log.info("send event {}", clearanceEvent);
     try {
       clearanceEventOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(clearanceEvent));
+    } catch (JsonProcessingException e) {
+      log.error("Could not send ClearanceEventDTO to PubSub.", e);
+    }
+  }
+
+  public List<Vehicle> getVehicleToNotify(final Double[] location, final long kilometers) {
+    log.info("get vehicles to notify for location {} around {}km", location, kilometers);
+
+    final Vehicle[] vehicles =
+        restTemplate.postForObject(
+            trackdataAddress + "/live-vehicle-track/range",
+            new RangeRequest(location, new BigDecimal(kilometers)),
+            Vehicle[].class);
+    return Arrays.asList(vehicles);
+  }
+
+  public void sendStatistics(final AccidentStatisticsDTO statistics) {
+    log.info("send statistics {}", statistics);
+    try {
+      clearanceEventOutboundGateway.sendToPubsub(objectMapper.writeValueAsString(statistics));
     } catch (JsonProcessingException e) {
       log.error("Could not send ClearanceEventDTO to PubSub.", e);
     }

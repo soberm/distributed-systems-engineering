@@ -14,5 +14,4 @@ public interface CrudService<T, ID> {
   T findOne(ID id) throws ServiceException;
 
   List<T> findAll() throws ServiceException;
-
 }

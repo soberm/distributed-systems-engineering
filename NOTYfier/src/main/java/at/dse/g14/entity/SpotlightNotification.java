@@ -1,10 +1,9 @@
 package at.dse.g14.entity;
 
+import javax.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor

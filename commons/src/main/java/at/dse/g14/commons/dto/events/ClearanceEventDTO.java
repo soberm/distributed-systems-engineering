@@ -1,5 +1,7 @@
-package at.dse.g14.commons.dto;
+package at.dse.g14.commons.dto.events;
 
+import at.dse.g14.commons.dto.data.Vehicle;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClearanceEventDTO {
 
-    private Boolean cleared = true;
+  private List<Vehicle> vehiclesToNotify;
 }

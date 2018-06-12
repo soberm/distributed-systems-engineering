@@ -13,11 +13,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableFeignClients
-//@EnableDiscoveryClient
+// @EnableDiscoveryClient
 public class GOVStatApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(GOVStatApplication.class, args);
   }
-
 }

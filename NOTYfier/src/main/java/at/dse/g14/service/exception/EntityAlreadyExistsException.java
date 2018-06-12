@@ -4,15 +4,14 @@ import at.dse.g14.commons.service.exception.ServiceException;
 
 public class EntityAlreadyExistsException extends ServiceException {
 
-    public EntityAlreadyExistsException() {
-    }
+  public EntityAlreadyExistsException() {
+  }
 
-    public EntityAlreadyExistsException(String message) {
-        super(message);
-    }
+  public EntityAlreadyExistsException(String message) {
+    super(message);
+  }
 
-    public EntityAlreadyExistsException(String message, Exception e) {
-        super(message, e);
-    }
-
+  public EntityAlreadyExistsException(String message, Exception e) {
+    super(message, e);
+  }
 }
