@@ -65,6 +65,7 @@ public class VehicleTrackMessageHandler implements MessageHandler {
 
   /**
    * Converts an VehicleTrack dto to an entity.
+   *
    * @param vehicleTrackDTO which should be converted to an entity.
    * @return the converted dto.
    */

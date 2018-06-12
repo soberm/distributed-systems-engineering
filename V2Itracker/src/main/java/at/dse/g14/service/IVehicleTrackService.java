@@ -10,6 +10,4 @@ import at.dse.g14.entity.VehicleTrack;
  * @since 1.0
  * @see CrudService
  */
-public interface IVehicleTrackService extends CrudService<VehicleTrack, String> {
-
-}
+public interface IVehicleTrackService extends CrudService<VehicleTrack, String> {}

@@ -1,17 +1,10 @@
 package at.dse.g14.service.impl;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.config.PubSubConfig.AccidentEventOutboundGateway;
 import at.dse.g14.entity.LiveVehicleTrack;
 import at.dse.g14.service.ILiveVehicleTrackService;
 import at.dse.g14.service.exception.LiveVehicleTrackAlreadyExistsException;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,6 +16,14 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit-Tests for the LiveVehicleTrackService.

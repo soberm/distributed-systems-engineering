@@ -3,9 +3,10 @@ package at.dse.g14.service;
 import at.dse.g14.commons.service.CrudService;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.entity.LiveVehicleTrack;
-import java.util.List;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
+
+import java.util.List;
 
 /**
  * This interface represents the needed functionality around LiveVehicleTracks.
@@ -18,6 +19,7 @@ public interface ILiveVehicleTrackService extends CrudService<LiveVehicleTrack, 
 
   /**
    * Finds all LiveVehicleTracks which are in the right distance of a specific point.
+   *
    * @param p the point from which the distance is checked.
    * @param d the distance which should be checked.
    * @return all LiveVehicleTracks found in this area.
@@ -27,6 +29,7 @@ public interface ILiveVehicleTrackService extends CrudService<LiveVehicleTrack, 
 
   /**
    * Finding all LiveVehicleTracks which belong to vehicles of a specific manufacturer.
+   *
    * @param id of the manufacturer.
    * @return the found LiveVehicleTracks for the manufacturer.
    * @throws ServiceException if an error finding the LiveVehicleTracks occur.

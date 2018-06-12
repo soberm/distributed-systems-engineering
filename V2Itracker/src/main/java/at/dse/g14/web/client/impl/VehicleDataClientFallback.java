@@ -2,9 +2,10 @@ package at.dse.g14.web.client.impl;
 
 import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.web.client.VehicleDataClient;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 /**
  * Fallback if the vehicle data service is not available.

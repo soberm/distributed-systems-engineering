@@ -19,8 +19,7 @@ public class VehicleManufacturer implements DTO {
 
   private String id;
 
-  @NotBlank
-  private String name;
+  @NotBlank private String name;
 
   public VehicleManufacturer(String id, String name) {
     this.id = id;

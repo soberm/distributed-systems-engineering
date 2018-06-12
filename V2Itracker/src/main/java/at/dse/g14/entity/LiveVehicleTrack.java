@@ -1,9 +1,5 @@
 package at.dse.g14.entity;
 
-import java.math.BigDecimal;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +8,11 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 /**
  * An entity which represents the latest information about a moving vehicle.
@@ -26,11 +27,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "live_vehicle_tracks")
 public class LiveVehicleTrack {
 
-  @Id
-  private String vin;
+  @Id private String vin;
 
-  @NotNull
-  private String modelType;
+  @NotNull private String modelType;
 
   @Range(min = 0, max = 300)
   private Integer passengers;
@@ -50,9 +49,7 @@ public class LiveVehicleTrack {
   @DecimalMin(value = "0.0")
   private BigDecimal distanceVehicleBehind;
 
-  @NotNull
-  private Boolean nearCrashEvent;
+  @NotNull private Boolean nearCrashEvent;
 
-  @NotNull
-  private Boolean crashEvent;
+  @NotNull private Boolean crashEvent;
 }
