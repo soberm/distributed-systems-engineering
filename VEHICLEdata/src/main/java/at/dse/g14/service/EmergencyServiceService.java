@@ -10,4 +10,5 @@ import at.dse.g14.commons.service.CrudService;
  */
 public interface EmergencyServiceService extends CrudService<EmergencyService, String> {
 
+  EmergencyService getByName(final String name);
 }
