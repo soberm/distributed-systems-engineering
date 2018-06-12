@@ -19,9 +19,17 @@ public interface INotificationService {
    * Retrieves all notifications.
    *
    * @return all found notifications.
-   * @throws ServiceException if an error while, finding the notifications occured.
+   * @throws ServiceException if an error while, finding the notifications occurred.
    */
   List<Notification> findAll() throws ServiceException;
+
+  /**
+   * Retrieves the top 10 notifications for the specified receiver.
+   * @param receiver of which the top 10 notifications should be found.
+   * @return the notifications found.
+   * @throws ServiceException if an error while, finding the notifications occurred.
+   */
+  List<Notification> findTop10ByReceiver(String receiver) throws ServiceException;
 
   /**
    * Retrieves all notifications of a given receiver.
