@@ -156,7 +156,7 @@ spec:
 #          name: datasimulator
 #          image: gcr.io/dse-group-14/data-simulator
 #          ports:
-#              - containerPort: 8138
+#              - containerPort: 8080
 #          livenessProbe:
 #            initialDelaySeconds: 60
 #            httpGet:
@@ -175,8 +175,8 @@ spec:
 #    app: datasimulator
 #    tier: backend
 #  ports:
-#    - port: 8138
-#      targetPort: 8138
+#    - port: 8080
+#      targetPort: 8080
 #---
 #kind: Deployment
 #apiVersion: apps/v1beta1

@@ -8,6 +8,7 @@ import { MaterialModule } from './material.module';
 import { GmapsComponent } from './components/gmaps/gmaps.component';
 import { FormsModule } from '@angular/forms';
 import { ManufacturerComponent } from './components/manufacturer/manufacturer.component';
+import { DatasimulatorComponent } from './components/datasimulator/datasimulator.component';
 
 
 
@@ -15,7 +16,8 @@ import { ManufacturerComponent } from './components/manufacturer/manufacturer.co
   declarations: [
     AppComponent,
     GmapsComponent,
-    ManufacturerComponent
+    ManufacturerComponent,
+    DatasimulatorComponent
   ],
   imports: [
     BrowserModule,
