@@ -32,7 +32,7 @@ gradle clean build -x test
 docker build -t eu.gcr.io/dse-group-14/notyfier .
 gcloud docker -- push eu.gcr.io/dse-group-14/notyfier
 cd ..
-
+#
 cd V2Itracker
 
 docker build -t eu.gcr.io/dse-group-14/v2itracker .

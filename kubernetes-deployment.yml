@@ -57,9 +57,9 @@ spec:
     spec:
       containers:
         - env:
-           - name: SPRING_PROFILES_ACTIVE
+          -  name: SPRING_PROFILES_ACTIVE
              value: kubernetes
-         name: apigateway
+          name: apigateway
           image: eu.gcr.io/dse-group-14/apigateway
           ports:
               - containerPort: 4000
