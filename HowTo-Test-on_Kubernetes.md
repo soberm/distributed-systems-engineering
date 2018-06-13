@@ -29,9 +29,15 @@ gcloud container clusters get-credentials cluster-dse-group-14
 ./build-and-push-images-kubernets.sh
 ```
 
+4) Create deployment
+```bash
+kubectl create -f kubernetes-deployment.yml
+```
 
-https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
-
+5) Delete deployment
+```bash
+kubectl create -f kubernetes-deployment.yml
+```
 
 
 
