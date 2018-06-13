@@ -2,10 +2,10 @@
 
 #gradle build -x test
 
-#cd StoreFrontUI
-#docker build -t eu.gcr.io/dse-group-14/storefrontui .
-#gcloud docker -- push eu.gcr.io/dse-group-14/storefrontui
-#cd ..
+cd StoreFrontUI
+docker build -t eu.gcr.io/dse-group-14/storefrontui .
+gcloud docker -- push eu.gcr.io/dse-group-14/storefrontui
+cd ..
 
 #cd APIgateway
 #docker build -t eu.gcr.io/dse-group-14/apigateway .
@@ -43,7 +43,7 @@
 #docker build -t eu.gcr.io/dse-group-14/mongodb-dse-group-14 .
 #gcloud docker -- push eu.gcr.io/dse-group-14/mongodb-dse-group-14
 #cd ..
-
-gcloud config set project dse-group-14
-gcloud config set compute/zone europe-west1-c
-gcloud container clusters get-credentials cluster-dse-group-14
+#
+#gcloud config set project dse-group-14
+#gcloud config set compute/zone europe-west1-c
+#gcloud container clusters get-credentials cluster-dse-group-14

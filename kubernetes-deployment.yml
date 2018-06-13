@@ -37,361 +37,361 @@ spec:
     targetPort: 4200
   type: LoadBalancer
   loadBalancerIP: "104.155.74.195"
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: apigateway
-#  labels:
-#      app: apigateway
-#spec:
-#  replicas: 3
-#  selector:
-#    matchLabels:
-#      app: apigateway
-#  template:
-#    metadata:
-#      labels:
-#        app: apigateway
-#        tier: frontend
-#    spec:
-#      containers:
-#        - name: apigateway
-#          image: eu.gcr.io/dse-group-14/apigateway
-#          ports:
-#              - containerPort: 4000
-#          imagePullPolicy: Always
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: apigateway-service
-#  namespace: default
-#spec:
-#  type: NodePort
-#  selector:
-#    app: apigateway
-#    tier: frontend
-#  ports:
-#  - port: 4000
-#    targetPort: 4000
-#  type: LoadBalancer
-#  loadBalancerIP: "35.195.254.163"
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: vehicledata
-#  labels:
-#      app: vehicledata
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: vehicledata
-#  template:
-#    metadata:
-#      labels:
-#        app: vehicledata
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: compose
-#          name: vehicledata
-#          image: eu.gcr.io/dse-group-14/vehicledata
-#          ports:
-#              - containerPort: 8001
-#          args: [
-#                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/vehicledatadb",
-#                 "--spring.datasource.username=vehicledatauser",
-#                 "--spring.datasource.password=vHp3fsSfZgnNW5Pe",
-#                 "--spring.datasource.driverClassName=org.postgresql.Driver",
-#                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
-#                 "--server.port=8001"]
-#
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: vehicledata-service
-#  labels:
-#    app: vehicledata-service
-#spec:
-#  selector:
-#    app: vehicledata
-#    tier: backend
-#  ports:
-#    - port: 8001
-#      targetPort: 8001
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: datasimulator
-#  labels:
-#      app: datasimulator
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: datasimulator
-#  template:
-#    metadata:
-#      labels:
-#        app: datasimulator
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: kubernetes
-#          name: datasimulator
-#          image: gcr.io/dse-group-14/data-simulator
-#          ports:
-#              - containerPort: 8080
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: datasimulator-service
-#  labels:
-#    app: datasimulator-service
-#spec:
-#  selector:
-#    app: datasimulator
-#    tier: backend
-#  ports:
-#    - port: 8080
-#      targetPort: 8080
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: govstat
-#  labels:
-#      app: govstat
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: govstat
-#  template:
-#    metadata:
-#      labels:
-#        app: govstat
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: compose
-#          name: govstat
-#          image: eu.gcr.io/dse-group-14/govstat
-#          ports:
-#              - containerPort: 8242
-#          args: [
-#                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/govstatdb",
-#                 "--spring.datasource.username=govstatuser",
-#                 "--spring.datasource.password=cGwq2mBf3GgMR7Hh",
-#                 "--spring.datasource.driverClassName=org.postgresql.Driver",
-#                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
-#                 "--server.port=8242"
-#                 ]
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: govstat-service
-#  labels:
-#    app: govstat-service
-#spec:
-#  selector:
-#    app: govstat
-#    tier: backend
-#  ports:
-#    - port: 8242
-#      targetPort: 8242
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: notyfier
-#  labels:
-#      app: notyfier
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: notyfier
-#  template:
-#    metadata:
-#      labels:
-#        app: notyfier
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: compose
-#          name: notyfier
-#          image: eu.gcr.io/dse-group-14/notyfier
-#          ports:
-#              - containerPort: 8248
-#          args: [
-#                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/notyfierdb",
-#                 "--spring.datasource.username=notyfieruser",
-#                 "--spring.datasource.password=sX4wCq8MByqrD9eL",
-#                 "--spring.datasource.driverClassName=org.postgresql.Driver",
-#                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
-#                 "--server.port=8248"
-#                 ]
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: notyfier-service
-#  labels:
-#    app: notyfier-service
-#  namespace: default
-#spec:
-#  selector:
-#    app: notyfier
-#    tier: backend
-#  ports:
-#    - port: 8248
-#      targetPort: 8248
-#---
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: v2itracker
-#  labels:
-#      app: v2itracker
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: v2itracker
-#  template:
-#    metadata:
-#      labels:
-#        app: v2itracker
-#        tier: backend
-#    spec:
-#      containers:
-#        - env:
-#          - name: SPRING_PROFILES_ACTIVE
-#            value: kubernetes
-#          name: v2itracker
-#          image: eu.gcr.io/dse-group-14/v2itracker
-#          ports:
-#              - containerPort: 8241
-#          livenessProbe:
-#            initialDelaySeconds: 60
-#            httpGet:
-#              path: /health
-#              port: http
-#          imagePullPolicy: Always
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: v2itracker-service
-#  labels:
-#    app: v2itracker-service
-#spec:
-#  selector:
-#    app: v2itracker
-#    tier: backend
-#  ports:
-#    - port: 8241
-#      targetPort: 8241
-#---
-## mongodb - DSE Group 14
-#kind: Deployment
-#apiVersion: apps/v1beta1
-#metadata:
-#  name: mongodb
-#  labels:
-#      app: mongodb
-#spec:
-#  replicas: 1
-#  strategy:
-#    type: Recreate
-#  selector:
-#    matchLabels:
-#      app: mongodb
-#  template:
-#    metadata:
-#      labels:
-#        app: mongodb
-#        tier: store
-#    spec:
-#      containers:
-#        - name: mongodb
-#          image: eu.gcr.io/dse-group-14/mongodb-dse-group-14
-#          ports:
-#              - containerPort: 27017
-#          volumeMounts:
-#              - mountPath: /data/db
-#                name: mongo-claim0
-#          imagePullPolicy: Always
-#      restartPolicy: Always
-#      volumes:
-#        - name: mongo-claim0
-#          persistentVolumeClaim:
-#            claimName: mongo-claim0
-#---
-#apiVersion: v1
-#kind: PersistentVolumeClaim
-#metadata:
-#  labels:
-#    io.kompose.service: mongo-claim0
-#  name: mongo-claim0
-#spec:
-#  accessModes:
-#  - ReadWriteOnce
-#  resources:
-#    requests:
-#      storage: 15Gi
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: mongodb
-#  labels:
-#    app: mongodb
-#spec:
-#  selector:
-#    app: mongodb
-#    tier: store
-#  ports:
-#    - port: 27017
-#      targetPort: 27017
-#---
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: apigateway
+  labels:
+      app: apigateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apigateway
+  template:
+    metadata:
+      labels:
+        app: apigateway
+        tier: frontend
+    spec:
+      containers:
+        - name: apigateway
+          image: eu.gcr.io/dse-group-14/apigateway
+          ports:
+              - containerPort: 4000
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway-service
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: apigateway
+    tier: frontend
+  ports:
+  - port: 4000
+    targetPort: 4000
+  type: LoadBalancer
+  loadBalancerIP: "35.195.254.163"
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: vehicledata
+  labels:
+      app: vehicledata
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vehicledata
+  template:
+    metadata:
+      labels:
+        app: vehicledata
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: vehicledata
+          image: eu.gcr.io/dse-group-14/vehicledata
+          ports:
+              - containerPort: 8001
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/vehicledatadb",
+                 "--spring.datasource.username=vehicledatauser",
+                 "--spring.datasource.password=vHp3fsSfZgnNW5Pe",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8001"]
+
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: vehicledata-service
+  labels:
+    app: vehicledata-service
+spec:
+  selector:
+    app: vehicledata
+    tier: backend
+  ports:
+    - port: 8001
+      targetPort: 8001
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: datasimulator
+  labels:
+      app: datasimulator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: datasimulator
+  template:
+    metadata:
+      labels:
+        app: datasimulator
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: kubernetes
+          name: datasimulator
+          image: gcr.io/dse-group-14/data-simulator
+          ports:
+              - containerPort: 8080
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: datasimulator-service
+  labels:
+    app: datasimulator-service
+spec:
+  selector:
+    app: datasimulator
+    tier: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: govstat
+  labels:
+      app: govstat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: govstat
+  template:
+    metadata:
+      labels:
+        app: govstat
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: govstat
+          image: eu.gcr.io/dse-group-14/govstat
+          ports:
+              - containerPort: 8242
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/govstatdb",
+                 "--spring.datasource.username=govstatuser",
+                 "--spring.datasource.password=cGwq2mBf3GgMR7Hh",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8242"
+                 ]
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: govstat-service
+  labels:
+    app: govstat-service
+spec:
+  selector:
+    app: govstat
+    tier: backend
+  ports:
+    - port: 8242
+      targetPort: 8242
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: notyfier
+  labels:
+      app: notyfier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: notyfier
+  template:
+    metadata:
+      labels:
+        app: notyfier
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: compose
+          name: notyfier
+          image: eu.gcr.io/dse-group-14/notyfier
+          ports:
+              - containerPort: 8248
+          args: [
+                 "--spring.datasource.url=jdbc:postgresql://35.233.112.7:5432/notyfierdb",
+                 "--spring.datasource.username=notyfieruser",
+                 "--spring.datasource.password=sX4wCq8MByqrD9eL",
+                 "--spring.datasource.driverClassName=org.postgresql.Driver",
+                 "--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+                 "--server.port=8248"
+                 ]
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: notyfier-service
+  labels:
+    app: notyfier-service
+  namespace: default
+spec:
+  selector:
+    app: notyfier
+    tier: backend
+  ports:
+    - port: 8248
+      targetPort: 8248
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: v2itracker
+  labels:
+      app: v2itracker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: v2itracker
+  template:
+    metadata:
+      labels:
+        app: v2itracker
+        tier: backend
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: kubernetes
+          name: v2itracker
+          image: eu.gcr.io/dse-group-14/v2itracker
+          ports:
+              - containerPort: 8241
+          livenessProbe:
+            initialDelaySeconds: 60
+            httpGet:
+              path: /health
+              port: http
+          imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: v2itracker-service
+  labels:
+    app: v2itracker-service
+spec:
+  selector:
+    app: v2itracker
+    tier: backend
+  ports:
+    - port: 8241
+      targetPort: 8241
+---
+# mongodb - DSE Group 14
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: mongodb
+  labels:
+      app: mongodb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        tier: store
+    spec:
+      containers:
+        - name: mongodb
+          image: eu.gcr.io/dse-group-14/mongodb-dse-group-14
+          ports:
+              - containerPort: 27017
+          volumeMounts:
+              - mountPath: /data/db
+                name: mongo-claim0
+          imagePullPolicy: Always
+      restartPolicy: Always
+      volumes:
+        - name: mongo-claim0
+          persistentVolumeClaim:
+            claimName: mongo-claim0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    io.kompose.service: mongo-claim0
+  name: mongo-claim0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+spec:
+  selector:
+    app: mongodb
+    tier: store
+  ports:
+    - port: 27017
+      targetPort: 27017
+---
