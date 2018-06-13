@@ -9,7 +9,10 @@ import at.dse.g14.data.simulator.web.DseSender;
 import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +22,10 @@ public class Scenario2Crash extends AbstractScenario {
 
   private static final int ARRIVAL_TIME_SEC = 20;
   private static final int CLEARANCE_TIME_SEC = 10;
-  private static final int START_INTERVALL_MSEC = 2000;
-  private static final int SEND_INTERVALL_MSEC = 500;
+  private static final long START_INTERVALL_MSEC = 2000;
+  private static final long SEND_INTERVALL_MSEC = 500;
+
+  private final Map<Vehicle, CSVReader> cars = new HashMap<>();
 
   private Vehicle crashedVehicle;
   private AccidentStatisticsDTO accidentStatistics;
@@ -28,6 +33,10 @@ public class Scenario2Crash extends AbstractScenario {
 
   public Scenario2Crash(final DseSender sender) {
     super(sender);
+
+    cars.put(vehicle1, car1);
+    cars.put(vehicle7, car7);
+    cars.put(vehicle13, car13);
   }
 
   @Override
@@ -40,41 +49,44 @@ public class Scenario2Crash extends AbstractScenario {
   }
 
   private void startVehicle() {
-    try {
-      final Vehicle vehicle = vehicle1;
-      final CSVReader reader = car1;
+    for (Entry<Vehicle, CSVReader> entry : cars.entrySet()) {
 
-      final ThreadLocalRandom random = ThreadLocalRandom.current();
-      String[] line = reader.readNext();
+      try {
+        final Vehicle vehicle = entry.getKey();
+        final CSVReader reader = entry.getValue();
 
-      if (line.length != 8) {
-        log.warn("line invalid, skip it");
-        return;
-      }
+        final ThreadLocalRandom random = ThreadLocalRandom.current();
+        String[] line = reader.readNext();
 
-      if (vehicle != crashedVehicle) {
-        final VehicleTrackDTO track =
-            VehicleTrackDTO.builder()
-                .vin(String.valueOf(vehicle.getVin()))
-                .modelType(vehicle.getModelType())
-                .passengers(random.nextInt(1, 4))
-                .location(constructGpsPoint(line))
-                .speed(BigDecimal.valueOf(Double.parseDouble(line[7])))
-                .distanceVehicleAhead(BigDecimal.valueOf(random.nextLong(0, 500)))
-                .distanceVehicleBehind(BigDecimal.valueOf(random.nextLong(0, 500)))
-                .nearCrashEvent(getRandomNearCrashEvent(random))
-                .crashEvent(crashedVehicle == null && getRandomCrashEvent(random))
-                .build();
-
-        sender.sendTrackData(track);
-
-        if (track.getCrashEvent()) {
-          log.info("crash event detected!");
-          initCrash(vehicle, track);
+        if (line.length != 8) {
+          log.warn("line invalid, skip it");
+          return;
         }
+
+        if (vehicle != crashedVehicle) {
+          final VehicleTrackDTO track =
+              VehicleTrackDTO.builder()
+                  .vin(String.valueOf(vehicle.getVin()))
+                  .modelType(vehicle.getModelType())
+                  .passengers(random.nextInt(1, 4))
+                  .location(constructGpsPoint(line))
+                  .speed(BigDecimal.valueOf(Double.parseDouble(line[7])))
+                  .distanceVehicleAhead(BigDecimal.valueOf(random.nextLong(0, 500)))
+                  .distanceVehicleBehind(BigDecimal.valueOf(random.nextLong(0, 500)))
+                  .nearCrashEvent(getRandomNearCrashEvent(random))
+                  .crashEvent(crashedVehicle == null && getRandomCrashEvent(random))
+                  .build();
+
+          sender.sendTrackData(track);
+
+          if (track.getCrashEvent()) {
+            log.info("crash event detected!");
+            initCrash(vehicle, track);
+          }
+        }
+      } catch (IOException e) {
+        log.error("error reading csv", e);
       }
-    } catch (IOException e) {
-      log.error("error reading csv", e);
     }
   }
 
