@@ -23,7 +23,7 @@ interface VehicleResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   nearCrashEvent: boolean,
-  crashEvent: boolean
+  crashEvent: boolean,
 }
 
 interface NotificationResponse {
@@ -37,7 +37,8 @@ interface NotificationResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   type: string,
-  date: string
+  date: string,
+  isNew: boolean
 }
 
 
@@ -58,6 +59,7 @@ export class ManufacturerComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
+  allNotificationIDs: number[];
   crashNotifications: NotificationResponse[];
   nearCrashNotifications: NotificationResponse[];
 
@@ -68,6 +70,7 @@ export class ManufacturerComponent implements OnInit {
     this.alive = false;
     this.interval = 2000;
     this.doCenter = true;
+    this.allNotificationIDs = [];
   }
 
   ngOnInit() {
@@ -142,6 +145,15 @@ export class ManufacturerComponent implements OnInit {
             if(existingVehicle == null) {
               return;
             }
+            if(this.allNotificationIDs.indexOf(notification.id) < 0) {
+              console.log("A new id " + notification.id);
+              notification.isNew = true;
+              this.allNotificationIDs.push(notification.id);
+            } else {
+              console.log("Not a new id " + notification.id);
+              notification.isNew = false;
+            }
+
             notification.aliasInMap = existingVehicle.vehicleAlias.toString();
             // console.log("notification: " + notification.id);
             if (notification.type == "CrashEventNotification") {

@@ -11,7 +11,8 @@ interface AccidentStatisticsResponse {
   modelType: string
   passengers: number
   arrivalTimeEmergencyService: number,
-  clearanceTimeAccidentSpot: number
+  clearanceTimeAccidentSpot: number,
+  isNew: boolean
 }
 
 @Component({
@@ -24,11 +25,13 @@ export class TraffiauthorityComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
+  allAccidentStatisticsIDs: number[];
 
   constructor(private http: HttpClient) {
     this.alive = false;
     this.interval = 5000;
     this.doCenter = true;
+    this.allAccidentStatisticsIDs = [];
   }
 
   ngOnInit() {
@@ -37,7 +40,19 @@ export class TraffiauthorityComponent implements OnInit {
 
   loadStatistics() {
     this.http.get<AccidentStatisticsResponse[]>(environment.GOVSTAT_SERVICE + 'accident-statistics').subscribe(data => {
-      this.accidentStatistics = data as AccidentStatisticsResponse[];
+      this.accidentStatistics = (data as AccidentStatisticsResponse[]).reverse();
+      for(let i = 0; i < this.accidentStatistics.length; i++) {
+        let statistic = this.accidentStatistics[i];
+        console.log("Length statistics " + this.allAccidentStatisticsIDs.length);
+        if (this.allAccidentStatisticsIDs.indexOf(statistic.id) < 0) {
+          console.log("A new id " + statistic.id);
+          statistic.isNew = true;
+          this.allAccidentStatisticsIDs.push(statistic.id);
+        } else {
+          console.log("Not a new id " + statistic.id);
+          statistic.isNew = false;
+        }
+      }
     }, error => {
       console.error(error);
       return [];

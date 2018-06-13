@@ -13,58 +13,32 @@
     <h2  style="margin: 1pc 1pc 1pc 1pc">Crash Events</h2>
     <mat-list dense>
       <mat-list-item *ngFor="let notification of crashNotifications">
-        <h3 matLine>Notification {{notification.id}}</h3>
-        <h2 matLine>Alias in map: {{notification.aliasInMap}}</h2>
-        <h2 matLine>Manufacturer-Number: {{notification.vin}}</h2>
-        <p matLine>
-          <span> Time of event: {{notification.date}} </span>
-        </p>
-        <p matLine>
+        <h3 matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">Notification {{notification.id}}</h3>
+        <h2 matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">Alias in map: {{notification.aliasInMap}}</h2>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Model: {{notification.modelType}} </span>
         </p>
-        <p matLine>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Passengers: {{notification.passengers}} </span>
         </p>
-        <p matLine>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Location: {{notification.location}} </span>
-        </p>
-        <p matLine>
-          <span> Speed: {{notification.speed}} </span>
-        </p>
-        <p matLine>
-          <span> Distance Vehicle Ahead: {{notification.distanceVehicleAhead}} </span>
-        </p>
-        <p matLine>
-          <span> Distance Vehicle Behind: {{notification.distanceVehicleBehind}} </span>
         </p>
       </mat-list-item>
     </mat-list>
     <h2  style="margin: 1pc 1pc 1pc 1pc">Near Crash Events</h2>
     <mat-list dense>
       <mat-list-item *ngFor="let notification of nearCrashNotifications">
-        <h3 matLine>Notification {{notification.id}}</h3>
-        <h2 matLine>Alias in map: {{notification.aliasInMap}}</h2>
-        <h2 matLine>Manufacturer-Number:: {{notification.vin}}</h2>
-        <p matLine>
-          <span> Time of event: {{notification.date}} </span>
-        </p>
-        <p matLine>
+        <h3 matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">Notification {{notification.id}}</h3>
+        <h2 matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">Alias in map: {{notification.aliasInMap}}</h2>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Model: {{notification.modelType}} </span>
         </p>
-        <p matLine>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Passengers: {{notification.passengers}} </span>
         </p>
-        <p matLine>
+        <p matLine [ngClass]="{'positive' : notification.isNew == true, 'negative' : notification.isNew == false}">
           <span> Location: {{notification.location}} </span>
-        </p>
-        <p matLine>
-          <span> Speed: {{notification.speed}} </span>
-        </p>
-        <p matLine>
-          <span> Distance Vehicle Ahead: {{notification.distanceVehicleAhead}} </span>
-        </p>
-        <p matLine>
-          <span> Distance Vehicle Behind: {{notification.distanceVehicleBehind}} </span>
         </p>
       </mat-list-item>
     </mat-list>

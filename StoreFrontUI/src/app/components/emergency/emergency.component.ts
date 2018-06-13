@@ -22,7 +22,8 @@ interface NotificationResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   type: string,
-  date: string
+  date: string,
+  isNew: boolean
 }
 
 
@@ -41,6 +42,7 @@ export class EmergencyComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
+  allNotificationIDs: number[];
 
   @ViewChild("gmapsComponent") gmapsComponent: GmapsComponent;
 
@@ -48,8 +50,8 @@ export class EmergencyComponent implements OnInit {
     this.mapVehicleInformations = new Map();
     this.alive = false;
     this.interval = 2000;
-    // this.markers = [];
     this.doCenter = true;
+    this.allNotificationIDs = [];
   }
 
   ngOnInit() {
@@ -84,6 +86,14 @@ export class EmergencyComponent implements OnInit {
           this.nearCrashNotifications = [];
           for (let i = 0; i < notifications.length; i++) {
             let notification = notifications[i];
+            if(this.allNotificationIDs.indexOf(notification.id) < 0) {
+              console.log("A new id " + notification.id);
+              notification.isNew = true;
+              this.allNotificationIDs.push(notification.id);
+            } else {
+              console.log("Not a new id " + notification.id);
+              notification.isNew = false;
+            }
             let vehicleInformation;
             let existingVehicle = this.mapVehicleInformations.get(notification.vin);
             if (existingVehicle != null) {
