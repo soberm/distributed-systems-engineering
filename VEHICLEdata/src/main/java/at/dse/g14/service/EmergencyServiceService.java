@@ -1,6 +1,6 @@
 package at.dse.g14.service;
 
-import at.dse.g14.commons.dto.EmergencyService;
+import at.dse.g14.commons.dto.data.EmergencyService;
 import at.dse.g14.commons.service.CrudService;
 
 /**
@@ -8,6 +8,7 @@ import at.dse.g14.commons.service.CrudService;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-public interface EmergencyServiceService extends CrudService<EmergencyService, Long> {
+public interface EmergencyServiceService extends CrudService<EmergencyService, String> {
 
+  EmergencyService getByName(final String name);
 }

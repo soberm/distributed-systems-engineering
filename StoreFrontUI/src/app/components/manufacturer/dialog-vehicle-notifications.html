@@ -1,0 +1,97 @@
+<h1 mat-dialog-title>Vehicle Notifications for
+  <em>{{data.vehicle}}</em>
+</h1>
+<div mat-dialog-content>
+  <p>Crash Events<p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.crashEventNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+      <h2 matLine>Manufacturer-Number: {{notification.vin}}</h2>
+      <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+      <p matLine>
+        <span> Model: {{notification.modelType}} </span>
+      </p>
+      <p matLine>
+        <span> Passengers: {{notification.passengers}} </span>
+      </p>
+      <p matLine>
+        <span> Location: {{notification.location}} </span>
+      </p>
+      <p matLine>
+        <span> Speed: {{notification.speed}} </span>
+      </p>
+      <p matLine>
+        <span> Distance Vehicle Ahead: {{notification.distanceVehicleAhead}} </span>
+      </p>
+      <p matLine>
+        <span> Distance Vehicle Behind: {{notification.distanceVehicleBehind}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p>Near Crash Events</p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.nearCrashEventNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+      <h2 matLine>Manufacturer-Number: {{notification.vin}}</h2>
+      <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+      <p matLine>
+        <span> Model: {{notification.modelType}} </span>
+      </p>
+      <p matLine>
+        <span> Passengers: {{notification.passengers}} </span>
+      </p>
+      <p matLine>
+        <span> Location: {{notification.location}} </span>
+      </p>
+      <p matLine>
+        <span> Speed: {{notification.speed}} </span>
+      </p>
+      <p matLine>
+        <span> Distance Vehicle Ahead: {{notification.distanceVehicleAhead}} </span>
+      </p>
+      <p matLine>
+        <span> Distance Vehicle Behind: {{notification.distanceVehicleBehind}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p>Arrival events</p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.arrivalNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+      <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p>Clearence Events</p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.clearanceNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+     <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p>Speeding Events</p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.speedNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+      <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+  <p>Spotlight Events</p>
+  <mat-list dense>
+    <mat-list-item *ngFor="let notification of data.spotlightNotifications">
+      <h3 matLine>Notification {{notification.id}}</h3>
+      <p matLine>
+        <span> Time of event: {{notification.date}} </span>
+      </p>
+      </mat-list-item>
+  </mat-list>
+</div>

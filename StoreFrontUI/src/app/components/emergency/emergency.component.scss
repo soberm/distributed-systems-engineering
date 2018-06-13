@@ -1,0 +1,31 @@
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #eee;
+}
+
+.my-sidnav-content{
+  padding-left: 5pc !important;
+  padding-right: 5pc !important;
+  padding-top: 5pc !important;
+}
+
+.side-nav-style{
+  margin-top:70px;
+  position: fixed
+}
+
+.positive {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.negative {
+  background-color: inherit;
+  border-color: inherit;
+  color: inherit;
+}

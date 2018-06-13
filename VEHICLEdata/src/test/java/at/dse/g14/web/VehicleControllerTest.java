@@ -3,7 +3,7 @@ package at.dse.g14.web;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -20,7 +20,7 @@ public class VehicleControllerTest extends AbstractControllerTest {
         .perform(
             post("/manufacturer/{id}/vehicle", String.valueOf(manufacturerEntity1.getId()))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(gson.toJson(new Vehicle(null, convertToDto(manufacturerEntity1), "Polo"))))
+                .content(gson.toJson(new Vehicle(null, "Polo", convertToDto(manufacturerEntity1)))))
         .andExpect(status().isOk())
         .andReturn();
   }

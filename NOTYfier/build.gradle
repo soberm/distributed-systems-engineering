@@ -41,6 +41,7 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-integration')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-web')
 
     /*** SPRING CLOUD ***/
@@ -50,10 +51,18 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
     compile('org.springframework.cloud:spring-cloud-starter-openfeign')
 
+    /** DATABASE **/
+    runtime('org.postgresql:postgresql:42.2.2')
+
+    /** DOCUMENTATION **/
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+
     /*** TEST ***/
 
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 
 }
 

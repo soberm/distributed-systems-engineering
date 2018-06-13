@@ -1,31 +1,25 @@
 package at.dse.g14;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * An application, which is responsible for saving Notifications.
+ *
  * @author Michael Sober
- * @version ${buildVersion}
- * @since 1.0.0
+ * @since 1.0
  */
+@EnableSwagger2
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableFeignClients
-@EnableDiscoveryClient
 public class NotyfierApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(NotyfierApplication.class, args);
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(NotyfierApplication.class, args);
+  }
 }

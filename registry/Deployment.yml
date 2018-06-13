@@ -1,0 +1,19 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: registry-deployment
+spec:
+  selector:
+    matchLabels:
+      app: registry-app
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: registry-app
+    spec:
+      containers:
+      - name: registry-app
+        image: gcr.io/dse-group-14/registry
+        ports:
+        - containerPort: 8761

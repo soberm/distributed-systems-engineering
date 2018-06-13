@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @since 1.0.0
  */
 @Repository
-public interface VehicleRepository extends CrudRepository<VehicleEntity, Long> {
+public interface VehicleRepository extends CrudRepository<VehicleEntity, String> {
 
-  List<VehicleEntity> findAllByManufacturer_Id(long id);
+  List<VehicleEntity> findAllByManufacturer_Id(String id);
 }

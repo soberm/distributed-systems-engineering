@@ -1,7 +1,6 @@
 package at.dse.g14.messaging;
 
-import at.dse.g14.commons.dto.VehicleTrackDTO;
-import at.dse.g14.commons.service.exception.ServiceException;
+import at.dse.g14.commons.dto.track.VehicleTrackDTO;
 import at.dse.g14.entity.VehicleTrack;
 import at.dse.g14.service.IVehicleTrackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +14,14 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
-import java.io.IOException;
-
+/**
+ * A MessageHandler which retrieves VehicleTrack-Messages from the configured Google Pub/Sub topic
+ * and handles them.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see MessageHandler
+ */
 @Slf4j
 @MessageEndpoint
 public class VehicleTrackMessageHandler implements MessageHandler {
@@ -34,6 +39,12 @@ public class VehicleTrackMessageHandler implements MessageHandler {
     this.vehicleTrackService = vehicleTrackService;
   }
 
+  /**
+   * Handles an VehicleTrack-Message, by saving it.
+   *
+   * @param message which contains the payload with the VehicleTrack.
+   * @throws MessagingException if an error occurs, while retrieving the message.
+   */
   @Override
   @ServiceActivator(inputChannel = "vehicleTrackInputChannel")
   public void handleMessage(Message<?> message) throws MessagingException {
@@ -44,7 +55,7 @@ public class VehicleTrackMessageHandler implements MessageHandler {
     try {
       VehicleTrackDTO vehicleTrackDTO = objectMapper.readValue(payload, VehicleTrackDTO.class);
       vehicleTrackService.update(convertToEntity(vehicleTrackDTO));
-    } catch (ServiceException | IOException e) {
+    } catch (Exception e) {
       log.error("Could not handle VehicleTrack-Message. Message ignored.", e);
     }
     if (consumer != null) {
@@ -52,6 +63,12 @@ public class VehicleTrackMessageHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Converts an VehicleTrack dto to an entity.
+   *
+   * @param vehicleTrackDTO which should be converted to an entity.
+   * @return the converted dto.
+   */
   private VehicleTrack convertToEntity(VehicleTrackDTO vehicleTrackDTO) {
     return modelMapper.map(vehicleTrackDTO, VehicleTrack.class);
   }

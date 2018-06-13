@@ -1,16 +1,12 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.VehicleManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Lukas Baronyai
@@ -18,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/manufacturer/")
+@RequestMapping("/manufacturer")
 public class VehicleManufacturerController {
 
   private final VehicleManufacturerService manufacturerService;
@@ -34,10 +30,21 @@ public class VehicleManufacturerController {
     return manufacturerService.save(manufacturer);
   }
 
-  @GetMapping("/{vid}")
-  public VehicleManufacturer getVehicleManufacturer(@PathVariable("id") final long id)
+  @GetMapping("/{id}")
+  public VehicleManufacturer getVehicleManufacturer(@PathVariable("id") final String id)
       throws ServiceException {
     return manufacturerService.findOne(id);
+  }
+
+  @GetMapping
+  public VehicleManufacturer getVehicleManufacturerByVin(@RequestParam("vin") final String vin)
+      throws ServiceException {
+    return manufacturerService.findByVin(vin);
+  }
+
+  @GetMapping("getAll")
+  public List<VehicleManufacturer> getAllVehicleManufacturers() throws ServiceException {
+    return manufacturerService.findAll();
   }
 
   @PutMapping

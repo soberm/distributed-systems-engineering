@@ -1,20 +1,25 @@
 package at.dse.g14.entity;
 
-import at.dse.g14.commons.dto.GpsPoint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+/**
+ * An entity which represents information about a moving vehicle.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,7 +27,7 @@ import java.math.BigDecimal;
 @Document(collection = "vehicle_tracks")
 public class VehicleTrack {
 
-  @Id private Long id;
+  @Id private String id;
 
   @NotNull private String vin;
 
@@ -31,10 +36,13 @@ public class VehicleTrack {
   @Range(min = 0, max = 300)
   private Integer passengers;
 
-  @Valid private GpsPoint location;
+  @NotNull
+  @GeoSpatialIndexed(useGeneratedName = true)
+  @Size(min = 2, max = 2)
+  private Double[] location;
 
   @DecimalMin(value = "0.0")
-  @DecimalMax(value = "130.0")
+  //  @DecimalMax(value = "130.0")
   private BigDecimal speed;
 
   @DecimalMin(value = "0.0")

@@ -4,5 +4,11 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  API_URL: 'http://localhost:4000/',
+  VEHICLE_DATA_SERVICE: 'http://localhost:4000/vehicledata/',
+  V2I_TRACKER_SERVICE: 'http://localhost:4000/v2itracker/',
+  DATA_SIMULATOR_SERVICE: 'http://localhost:4000/datasimulator/',
+  NOTYFIER_SERVICE: 'http://localhost:4000/notyfier/',
+  GOVSTAT_SERVICE: 'http://localhost:4000/govstat/'
 };
