@@ -146,11 +146,11 @@ export class ManufacturerComponent implements OnInit {
               return;
             }
             if(this.allNotificationIDs.indexOf(notification.id) < 0) {
-              console.log("A new id " + notification.id);
+              // console.log("A new id " + notification.id);
               notification.isNew = true;
               this.allNotificationIDs.push(notification.id);
             } else {
-              console.log("Not a new id " + notification.id);
+              // console.log("Not a new id " + notification.id);
               notification.isNew = false;
             }
 
