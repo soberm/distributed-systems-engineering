@@ -7,8 +7,7 @@ package at.dse.g14.commons.service.exception;
  */
 public class ServiceException extends Exception {
 
-  public ServiceException() {
-  }
+  public ServiceException() {}
 
   public ServiceException(final String message) {
     super(message);
@@ -21,5 +20,4 @@ public class ServiceException extends Exception {
   public ServiceException(final String message, final Throwable cause) {
     super(message, cause);
   }
-
 }

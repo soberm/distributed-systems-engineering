@@ -5,6 +5,13 @@ import lombok.*;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
 
+/**
+ * An entity which represents the notification, which informs stakeholders about a crash that
+ * occurred.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Data
 @Entity
 @NoArgsConstructor

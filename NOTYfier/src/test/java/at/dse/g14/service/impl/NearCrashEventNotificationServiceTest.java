@@ -13,6 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Unit-Tests for the NearCrashEventNotificationService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class NearCrashEventNotificationServiceTest extends AbstractCrudServiceTest {

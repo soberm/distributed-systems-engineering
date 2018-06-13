@@ -12,6 +12,14 @@ import javax.validation.Validator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * This class implements the general functionality of a CrudService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see CrudService
+ * @see Entity
+ */
 @Slf4j
 public abstract class AbstractCrudService<T extends Entity<ID>, ID> implements CrudService<T, ID> {
 
@@ -52,6 +60,13 @@ public abstract class AbstractCrudService<T extends Entity<ID>, ID> implements C
     return crudRepository.save(loadedEntity);
   }
 
+  /**
+   * Updates the loaded entity, with the attributes of the provided entity.
+   *
+   * @param loadedEntity which should get updated.
+   * @param entity which will be used to update the loadedEntity.
+   * @return the updated entity.
+   */
   protected abstract T updateLoadedEntity(T loadedEntity, T entity);
 
   @Override
@@ -80,6 +95,12 @@ public abstract class AbstractCrudService<T extends Entity<ID>, ID> implements C
     return (List<T>) crudRepository.findAll();
   }
 
+  /**
+   * Validates the entity.
+   *
+   * @param entity which should be validated.
+   * @throws ValidationException if the entity is not valid.
+   */
   protected void validate(T entity) throws ValidationException {
     log.debug("Validating " + entity);
     if (!validator.validate(entity).isEmpty()) {

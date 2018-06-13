@@ -1,6 +1,7 @@
 package at.dse.g14.entity;
 
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -32,6 +33,7 @@ public class VehicleManufacturerEntity implements Entity {
   private String id;
 
   @NotBlank
+  @Column(unique = true)
   private String name;
 
   @NotNull

@@ -6,6 +6,12 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 
+/**
+ * An entity which represents a notification, which tells a vehicle to reduce their speed.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Entity
 @NoArgsConstructor
 @ToString(callSuper = true)

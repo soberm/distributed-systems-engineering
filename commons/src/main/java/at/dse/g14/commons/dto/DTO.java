@@ -5,9 +5,8 @@ package at.dse.g14.commons.dto;
  * @version ${buildVersion}
  * @since 1.0.0
  */
-
 public interface DTO {
 
-//  Long getId();
+  //  Long getId();
 
 }

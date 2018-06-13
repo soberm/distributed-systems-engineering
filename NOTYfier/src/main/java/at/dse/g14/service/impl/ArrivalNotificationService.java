@@ -1,6 +1,7 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.ArrivalEventDTO;
+import at.dse.g14.commons.dto.data.Vehicle;
+import at.dse.g14.commons.dto.events.ArrivalEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.ArrivalNotification;
@@ -12,8 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the functionality around ArrivalNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see IArrivalNotificationService
+ */
 @Slf4j
 @Service
 public class ArrivalNotificationService extends AbstractCrudService<ArrivalNotification, Long>
@@ -41,8 +51,19 @@ public class ArrivalNotificationService extends AbstractCrudService<ArrivalNotif
   }
 
   @Override
-  public List<ArrivalNotification> generateFrom(ArrivalEventDTO arrivalEventDTO) throws ServiceException {
-    //TODO: Generate notification or notifications from DTO
-    return null;
+  public List<ArrivalNotification> generateFrom(ArrivalEventDTO arrivalEventDTO)
+      throws ServiceException {
+    validate(arrivalEventDTO);
+    log.info("Generating ArrivalNotifications for {}", arrivalEventDTO);
+    return generateForVehicles(arrivalEventDTO);
+  }
+
+  private List<ArrivalNotification> generateForVehicles(ArrivalEventDTO arrivalEventDTO) {
+    log.info("Generating ArrivalNotification for the vehicles near {}", arrivalEventDTO);
+    List<ArrivalNotification> arrivalNotificationsVehicles = new ArrayList<>();
+    for (Vehicle vehicle : arrivalEventDTO.getVehiclesToNotify()) {
+      arrivalNotificationsVehicles.add(new ArrivalNotification(null, vehicle.getVin()));
+    }
+    return arrivalNotificationsVehicles;
   }
 }

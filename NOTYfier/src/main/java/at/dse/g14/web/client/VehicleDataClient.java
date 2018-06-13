@@ -1,7 +1,7 @@
 package at.dse.g14.web.client;
 
-import at.dse.g14.commons.dto.EmergencyService;
-import at.dse.g14.commons.dto.VehicleManufacturer;
+import at.dse.g14.commons.dto.data.EmergencyService;
+import at.dse.g14.commons.dto.data.VehicleManufacturer;
 import at.dse.g14.web.client.impl.VehicleDataClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Feign-Client to access the rest-endpoints of the vehicle data service.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @FeignClient(
   name = "vehicledata-service",
   url = "${vehicledata.address}",

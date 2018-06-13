@@ -6,6 +6,13 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 
+/**
+ * An entity which represents the notification, which informs stakeholders about an arrived
+ * emergency service at the accident spot.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 @Entity
 @NoArgsConstructor
 @ToString(callSuper = true)

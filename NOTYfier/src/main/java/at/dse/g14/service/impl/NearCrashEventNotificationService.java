@@ -1,7 +1,7 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.AccidentEventDTO;
-import at.dse.g14.commons.dto.LiveVehicleTrackDTO;
+import at.dse.g14.commons.dto.events.AccidentEventDTO;
+import at.dse.g14.commons.dto.track.LiveVehicleTrackDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.NearCrashEventNotification;
@@ -17,6 +17,14 @@ import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the functionality around NearCrashEventNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see INearCrashEventNotificationService
+ */
 @Slf4j
 @Service
 public class NearCrashEventNotificationService

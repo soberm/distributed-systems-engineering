@@ -11,6 +11,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * General tests for a CrudService.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ */
 public abstract class AbstractCrudServiceTest<T extends Entity<ID>, ID> {
 
   protected abstract AbstractCrudService<T, ID> getService();

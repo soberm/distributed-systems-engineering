@@ -3,7 +3,7 @@ package at.dse.g14.web;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 

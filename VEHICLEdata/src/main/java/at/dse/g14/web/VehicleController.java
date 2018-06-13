@@ -1,17 +1,12 @@
 package at.dse.g14.web;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.service.VehicleService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Lukas Baronyai
@@ -35,8 +30,8 @@ public class VehicleController {
   }
 
   @GetMapping("/{vid}")
-  public Vehicle getVehicle(@PathVariable("id") final String id,
-      @PathVariable("vid") final String vid)
+  public Vehicle getVehicle(
+      @PathVariable("id") final String id, @PathVariable("vid") final String vid)
       throws ServiceException {
     return vehicleService.findOne(id, vid);
   }

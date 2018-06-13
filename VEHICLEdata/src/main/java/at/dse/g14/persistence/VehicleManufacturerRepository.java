@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
  * @since 1.0.0
  */
 @Repository
-public interface VehicleManufacturerRepository extends
-    CrudRepository<VehicleManufacturerEntity, String> {
+public interface VehicleManufacturerRepository
+    extends CrudRepository<VehicleManufacturerEntity, String> {
 
+  VehicleManufacturerEntity getByName(final String name);
 }

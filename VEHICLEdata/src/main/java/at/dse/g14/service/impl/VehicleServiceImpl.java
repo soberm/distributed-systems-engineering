@@ -1,6 +1,6 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.Vehicle;
+import at.dse.g14.commons.dto.data.Vehicle;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.VehicleEntity;
@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -49,6 +50,11 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public Vehicle save(final Vehicle vehicle) throws ValidationException {
     validate(vehicle);
+
+    if (vehicle.getVin() == null || vehicle.getVin().isEmpty()) {
+      vehicle.setVin(UUID.randomUUID().toString());
+    }
+
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));
     return convertToDto(entity);
   }
@@ -58,8 +64,8 @@ public class VehicleServiceImpl implements VehicleService {
       throws ServiceException {
 
     final Optional<VehicleEntity> foundVehicle = vehicleRepository.findById(vehicleId);
-    final Optional<VehicleManufacturerEntity> foundManufacturer = manufacturerRepository
-        .findById(manufacturerId);
+    final Optional<VehicleManufacturerEntity> foundManufacturer =
+        manufacturerRepository.findById(manufacturerId);
 
     if (!foundVehicle.isPresent()) {
       throw new ServiceException("Unknown vehicleId " + vehicleId);
@@ -81,7 +87,7 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public Vehicle update(final Vehicle vehicle) throws ServiceException {
     validate(vehicle);
-    if (vehicle.getId() != null) {
+    if (vehicle.getVin() != null) {
       throw new ValidationException("No ID provided");
     }
     final VehicleEntity entity = vehicleRepository.save(convertToEntity(vehicle));
@@ -120,32 +126,34 @@ public class VehicleServiceImpl implements VehicleService {
     return convertToDto(vehicleRepository.findAllByManufacturer_Id(manufacturerId));
   }
 
-  private Vehicle convertToDto(final VehicleEntity entity) {
+  @Override
+  public Vehicle convertToDto(final VehicleEntity entity) {
     return modelMapper.map(entity, Vehicle.class);
   }
 
-  private List<Vehicle> convertToDto(final List<VehicleEntity> entities) {
+  @Override
+  public List<Vehicle> convertToDto(final List<VehicleEntity> entities) {
     return entities.stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
-  private VehicleEntity convertToEntity(Vehicle dto) {
+  @Override
+  public VehicleEntity convertToEntity(Vehicle dto) {
     return modelMapper.map(dto, VehicleEntity.class);
   }
 
-  private List<VehicleEntity> convertToEntity(final List<Vehicle> entities) {
+  @Override
+  public List<VehicleEntity> convertToEntity(final List<Vehicle> entities) {
     return entities.stream().map(this::convertToEntity).collect(Collectors.toList());
   }
 
-  private void validate(final Vehicle vehicle) throws ValidationException {
+  @Override
+  public void validate(final Vehicle vehicle) throws ValidationException {
     log.debug("Validating " + vehicle);
     Set<ConstraintViolation<Vehicle>> violations = validator.validate(vehicle);
     if (!violations.isEmpty()) {
-      throw new ValidationException("Vehicle not valid: \n" +
-          Arrays.toString(
-              violations.stream()
-                  .map(Object::toString)
-                  .toArray())
-      );
+      throw new ValidationException(
+          "Vehicle not valid: \n"
+              + Arrays.toString(violations.stream().map(Object::toString).toArray()));
     }
   }
 }

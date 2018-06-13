@@ -1,0 +1,8 @@
+<h2>Map Mode</h2>
+<!--<div class="col-md-4 col-sm-12 col-xs-12">-->
+  <button (click)="setMapType('terrain')" class="btn btn-primary">Terrain</button>
+  <button (click)="setMapType('satellite')" class="btn btn-danger">Satellite</button>
+  <button (click)="setMapType('roadmap')" class="btn btn-warning">Road Map</button>
+  <button (click)="setMapType('hybrid')" class="btn btn-dark">Hybrid</button>
+<!--</div>-->
+<div #gmap style=”width:100%;height:600px;”></div>

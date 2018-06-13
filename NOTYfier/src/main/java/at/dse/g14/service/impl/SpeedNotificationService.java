@@ -1,6 +1,6 @@
 package at.dse.g14.service.impl;
 
-import at.dse.g14.commons.dto.AccidentEventDTO;
+import at.dse.g14.commons.dto.events.AccidentEventDTO;
 import at.dse.g14.commons.service.exception.ServiceException;
 import at.dse.g14.commons.service.exception.ValidationException;
 import at.dse.g14.entity.SpeedNotification;
@@ -15,6 +15,14 @@ import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the functionality around SpeedNotifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see AbstractCrudService
+ * @see ISpeedNotificationService
+ */
 @Slf4j
 @Service
 public class SpeedNotificationService extends AbstractCrudService<SpeedNotification, Long>

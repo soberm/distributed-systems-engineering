@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * This class implements the functionality to read notifications.
+ *
+ * @author Michael Sober
+ * @since 1.0
+ * @see INotificationService
+ */
 @Slf4j
 @Service
 public class NotificationService implements INotificationService {
@@ -25,6 +32,11 @@ public class NotificationService implements INotificationService {
   public List<Notification> findAll() throws ServiceException {
     log.info("Finding all notifications.");
     return (List<Notification>) notificationRepository.findAll();
+  }
+
+  @Override
+  public List<Notification> findTop10ByReceiver(String receiver) throws ServiceException {
+    return notificationRepository.findFirst10ByReceiverOrderByDateDesc(receiver);
   }
 
   @Override
