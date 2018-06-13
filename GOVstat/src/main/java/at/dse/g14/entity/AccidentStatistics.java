@@ -34,7 +34,7 @@ public class AccidentStatistics {
 
   @NotNull private String modelType;
 
-  @Valid @Embedded private GpsPoint location;
+  private Double[] location;
 
   @Range(min = 0, max = 300)
   private Integer passengers;

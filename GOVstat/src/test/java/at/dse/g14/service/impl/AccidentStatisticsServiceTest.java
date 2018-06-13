@@ -75,20 +75,6 @@ public class AccidentStatisticsServiceTest {
   }
 
   @Test(expected = ValidationException.class)
-  public void save_invalidAccidentStatisticsLocationLat_shouldThrowException() throws Exception {
-    AccidentStatistics accidentStatistics = buildValidAccidentStatistics();
-    accidentStatistics.setLocation(new GpsPoint(new BigDecimal(-91), new BigDecimal(180)));
-    accidentStatisticsService.save(accidentStatistics);
-  }
-
-  @Test(expected = ValidationException.class)
-  public void save_invalidAccidentStatisticsLocationLon_shouldThrowException() throws Exception {
-    AccidentStatistics accidentStatistics = buildValidAccidentStatistics();
-    accidentStatistics.setLocation(new GpsPoint(new BigDecimal(-90), new BigDecimal(181)));
-    accidentStatisticsService.save(accidentStatistics);
-  }
-
-  @Test(expected = ValidationException.class)
   public void save_invalidAccidentStatisticsArrivalTimeEmergencyService_shouldThrowException()
       throws Exception {
     AccidentStatistics accidentStatistics = buildValidAccidentStatistics();
@@ -187,7 +173,7 @@ public class AccidentStatisticsServiceTest {
         .vin("W0L000051T2123456")
         .modelType("Opel")
         .passengers(4)
-        .location(new GpsPoint(lat, lon))
+        .location(new Double[] {20.0, 20.0})
         .arrivalTimeEmergencyService(5)
         .clearanceTimeAccidentSpot(30)
         .build();
