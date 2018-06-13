@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractScenario implements Runnable {
 
-  private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.1;
-  private static final double CRASH_EVENT_PROBABILITY = 0.05;
+  private static final double NEAR_CRASH_EVENT_PROBABILITY = 0.01;
+  private static final double CRASH_EVENT_PROBABILITY = 0.01;
 
   protected final DseSender sender;
   protected final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);

@@ -55,15 +55,16 @@ public class Scenario2Crash extends AbstractScenario {
         final Vehicle vehicle = entry.getKey();
         final CSVReader reader = entry.getValue();
 
-        final ThreadLocalRandom random = ThreadLocalRandom.current();
-        String[] line = reader.readNext();
-
-        if (line.length != 8) {
-          log.warn("line invalid, skip it");
-          return;
-        }
-
         if (vehicle != crashedVehicle) {
+
+          final ThreadLocalRandom random = ThreadLocalRandom.current();
+          String[] line = reader.readNext();
+
+          if (line.length != 8) {
+            log.warn("line invalid, skip it");
+            return;
+          }
+
           final VehicleTrackDTO track =
               VehicleTrackDTO.builder()
                   .vin(String.valueOf(vehicle.getVin()))

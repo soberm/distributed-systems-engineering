@@ -55,14 +55,13 @@ public class Scenario1Random extends AbstractScenario {
       final ThreadLocalRandom random = ThreadLocalRandom.current();
 
       for (Entry<Vehicle, CSVReader> entry : vehicleDataMap.entrySet()) {
-        String[] line = entry.getValue().readNext();
-
-        if (line.length != 8) {
-          log.warn("line invalid, skip it");
-          break;
-        }
-
         if (!crashes.containsKey(entry.getKey())) {
+          final String[] line = entry.getValue().readNext();
+
+          if (line.length != 8) {
+            log.warn("line invalid, skip it");
+            break;
+          }
           final VehicleTrackDTO track =
               VehicleTrackDTO.builder()
                   .vin(String.valueOf(entry.getKey().getVin()))
