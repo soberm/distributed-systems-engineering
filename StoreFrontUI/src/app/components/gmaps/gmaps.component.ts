@@ -33,15 +33,15 @@ export class GmapsComponent implements OnInit {
   }
 
   refresh() {
-    console.log(this.mapVehicleInformations.size);
+    // console.log(this.mapVehicleInformations.size);
     let vehicleInformation: MapVehicleInformation;
     for (let i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(null);
     }
     for (let key of Array.from(this.mapVehicleInformations.keys())) {
       vehicleInformation = this.mapVehicleInformations.get(key);
-      console.log("Information in map " + vehicleInformation.vehicleAlias + ": "
-        + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
+      // console.log("Information in map " + vehicleInformation.vehicleAlias + ": "
+      //   + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
       let marker = new google.maps.Marker({
         position: new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation.longitude),
         map: this.map,
@@ -53,10 +53,6 @@ export class GmapsComponent implements OnInit {
       this.map.setCenter(new google.maps.LatLng(vehicleInformation.latitude, vehicleInformation.longitude));
       this.doCenter = false;
     }
-  }
-
-  function1(){
-    console.log("Method in maps");
   }
 }
 

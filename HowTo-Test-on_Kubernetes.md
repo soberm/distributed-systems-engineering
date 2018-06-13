@@ -26,7 +26,7 @@ gcloud container clusters get-credentials cluster-dse-group-14
 
 3.) To build our project for cubernetes, build/use the newest images and upload it to the gcloud image registry with the following script:
 ```bash
-build-upload-images.sh
+./build-and-push-images-kubernets.sh
 ```
 
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {MapVehicleInformation} from "./model/MapVehicleInformation";
@@ -6,6 +6,7 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 import 'rxjs/add/operator/takeWhile';
 import {GmapsComponent} from "../gmaps/gmaps.component";
 import {Router} from "@angular/router";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material";
 
 interface ManufacturerResponse {
   id: string
@@ -22,7 +23,7 @@ interface VehicleResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   nearCrashEvent: boolean,
-  crashEvent: boolean
+  crashEvent: boolean,
 }
 
 interface NotificationResponse {
@@ -36,7 +37,8 @@ interface NotificationResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   type: string,
-  date: string
+  date: string,
+  isNew: boolean
 }
 
 
@@ -57,17 +59,18 @@ export class ManufacturerComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
+  allNotificationIDs: number[];
   crashNotifications: NotificationResponse[];
   nearCrashNotifications: NotificationResponse[];
 
   @ViewChild("gmapsComponent") gmapsComponent: GmapsComponent;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
     this.mapVehicleInformations = new Map();
     this.alive = false;
     this.interval = 2000;
-    // this.markers = [];
     this.doCenter = true;
+    this.allNotificationIDs = [];
   }
 
   ngOnInit() {
@@ -83,7 +86,7 @@ export class ManufacturerComponent implements OnInit {
     this.http.get<ManufacturerResponse[]>(this.manufacturerURL + 'getAll').subscribe(data => {
       this.manufacturers = data as ManufacturerResponse[];
       if (this.manufacturers != null && this.manufacturers.length > 0) {
-        console.log("got something");
+        // console.log("got something");
         this.manufacturersSelect = this.manufacturers[0].name
       }
     }, error => {
@@ -94,7 +97,7 @@ export class ManufacturerComponent implements OnInit {
 
   showVehicleInformation() {
     if (this.manufacturers != null) {
-      console.log(this.manufacturersSelect);
+      // console.log(this.manufacturersSelect);
       let id: string = this.manufacturers.find(manufacturer => manufacturer.name == this.manufacturersSelect).id;
       this.http.get<VehicleResponse[]>(this.v2itrackerURL + 'live-vehicle-track', {
         params: new HttpParams().set('manufacturer', id)
@@ -115,7 +118,7 @@ export class ManufacturerComponent implements OnInit {
             vehicle.aliasInMap = i.toString();
           }
           this.mapVehicleInformations.set(vehicle.vin, vehicleInformation);
-          console.log("vehicle " + vehicle.vin + " is at \n" + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
+          // console.log("vehicle " + vehicle.vin + " is at \n" + vehicleInformation.latitude + "/" + vehicleInformation.longitude);
         }
       }, error => {
         console.error(error);
@@ -126,7 +129,7 @@ export class ManufacturerComponent implements OnInit {
 
   showNotifications() {
     if (this.manufacturers != null) {
-      console.log(this.manufacturersSelect);
+      // console.log(this.manufacturersSelect);
       let id: string = this.manufacturers.find(manufacturer => manufacturer.name == this.manufacturersSelect).id;
       this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
         params: new HttpParams().set('receiver', id).append('top', 'true')
@@ -142,8 +145,17 @@ export class ManufacturerComponent implements OnInit {
             if(existingVehicle == null) {
               return;
             }
+            if(this.allNotificationIDs.indexOf(notification.id) < 0) {
+              // console.log("A new id " + notification.id);
+              notification.isNew = true;
+              this.allNotificationIDs.push(notification.id);
+            } else {
+              // console.log("Not a new id " + notification.id);
+              notification.isNew = false;
+            }
+
             notification.aliasInMap = existingVehicle.vehicleAlias.toString();
-            console.log("notification: " + notification.id);
+            // console.log("notification: " + notification.id);
             if (notification.type == "CrashEventNotification") {
               this.crashNotifications.push(notification);
             } else if(notification.type == "NearCrashEventNotification") {
@@ -173,7 +185,7 @@ export class ManufacturerComponent implements OnInit {
       return;
     }
     this.alive = true;
-    TimerObservable.create(2000, this.interval)
+    TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive)
       .subscribe(() => {
         this.showVehicleInformation();
@@ -186,4 +198,53 @@ export class ManufacturerComponent implements OnInit {
     console.log("Stopped live");
     this.alive = false;
   }
+
+  openDialog(vin:string) {
+    this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
+      params: new HttpParams().set('receiver', vin).append('top', 'true')
+    }).subscribe(data => {
+      let clearanceNotifications = [];
+      let arrivalNotifications = [];
+      let crashEventNotifications = [];
+      let nearCrashEventNotifications = [];
+      let speedNotifications = [];
+      let spotlightNotifications = [];
+      let notifications = data as NotificationResponse[];
+      for (let i = 0; i < notifications.length; i++) {
+        let notification = notifications[i];
+        if (notification.type == "CrashEventNotification") {
+          crashEventNotifications.push(notification);
+        } else if (notification.type == "NearCrashEventNotification") {
+          nearCrashEventNotifications.push(notification);
+        } else if (notification.type == "ClearanceNotification") {
+          clearanceNotifications.push(notification);
+        } else if (notification.type == "ArrivalNotification") {
+          arrivalNotifications.push(notification);
+        } else if (notification.type == "SpeedNotification") {
+          speedNotifications.push(notification);
+        } else if (notification.type == "SpotlightNotification") {
+          spotlightNotifications.push(notification);
+        }
+      }
+      this.dialog.open(DialogVehicleNotificationDialog, {
+        data: {
+          clearanceNotifications: clearanceNotifications,
+          arrivalNotifications: arrivalNotifications,
+          crashEventNotifications: crashEventNotifications,
+          nearCrashEventNotifications: nearCrashEventNotifications,
+          speedNotifications: speedNotifications,
+          spotlightNotifications:spotlightNotifications,
+          vehicle: vin
+        }
+      });
+    });
+  }
+}
+
+@Component({
+  selector: 'dialog-vehicle-notifications-dialog',
+  templateUrl: 'dialog-vehicle-notifications.html',
+})
+export class DialogVehicleNotificationDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }

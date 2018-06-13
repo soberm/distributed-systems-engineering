@@ -22,7 +22,8 @@ interface NotificationResponse {
   distanceVehicleAhead: number,
   distanceVehicleBehind: number,
   type: string,
-  date: string
+  date: string,
+  isNew: boolean
 }
 
 
@@ -41,6 +42,7 @@ export class EmergencyComponent implements OnInit {
   private alive: boolean;
   private interval: number;
   doCenter: boolean;
+  allNotificationIDs: number[];
 
   @ViewChild("gmapsComponent") gmapsComponent: GmapsComponent;
 
@@ -48,8 +50,8 @@ export class EmergencyComponent implements OnInit {
     this.mapVehicleInformations = new Map();
     this.alive = false;
     this.interval = 2000;
-    // this.markers = [];
     this.doCenter = true;
+    this.allNotificationIDs = [];
   }
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class EmergencyComponent implements OnInit {
     this.http.get<EmergencyServiceResponse[]>(environment.VEHICLE_DATA_SERVICE + 'emergencyService').subscribe(data => {
       this.emergencyServices = data as EmergencyServiceResponse[];
       if (this.emergencyServices != null && this.emergencyServices.length > 0) {
-        console.log("got something");
+        // console.log("got something");
         this.emergencyServiceSelect = this.emergencyServices[0].name
       }
     }, error => {
@@ -72,7 +74,7 @@ export class EmergencyComponent implements OnInit {
 
   showNotifications() {
     if (this.emergencyServices != null) {
-      console.log(this.emergencyServiceSelect);
+      // console.log(this.emergencyServiceSelect);
       let id: string = this.emergencyServices.find(emergencyService => emergencyService.name == this.emergencyServiceSelect).id;
       this.http.get<NotificationResponse[]>(environment.NOTYFIER_SERVICE + 'notification', {
         params: new HttpParams().set('receiver', id).append('top', 'true')
@@ -84,6 +86,14 @@ export class EmergencyComponent implements OnInit {
           this.nearCrashNotifications = [];
           for (let i = 0; i < notifications.length; i++) {
             let notification = notifications[i];
+            if(this.allNotificationIDs.indexOf(notification.id) < 0) {
+              // console.log("A new id " + notification.id);
+              notification.isNew = true;
+              this.allNotificationIDs.push(notification.id);
+            } else {
+              // console.log("Not a new id " + notification.id);
+              notification.isNew = false;
+            }
             let vehicleInformation;
             let existingVehicle = this.mapVehicleInformations.get(notification.vin);
             if (existingVehicle != null) {
@@ -93,10 +103,10 @@ export class EmergencyComponent implements OnInit {
               vehicleInformation = new MapVehicleInformation(i, notification.location[1], notification.location[0]);
               notification.aliasInMap = i.toString();
             }
-            this.mapVehicleInformations.set(notification.vin, vehicleInformation);
-            console.log("notification: " + notification.id);
+            // console.log("notification: " + notification.id);
             if (notification.type == "CrashEventNotification") {
               this.crashNotifications.push(notification);
+              this.mapVehicleInformations.set(notification.vin + i, vehicleInformation);
             } else if(notification.type == "NearCrashEventNotification") {
               this.nearCrashNotifications.push(notification);
             }
@@ -124,7 +134,7 @@ export class EmergencyComponent implements OnInit {
       return;
     }
     this.alive = true;
-    TimerObservable.create(2000, this.interval)
+    TimerObservable.create(0, this.interval)
       .takeWhile(() => this.alive)
       .subscribe(() => {
         this.showNotifications();
