@@ -1,5 +1,6 @@
 package at.dse.g14;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
@@ -12,12 +13,21 @@ import java.util.List;
 @Component
 public class SwaggerResourceProviderImpl implements SwaggerResourcesProvider {
 
+  @Value("${notyfier.service}")
+  private String notyfierService;
+
+  @Value("${vehicledata.service}")
+  private String vehicledataService;
+
+  @Value("${v2itracker.service}")
+  private String v2itrackerService;
+
   @Override
   public List<SwaggerResource> get() {
     List<SwaggerResource> resources = new ArrayList<>();
-    resources.add(swaggerResource("notyfier-service", "/notyfier/v2/api-docs", "2.0"));
-    resources.add(swaggerResource("vehicledata-service", "/vehicledata/v2/api-docs", "2.0"));
-    resources.add(swaggerResource("v2itracker-service", "/v2itracker/v2/api-docs", "2.0"));
+    resources.add(swaggerResource("notyfier-service", "/" + notyfierService + "/v2/api-docs", "2.0"));
+    resources.add(swaggerResource("vehicledata-service", "/" + vehicledataService + "/v2/api-docs", "2.0"));
+    resources.add(swaggerResource("v2itracker-service", "/" + v2itrackerService + "/v2/api-docs", "2.0"));
     return resources;
   }
 

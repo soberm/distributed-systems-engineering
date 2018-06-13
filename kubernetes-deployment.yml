@@ -56,7 +56,10 @@ spec:
         tier: frontend
     spec:
       containers:
-        - name: apigateway
+        - env:
+           - name: SPRING_PROFILES_ACTIVE
+             value: kubernetes
+         name: apigateway
           image: eu.gcr.io/dse-group-14/apigateway
           ports:
               - containerPort: 4000
