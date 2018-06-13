@@ -2,7 +2,6 @@
 
 gradle build -x test
 
- build and push storefront-ui
 cd StoreFrontUI
 docker build -t eu.gcr.io/dse-group-14/storefrontui .
 gcloud docker -- push eu.gcr.io/dse-group-14/storefrontui
